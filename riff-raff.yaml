@@ -8,4 +8,4 @@ deployments:
   cloudwatch-logs-management:
     type: cloud-formation
     parameters:
-      templatePath: cfn.yaml
+      templatePath: template.yaml

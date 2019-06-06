@@ -17,19 +17,27 @@ function cleanup {
 }
 trap cleanup EXIT
 
-# where is NVM on teamcity???
-# nvm.sh
-nvm install
-nvm use
-npm install
-npm run build
-sam package --output-template-file dist/cfn.yaml --s3-bucket ${DEPLOY_TOOLS_DIST_BUCKET}
-
-# build riff-raff package
+# create riff-raff dir
 RIFF_RAFF_ARTIFACT_DIR=$SCRIPT_DIR/../riff-raff-artifact
 rm -rf ${RIFF_RAFF_ARTIFACT_DIR} || true
 mkdir -p ${RIFF_RAFF_ARTIFACT_DIR}/cloudwatch-logs-management
-cp ${SCRIPT_DIR}/../dist/cfn.yaml ${RIFF_RAFF_ARTIFACT_DIR}/cloudwatch-logs-management/cfn.yaml
+
+# source NVM on teamcity
+. ${NVM_DIR}/nvm.sh
+nvm install
+nvm use
+
+# install deps and build app
+npm install
+npm run build
+
+# bundle lambda code
+(
+    cd ${SCRIPT_DIR}/../dist
+    zip -r ${RIFF_RAFF_ARTIFACT_DIR}/cloudwatch-logs-management/lambda.zip *
+)
+
+cp ${SCRIPT_DIR}/../template.yaml ${RIFF_RAFF_ARTIFACT_DIR}/cloudwatch-logs-management/template.yaml
 cp ${SCRIPT_DIR}/../riff-raff.yaml ${RIFF_RAFF_ARTIFACT_DIR}/riff-raff.yaml
 
 # publish from teamcity
