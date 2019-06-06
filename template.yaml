@@ -1,0 +1,209 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Lambdas to configure Cloudwatch Logs retention times and shipping of logs to ELK
+
+Parameters:
+  Stack:
+    Type: String
+    Description: The name of this stack (principly used to aid observability - used to tag functions)
+
+  Stage:
+    Type: String
+    Description: The stage of this stack (principly used to aid developement and tag functions, should be PROD when in use in an account)
+    Default: PROD
+
+  RetentionInDays:
+    Type: Number
+    Description: The number of days to set the expiry to on Cloudwatch Logs groups
+
+  ShippingPrefix:
+    Type: CommaDelimitedList
+    Description: Comma delimited list of log group prefixes that should be configured to ship to ELK
+    Default: /aws/lambda/
+
+  KinesisStreamName:
+    Type: String
+    Description: The name (not ARN) of the kinesis stream to ship logs to
+
+  CloudWatchLogsFilterName:
+    Type: String
+    Description: The name of the filter that should be added/maintained on log groups for shipping to the lambda
+    Default: GuLogShippingLambdaFilter
+
+  OptionLowerFirstCharOfTags:
+    Type: String
+    Description: Whether to make the first character of tags from lambdas lower case or not (this can help to align tags with other infrastructure in ELK)
+    AllowedValues:
+    - true
+    - false
+    Default: false
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Runtime: nodejs8.10
+    Environment:
+      Variables:
+        STAGE: !Ref Stage
+
+Resources:
+  StructuredFieldsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+  SetRetentionPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action: 
+              - logs:DescribeLogGroups
+              - logs:PutRetentionPolicy
+            Resource: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:*
+
+  SetRetentionFunc:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./dist
+      Handler: app.setRetention
+      Timeout: 60
+      Policies:
+      - !Ref SetRetentionPolicy
+      Environment:
+        Variables:
+          RETENTION_IN_DAYS: !Ref RetentionInDays
+      Events:
+        LogGroupChangeEvent:
+          Type: CloudWatchEvent
+          Properties:
+            Pattern:
+              source:
+              - aws.logs
+              detail-type:
+              - AWS API Call via CloudTrail
+              detail:
+                eventSource:
+                - logs.amazonaws.com
+                eventName:
+                - CreateLogGroup
+        # lets assume that we've missed an event and call it once a day as well
+        CheckStatusEvent:
+          Type: Schedule
+          Properties:
+            Schedule: rate(1 day) 
+      Tags:
+        Stack: !Ref Stack
+        Stage: !Ref Stage
+        App: set-retention
+
+
+  SetLogShippingPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action: 
+              - logs:DescribeLogGroups
+              - logs:DescribeSubscriptionFilters
+              - logs:PutSubscriptionFilter
+              - logs:DeleteSubscriptionFilter
+            Resource: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:*
+          - Effect: Allow
+            Action:
+              - lambda:ListFunctions
+              - lambda:ListTags
+            Resource: '*'
+          - Effect: Allow
+            Action:
+              - s3:PutObject
+            Resource: !Sub ${StructuredFieldsBucket.Arn}/*
+
+  SetLogShippingFunc:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./dist
+      Handler: app.setLogShipping
+      Timeout: 60
+      Policies:
+      - !Ref SetLogShippingPolicy
+      Environment:
+        Variables:
+          LOG_SHIPPING_LAMBDA_ARN: !GetAtt ShipLogEntriesFunc.Arn
+          LOG_NAME_PREFIXES: !Join [",", !Ref ShippingPrefix]
+          LOG_SHIPPING_FILTER_NAME: !Ref CloudWatchLogsFilterName
+          STRUCTURED_DATA_BUCKET: !Ref StructuredFieldsBucket
+          OPTION_LOWER_FIRST_CHAR_OF_TAGS: !Ref OptionLowerFirstCharOfTags
+      Events:
+        # Trigger whenever a log group is created
+        LogGroupChangeEvent:
+          Type: CloudWatchEvent
+          Properties:
+            Pattern:
+              source:
+              - aws.logs
+              detail-type:
+              - AWS API Call via CloudTrail
+              detail:
+                eventSource:
+                - logs.amazonaws.com
+                eventName:
+                - CreateLogGroup
+        # tag changes on lambdas can't be triggered this way yet so update every 10 mins anyway
+        CheckStatusEvent:
+          Type: Schedule
+          Properties:
+            Schedule: rate(10 minutes)
+      Tags:
+        Stack: !Ref Stack
+        Stage: !Ref Stage
+        App: set-log-shipping
+
+  ShipLogEntriesPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action: 
+              - kinesis:PutRecords
+            Resource: !Sub arn:aws:kinesis:${AWS::Region}:${AWS::AccountId}:stream/${KinesisStreamName}
+          - Effect: Allow
+            Action:
+              - s3:GetObject
+            Resource: !Sub ${StructuredFieldsBucket.Arn}/*
+
+  ShipLogEntriesFunc:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./dist
+      Handler: app.shipLogEntries
+      Timeout: 5
+      Policies:
+      - !Ref ShipLogEntriesPolicy
+      Environment:
+        Variables:
+          LOG_KINESIS_STREAM: !Ref KinesisStreamName
+          STRUCTURED_DATA_BUCKET: !Ref StructuredFieldsBucket
+      Tags:
+        Stack: !Ref Stack
+        Stage: !Ref Stage
+        App: ship-log-entries
+
+  # Allow cloudwatch logs to call this function
+  ShipLogEntriesPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt ShipLogEntriesFunc.Arn
+      Action: lambda:InvokeFunction
+      Principal: !Sub logs.${AWS::Region}.amazonaws.com
+      SourceAccount: !Ref AWS::AccountId
