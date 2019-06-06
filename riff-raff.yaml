@@ -1,7 +1,7 @@
 regions:
 - eu-west-1
 stacks:
-- composer
+- flexible
 - workflow
 - deploy
 
@@ -14,10 +14,12 @@ templates:
       bucket: %DEPLOY_TOOLS_DIST_BUCKET%
       fileName: lambda.zip
       prefixStack: false
+      lookupByTags: true
 
 deployments:
   cloudwatch-logs-management-cfn:
     type: cloud-formation
+    app: cloudwatch-logs-management
     parameters:
       templatePath: template.yaml
 

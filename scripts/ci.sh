@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 # This script will build the SAM app and push into the appropriate bucket
 # It will then try to push the resulting cloudformation into a riff-raff build
 
