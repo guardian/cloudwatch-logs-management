@@ -5,7 +5,7 @@
 set -e
 
 if [ -z "${DEPLOY_TOOLS_DIST_BUCKET}" ]; then
-    echo "Env var DEPLOY_TOOLS_DIST_BUCKET not set so don't know where to upload SAM build"
+    echo "Env var DEPLOY_TOOLS_DIST_BUCKET not set so don't know where to upload lambda build"
     exit 1
 fi
 
@@ -37,8 +37,13 @@ npm run build
     zip -r ${RIFF_RAFF_ARTIFACT_DIR}/cloudwatch-logs-management/lambda.zip *
 )
 
-cp ${SCRIPT_DIR}/../template.yaml ${RIFF_RAFF_ARTIFACT_DIR}/cloudwatch-logs-management/template.yaml
-cp ${SCRIPT_DIR}/../riff-raff.yaml ${RIFF_RAFF_ARTIFACT_DIR}/riff-raff.yaml
+function sub {
+    mkdir -p $(dirname $2)
+    sed -e "s/%DEPLOY_TOOLS_DIST_BUCKET%/${DEPLOY_TOOLS_DIST_BUCKET}/" ${1} > ${2}
+}
+
+sub ${SCRIPT_DIR}/../template.yaml ${RIFF_RAFF_ARTIFACT_DIR}/cloudwatch-logs-management-cfn/template.yaml
+sub ${SCRIPT_DIR}/../riff-raff.yaml ${RIFF_RAFF_ARTIFACT_DIR}/riff-raff.yaml
 
 # publish from teamcity
 echo "##teamcity[publishArtifacts '${RIFF_RAFF_ARTIFACT_DIR} => .']"

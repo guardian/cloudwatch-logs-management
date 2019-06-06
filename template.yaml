@@ -71,7 +71,7 @@ Resources:
   SetRetentionFunc:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./dist
+      CodeUri: !Sub s3://%DEPLOY_TOOLS_DIST_BUCKET%/${Stage}/cloudwatch-logs-management/lambda.zip
       Handler: app.setRetention
       Timeout: 60
       Policies:
@@ -130,7 +130,7 @@ Resources:
   SetLogShippingFunc:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./dist
+      CodeUri: !Sub s3://%DEPLOY_TOOLS_DIST_BUCKET%/${Stage}/cloudwatch-logs-management/lambda.zip
       Handler: app.setLogShipping
       Timeout: 60
       Policies:
@@ -185,7 +185,7 @@ Resources:
   ShipLogEntriesFunc:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./dist
+      CodeUri: !Sub s3://%DEPLOY_TOOLS_DIST_BUCKET%/${Stage}/cloudwatch-logs-management/lambda.zip
       Handler: app.shipLogEntries
       Timeout: 5
       Policies:

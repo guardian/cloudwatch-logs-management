@@ -4,8 +4,35 @@ stacks:
 - composer
 - workflow
 - deploy
+
+templates:
+  lambda:
+    type: aws-lambda
+    app: cloudwatch-logs-management
+    contentDirectory: cloudwatch-logs-management
+    parameters:
+      bucket: %DEPLOY_TOOLS_DIST_BUCKET%
+      fileName: lambda.zip
+      prefixStack: false
+
 deployments:
-  cloudwatch-logs-management:
+  cloudwatch-logs-management-cfn:
     type: cloud-formation
     parameters:
       templatePath: template.yaml
+
+  # only upload once into the central bucket
+  cloudwatch-logs-management-upload:
+    template: lambda
+    actions:
+    - uploadLambda
+    stacks:
+    - deploy
+
+  cloudwatch-logs-management-update:
+    template: lambda
+    actions:
+    - updateLambda
+    dependencies:
+    - cloudwatch-logs-management-cfn
+    - cloudwatch-logs-management-upload
