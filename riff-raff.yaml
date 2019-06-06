@@ -1,0 +1,11 @@
+regions:
+- eu-west-1
+stacks:
+- composer
+- workflow
+- deploy
+deployments:
+  cloudwatch-logs-management:
+    type: cloud-formation
+    parameters:
+      templatePath: cfn.yaml
