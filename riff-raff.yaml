@@ -8,13 +8,20 @@ stacks:
 templates:
   lambda:
     type: aws-lambda
-    app: cloudwatch-logs-management
     contentDirectory: cloudwatch-logs-management
     parameters:
       bucket: %DEPLOY_TOOLS_DIST_BUCKET%
       fileName: lambda.zip
       prefixStack: false
       lookupByTags: true
+
+  lambdaUpdate:
+    template: lambda
+    actions:
+    - updateLambda
+    dependencies:
+    - cloudwatch-logs-management-cfn
+    - cloudwatch-logs-management-upload
 
 deployments:
   cloudwatch-logs-management-cfn:
@@ -26,15 +33,15 @@ deployments:
   # only upload once into the central bucket
   cloudwatch-logs-management-upload:
     template: lambda
+    app: cloudwatch-logs-management
     actions:
     - uploadLambda
     stacks:
     - deploy
 
-  cloudwatch-logs-management-update:
-    template: lambda
-    actions:
-    - updateLambda
-    dependencies:
-    - cloudwatch-logs-management-cfn
-    - cloudwatch-logs-management-upload
+  set-retention:
+    template: lambdaUpdate
+  set-log-shipping:
+    template: lambdaUpdate
+  ship-log-entries:
+    template: lambdaUpdate
