@@ -1,7 +1,7 @@
-Logs Maintenance Lambda
-=======================
+Cloudwatch Logs Management
+==========================
 
-This SAM stack provides support to:
+This set of lambdas provides support to:
  - Set retention/expiry of cloudwatch log groups
  - Provide a lambda that forwards logs from lambdas to Kinesis ELK
  - Automatically seek out lambdas and configure log forwarding to ELK
@@ -24,17 +24,10 @@ Setup
 Deploy
 ------
 
-You'll need a S3 bucket in the target account to store the code for the lambda. For example, `composer-dist` in the Composer account.
-
-The first time you deploy, create the package and then deploy `dist/cfn.yaml` directly from the UI so you can add in the parameters.
-
-```
-sam package --output-template-file dist/cfn.yaml --s3-bucket <DIST_BUCKET> --profile <AWS_CREDENTIALS_PROFILE>
-```
-
-Subsequent deploys that don't affect Cloudformation parameters can be run from the command line:
-
-```
-sam package --output-template-file dist/cfn.yaml --s3-bucket <DIST_BUCKET> --profile <AWS_CREDENTIALS_PROFILE>
-aws cloudformation deploy --capabilities CAPABILITY_IAM --template-file dist/cfn.yaml --stack-name <STACK_NAME> --profile <AWS_CREDENTIALS_PROFILE> --region <AWS_REGION>
-```
+This is deployed via riff-raff. In order to add a new account and deploy for the first time you should:
+ 1. Ensure you have an S3 bucket in the target account to store the code for the lambda - this is typically your "dist" bucket
+ 1. The name of this bucket needs to be available in SSM under the key `/account/services/artifact.bucket`
+ 1. Add your stack name to the `stacks` section of `riff-raff.yaml`
+ 1. Use riff-raff to upload the artifact to the dist bucket in your account (use preview and select just the appropriate upload task)
+ 1. Manually deploy the cloudformation template (at `template.yaml`) for the first time, filling in parameters as desired
+ 1. Test that you can do a full deploy

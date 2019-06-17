@@ -38,6 +38,11 @@ Parameters:
     - false
     Default: false
 
+  DistBucket:
+    Description: The S3 bucket for distributing code in this account
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /account/services/artifact.bucket
+
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
@@ -71,7 +76,7 @@ Resources:
   SetRetentionFunc:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: !Sub s3://%DEPLOY_TOOLS_DIST_BUCKET%/${Stage}/cloudwatch-logs-management/lambda.zip
+      CodeUri: !Sub s3://${DistBucket}/${Stage}/cloudwatch-logs-management/lambda.zip
       Handler: app.setRetention
       Timeout: 60
       Policies:
@@ -130,7 +135,7 @@ Resources:
   SetLogShippingFunc:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: !Sub s3://%DEPLOY_TOOLS_DIST_BUCKET%/${Stage}/cloudwatch-logs-management/lambda.zip
+      CodeUri: !Sub s3://${DistBucket}/${Stage}/cloudwatch-logs-management/lambda.zip
       Handler: app.setLogShipping
       Timeout: 60
       Policies:
@@ -185,7 +190,7 @@ Resources:
   ShipLogEntriesFunc:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: !Sub s3://%DEPLOY_TOOLS_DIST_BUCKET%/${Stage}/cloudwatch-logs-management/lambda.zip
+      CodeUri: !Sub s3://${DistBucket}/${Stage}/cloudwatch-logs-management/lambda.zip
       Handler: app.shipLogEntries
       Timeout: 5
       Policies:

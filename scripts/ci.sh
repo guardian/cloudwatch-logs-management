@@ -4,13 +4,10 @@
 
 set -e
 
-if [ -z "${DEPLOY_TOOLS_DIST_BUCKET}" ]; then
-    echo "Env var DEPLOY_TOOLS_DIST_BUCKET not set so don't know where to upload lambda build"
-    exit 1
-fi
-
-SCRIPT_DIR=$(dirname $0)
-pushd $SCRIPT_DIR/..
+echo $BASH_SOURCE
+SCRIPT_DIR=$(dirname ${BASH_SOURCE})
+pushd ${SCRIPT_DIR}/..
+PROJECT_DIR=$(pwd)
 
 function cleanup {
     popd
@@ -18,32 +15,34 @@ function cleanup {
 trap cleanup EXIT
 
 # create riff-raff dir
-RIFF_RAFF_ARTIFACT_DIR=$SCRIPT_DIR/../riff-raff-artifact
+RIFF_RAFF_ARTIFACT_DIR=${PROJECT_DIR}/riff-raff-artifact
 rm -rf ${RIFF_RAFF_ARTIFACT_DIR} || true
+pwd
 mkdir -p ${RIFF_RAFF_ARTIFACT_DIR}/cloudwatch-logs-management
 
+set +x
 # source NVM on teamcity
-. ${NVM_DIR}/nvm.sh
+if [ -e "${NVM_DIR}/nvm.sh" ]; then
+    . ${NVM_DIR}/nvm.sh
+else
+    . $(brew --prefix nvm)/nvm.sh
+fi
 nvm install
 nvm use
 
 # install deps and build app
 npm install
 npm run build
-
+set -x
 # bundle lambda code
 (
-    cd ${SCRIPT_DIR}/../dist
+    cd ${PROJECT_DIR}/dist
     zip -r ${RIFF_RAFF_ARTIFACT_DIR}/cloudwatch-logs-management/lambda.zip *
 )
 
-function sub {
-    mkdir -p $(dirname $2)
-    sed -e "s/%DEPLOY_TOOLS_DIST_BUCKET%/${DEPLOY_TOOLS_DIST_BUCKET}/" ${1} > ${2}
-}
-
-sub ${SCRIPT_DIR}/../template.yaml ${RIFF_RAFF_ARTIFACT_DIR}/cloudwatch-logs-management-cfn/template.yaml
-sub ${SCRIPT_DIR}/../riff-raff.yaml ${RIFF_RAFF_ARTIFACT_DIR}/riff-raff.yaml
+mkdir -p ${RIFF_RAFF_ARTIFACT_DIR}/cloudwatch-logs-management-cfn
+cp ${PROJECT_DIR}/template.yaml ${RIFF_RAFF_ARTIFACT_DIR}/cloudwatch-logs-management-cfn/template.yaml
+cp ${PROJECT_DIR}/riff-raff.yaml ${RIFF_RAFF_ARTIFACT_DIR}/riff-raff.yaml
 
 # publish from teamcity
 echo "##teamcity[publishArtifacts '${RIFF_RAFF_ARTIFACT_DIR} => .']"

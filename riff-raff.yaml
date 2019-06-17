@@ -10,7 +10,7 @@ templates:
     type: aws-lambda
     contentDirectory: cloudwatch-logs-management
     parameters:
-      bucket: %DEPLOY_TOOLS_DIST_BUCKET%
+      bucketSsmLookup: true
       fileName: lambda.zip
       prefixStack: false
       lookupByTags: true
