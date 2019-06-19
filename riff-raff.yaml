@@ -6,13 +6,16 @@ stacks:
 templates:
   lambda:
     type: aws-lambda
-    app: cloudwatch-logs-management
     contentDirectory: cloudwatch-logs-management
     parameters:
       bucketSsmLookup: true
       fileName: lambda.zip
-      prefixStack: true
       lookupByTags: true
+
+  lambdaUpload:
+    template: lambda
+    actions:
+    - uploadLambda
 
   lambdaUpdate:
     template: lambda
@@ -23,10 +26,15 @@ templates:
 
 deployments:
   # upload before cloudformation
-  cloudwatch-logs-management-upload:
-    template: lambda
-    actions:
-    - uploadLambda
+  upload-set-retention:
+    template: lambdaUpload
+    app: set-retention
+  upload-set-log-shipping:
+    template: lambdaUpload
+    app: set-log-shipping
+  upload-ship-log-entries:
+    template: lambdaUpload
+    app: ship-log-entries
 
   cloudwatch-logs-management-cfn:
     type: cloud-formation
@@ -34,7 +42,9 @@ deployments:
     parameters:
       templatePath: template.yaml
     dependencies:
-    - cloudwatch-logs-management-upload
+    - upload-set-retention
+    - upload-set-log-shipping
+    - upload-ship-log-entries
 
   set-retention:
     template: lambdaUpdate
