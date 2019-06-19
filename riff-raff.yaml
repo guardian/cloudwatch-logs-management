@@ -2,6 +2,7 @@ regions:
 - eu-west-1
 stacks:
 - flexible
+- workflow
 
 templates:
   lambda:
