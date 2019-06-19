@@ -22,8 +22,9 @@ Parameters:
     Default: /aws/lambda/
 
   KinesisStreamName:
-    Type: String
     Description: The name (not ARN) of the kinesis stream to ship logs to
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /account/services/logging.stream
 
   CloudWatchLogsFilterName:
     Type: String
