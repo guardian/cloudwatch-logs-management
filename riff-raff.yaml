@@ -6,6 +6,7 @@ stacks:
 templates:
   lambda:
     type: aws-lambda
+    app: cloudwatch-logs-management
     contentDirectory: cloudwatch-logs-management
     parameters:
       bucketSsmLookup: true
@@ -24,7 +25,6 @@ deployments:
   # upload before cloudformation
   cloudwatch-logs-management-upload:
     template: lambda
-    app: cloudwatch-logs-management
     actions:
     - uploadLambda
 
