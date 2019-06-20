@@ -21,8 +21,8 @@ Parameters:
     Description: Comma delimited list of log group prefixes that should be configured to ship to ELK
     Default: /aws/lambda/
 
-  KinesisStreamName:
-    Description: The name (not ARN) of the kinesis stream to ship logs to
+  KinesisStreamArn:
+    Description: The ARN (not name) of the kinesis stream to ship logs to
     Type: AWS::SSM::Parameter::Value<String>
     Default: /account/services/logging.stream
 
@@ -186,7 +186,7 @@ Resources:
           - Effect: Allow
             Action: 
               - kinesis:PutRecords
-            Resource: !Sub arn:aws:kinesis:${AWS::Region}:${AWS::AccountId}:stream/${KinesisStreamName}
+            Resource: !Ref KinesisStreamArn
           - Effect: Allow
             Action:
               - s3:GetObject
@@ -204,7 +204,7 @@ Resources:
       - !Ref ShipLogEntriesPolicy
       Environment:
         Variables:
-          LOG_KINESIS_STREAM: !Ref KinesisStreamName
+          LOG_KINESIS_STREAM: !Ref KinesisStreamArn
           STRUCTURED_DATA_BUCKET: !Ref StructuredFieldsBucket
       Tags:
         Stack: !Ref Stack

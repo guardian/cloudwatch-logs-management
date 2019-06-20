@@ -227,7 +227,7 @@ function createStructuredLog(logGroup: string, logEvent: CloudWatchLogsLogEvent,
 }
 
 export async function shipLogEntries(event: CloudWatchLogsEvent): Promise<void> {
-    const { kinesisStream, structuredDataBucket, structuredDataKey } = getShipLogsConfig();
+    const { kinesisStreamName, structuredDataBucket, structuredDataKey } = getShipLogsConfig();
 
     const payload = new Buffer(event.awslogs.data, 'base64');
     const json = zlib.gunzipSync(payload).toString('utf8');
@@ -240,6 +240,6 @@ export async function shipLogEntries(event: CloudWatchLogsEvent): Promise<void> 
             return {};
         });
     const structuredLogs = decoded.logEvents.map((logEvent) => createStructuredLog(logGroup, logEvent, extraFields));
-    console.log(`Sending ${structuredLogs.length} events from ${logGroup} to ${kinesisStream}`)
-    await putKinesisRecords(kinesis, kinesisStream, structuredLogs);
+    console.log(`Sending ${structuredLogs.length} events from ${logGroup} to ${kinesisStreamName}`)
+    await putKinesisRecords(kinesis, kinesisStreamName, structuredLogs);
 }
