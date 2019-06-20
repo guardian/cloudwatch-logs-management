@@ -37,7 +37,7 @@ Parameters:
     AllowedValues:
     - true
     - false
-    Default: false
+    Default: true
 
   DistBucket:
     Description: The S3 bucket for distributing code in this account
