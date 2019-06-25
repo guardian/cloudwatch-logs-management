@@ -3,6 +3,7 @@ regions:
 stacks:
 - flexible
 - workflow
+- capi
 
 templates:
   lambda:
