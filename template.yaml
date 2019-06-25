@@ -26,6 +26,10 @@ Parameters:
     Type: AWS::SSM::Parameter::Value<String>
     Default: /account/services/logging.stream
 
+  KinesisStreamRole:
+    Description: The ARN of the role to assume when writing to the kinesis stream (leaving this empty will mean no role is assumed)
+    Type: String
+
   CloudWatchLogsFilterName:
     Type: String
     Description: The name of the filter that should be added/maintained on log groups for shipping to the lambda
@@ -51,6 +55,11 @@ Globals:
     Environment:
       Variables:
         STAGE: !Ref Stage
+
+Conditions:
+  UseRoleAssumption:
+    Fn::Not:
+    - !Equals [ !Ref KinesisStreamRole, "" ]
 
 Resources:
   StructuredFieldsBucket:
@@ -192,19 +201,35 @@ Resources:
               - s3:GetObject
             Resource: !Sub ${StructuredFieldsBucket.Arn}/*
 
+  KinesisRoleAssumptionPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Condition: UseRoleAssumption
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action: sts:assumeRole
+            Resource: !Ref KinesisStreamRole
+
   ShipLogEntriesFunc:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: 
         Bucket: !Ref DistBucket
         Key: !Sub ${Stack}/${Stage}/ship-log-entries/lambda.zip
-      Handler: app.shipLogEntries
+      Handler: shipLogEntries.shipLogEntries
       Timeout: 5
       Policies:
       - !Ref ShipLogEntriesPolicy
+      - Fn::If:
+        - UseRoleAssumption
+        - !Ref KinesisRoleAssumptionPolicy
+        - !Ref AWS::NoValue
       Environment:
         Variables:
           LOG_KINESIS_STREAM: !Ref KinesisStreamArn
+          LOG_KINESIS_STREAM_ROLE: !Ref KinesisStreamRole
           STRUCTURED_DATA_BUCKET: !Ref StructuredFieldsBucket
       Tags:
         Stack: !Ref Stack

@@ -20,6 +20,7 @@ interface ConfigureLogShippingConfig extends StructuredDataConfig {
 
 interface ShipLogsConfig extends StructuredDataConfig {
     kinesisStreamName: string,
+    kinesisStreamRole: string | undefined
 }
 
 function getRequiredEnv(key: string, devDefault: string | undefined = undefined): string {
@@ -69,11 +70,14 @@ export function getConfigureLogShippingConfig(): ConfigureLogShippingConfig {
 
 export function getShipLogsConfig(): ShipLogsConfig {
     const kinesisStream = getRequiredEnv("LOG_KINESIS_STREAM");
+    const kinesisStreamRole = process.env["LOG_KINESIS_STREAM_ROLE"];
+    const maybeKinesisStreamRole = (!kinesisStreamRole || kinesisStreamRole.trim().length == 0) ? undefined : kinesisStreamRole;
     const structuredDataBucket = getRequiredEnv("STRUCTURED_DATA_BUCKET");
     const kinesisStreamName = kinesisStream.includes('/') ? kinesisStream.split('/')[1] : kinesisStream;
 
     return {
         kinesisStreamName,
+        kinesisStreamRole: maybeKinesisStreamRole,
         structuredDataBucket,
         structuredDataKey: 'structured-data.json'
     };
