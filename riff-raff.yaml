@@ -3,7 +3,7 @@ regions:
 stacks:
 - flexible
 - workflow
-- capi
+- content-api
 
 templates:
   lambda:
