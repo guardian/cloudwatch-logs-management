@@ -15,7 +15,7 @@ One of the lambdas runs once a day and sets the retention time on all cloudwatch
 ### Shipping lambda logs to ELK
 Cloudwatch log groups created by Lambda (with prefix `/aws/lambda`) are automatically configured to forward to ELK by these lambdas.
 
-You lambda can:
+Your lambda can:
  - output plain text (we put this into the `message` field)
  - output a JSON object (we forward all fields onto Logstash as is)
 
