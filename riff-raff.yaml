@@ -4,6 +4,7 @@ stacks:
 - flexible
 - workflow
 - media-service
+- content-api
 
 templates:
   lambda:
