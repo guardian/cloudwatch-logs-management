@@ -5,7 +5,6 @@ stacks:
 - workflow
 - media-service
 - content-api
-- deploy
 
 templates:
   lambda:
