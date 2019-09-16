@@ -5,7 +5,7 @@ stacks:
 - workflow
 - media-service
 - content-api
-- cmsFronts
+- cms-fronts
 
 templates:
   lambda:
