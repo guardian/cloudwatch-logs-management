@@ -54,13 +54,23 @@ Deployment
 ----------
 
 This is deployed via riff-raff. In order to add a new account and deploy for the first time you should:
- 1. Ensure that the riff-raff user in the target account has permissions listed below
+
+Prerequisites:
+
+ 1. Ensure that the riff-raff user in the target account with permissions listed below
  1. Ensure you have an S3 bucket in the target account to store the code for the lambda - this is typically your "dist" bucket
+ 1. Find the name of the Kinesis stream you are using to send data to ELK
+ 1. If the kinesis stream is not owned by your target account, find the name of the role used to permit enqueing to that stream
+
+Target Account Actions:
  1. The name of this bucket needs to be available in SSM under the key `/account/services/artifact.bucket`
  1. The ARN of the target kinesis stream needs to be available in SSM under the key `/account/services/logging.stream`
+
+This Account Actions:
+
  1. Add your stack name to the `stacks` section of `riff-raff.yaml`
- 1. Use riff-raff to upload the artifact to the dist bucket in your account (use preview and select just the appropriate upload tasks)
- 1. Manually deploy the cloudformation template (at `template.yaml`) for the first time, filling in parameters as desired (retention days etc - at the Guardian I recommend that you set `OptionLowerFirstCharOfTags` to true)
+ 1. Use riff-raff to upload the artifact to the dist bucket in your account (use preview and select just the appropriate upload tasks).  
+ 1. Manually deploy the cloudformation template (at `template.yaml`) for the first time, filling in parameters as desired (retention days etc - at the Guardian I recommend that you set `OptionLowerFirstCharOfTags` to true). The stack name in the cfn deployment must match the value above
  1. Test that you can do a full deploy so you know future updates will work
 
 ### Riff-Raff permissions
@@ -74,6 +84,69 @@ Your riff-raff user will required the following permissions:
  - events:DescribeRule
  - events:PutRule
  - ssm:GetParameter*
+
+This can be simply added as a single policy:
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "CloudwatchLogsManagement",
+            "Effect": "Allow",
+            "Action": [
+                "s3:*",
+                "iam:*",
+                "cloudformation:*",
+                "lambda:*",
+                "events:DescribeRule",
+                "events:PutRule",
+                "ssm:GetParameter*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+and attached to the riffraff user with the following command:
+
+```
+aws --profile $PROFILE --region $REGION iam attach-user-policy --user-name riffraff --policy-arn $POLICY_ARN 
+```
+
+### Bucket Parameter
+
+List buckets:
+```
+aws --profile $PROFILE --region $REGION s3 ls
+```
+
+Create parameter:
+```
+aws --profile $PROFILE --region $REGION ssm put-parameter --name '/account/services/artifact.bucket' --value $VALUE --type String
+```
+
+# Kinesis parameter:
+
+Assuming your elk kinesis stream is in the same account, you can use the following commands.  If not, ask which ARN you should use for
+the third command below.
+
+List streams:
+```
+aws --profile $PROFILE --region $REGION kinesis list-streams
+```
+
+Get stream ARN:
+```
+aws --profile $PROFILE --region $REGION kinesis describe-stream --stream-name $NAME | jq -r .StreamDescription.StreamARN
+```
+
+Create parameter:
+```
+aws --profile $PROFILE --region $REGION ssm put-parameter --name '/account/services/logging.stream' --value $VALUE --type String
+```
+
 
 Development
 -----------
