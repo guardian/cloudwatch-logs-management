@@ -5,6 +5,7 @@ stacks:
 - workflow
 - media-service
 - content-api
+- frontend
 
 templates:
   lambda:
