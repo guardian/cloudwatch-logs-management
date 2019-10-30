@@ -162,11 +162,11 @@ function createStructuredLog(logGroup: string, logEvent: CloudWatchLogsLogEvent,
 }
 
 export async function shipLogEntries(event: CloudWatchLogsEvent, context: Context): Promise<void> {
-    
-
     const payload = new Buffer(event.awslogs.data, 'base64');
     const json = zlib.gunzipSync(payload).toString('utf8');
     const decoded: CloudWatchLogsDecodedData = JSON.parse(json);
+
+    console.log('decoded CloudWatch logs to forward', decoded);
 
     const logGroup = decoded.logGroup;
     const extraFields: StructuredFields = 
