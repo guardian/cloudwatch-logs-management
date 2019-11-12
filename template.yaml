@@ -15,6 +15,7 @@ Parameters:
   RetentionInDays:
     Type: Number
     Description: The number of days to set the expiry to on Cloudwatch Logs groups
+    Default: 7
     AllowedValues:
       - 1
       - 3
