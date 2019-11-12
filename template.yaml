@@ -47,6 +47,7 @@ Parameters:
 
   KinesisStreamRole:
     Description: The ARN of the role to assume when writing to the kinesis stream (leaving this empty will mean no role is assumed)
+    Default: "-"
     Type: String
 
   CloudWatchLogsFilterName:
@@ -77,8 +78,11 @@ Globals:
 
 Conditions:
   UseRoleAssumption:
-    Fn::Not:
-    - !Equals [ !Ref KinesisStreamRole, "" ]
+    Fn::And:
+    - Fn::Not:
+      - !Equals [ !Ref KinesisStreamRole, "" ]
+    - Fn::Not:
+      - !Equals [ !Ref KinesisStreamRole, "-" ]
 
 Resources:
   StructuredFieldsBucket:
