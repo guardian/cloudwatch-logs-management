@@ -6,6 +6,9 @@ stacks:
 - media-service
 - content-api
 - cms-fronts
+- frontend
+- identity
+- mobile
 
 templates:
   lambda:

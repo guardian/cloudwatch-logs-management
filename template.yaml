@@ -5,7 +5,7 @@ Description: Lambdas to configure Cloudwatch Logs retention times and shipping o
 Parameters:
   Stack:
     Type: String
-    Description: The name of this stack (principly used to aid observability - used to tag functions)
+    Description: The name of this stack, as specified in the riff-raff stacks entry (principly used to aid observability - used to tag functions)
 
   Stage:
     Type: String
@@ -15,6 +15,7 @@ Parameters:
   RetentionInDays:
     Type: Number
     Description: The number of days to set the expiry to on Cloudwatch Logs groups
+    Default: 7
     AllowedValues:
       - 1
       - 3
