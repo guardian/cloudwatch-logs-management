@@ -57,7 +57,7 @@ This is deployed via riff-raff. In order to add a new account and deploy for the
 
 Prerequisites:
 
- 1. Ensure that the riff-raff user in the target account with permissions listed below
+ 1. Ensure that the riff-raff user in the target account has the permissions listed below
  1. Ensure you have an S3 bucket in the target account to store the code for the lambda - this is typically your "dist" bucket
  1. Find the name of the Kinesis stream you are using to send data to ELK
  1. If the kinesis stream is not owned by your target account, find the name of the role used to permit enqueing to that stream
