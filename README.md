@@ -56,8 +56,8 @@ Deployment
 This is deployed via riff-raff. In order to add a new account and deploy for the first time you should:
  1. Ensure that the riff-raff user in the target account has permissions listed below
  1. Ensure you have an S3 bucket in the target account to store the code for the lambda - this is typically your "dist" bucket
- 1. The name of this bucket needs to be available in SSM under the key `/account/services/artifact.bucket`
- 1. The ARN of the target kinesis stream needs to be available in SSM under the key `/account/services/logging.stream`
+ 1. The name of this bucket needs to be available in AWS Parameter Store under the key `/account/services/artifact.bucket`
+ 1. The ARN of the target kinesis stream needs to be available in AWS Parameter Store under the key `/account/services/logging.stream`
  1. Add your stack name to the `stacks` section of `riff-raff.yaml`
  1. Use riff-raff to upload the artifact to the dist bucket in your account (use preview and select just the appropriate upload tasks)
  1. Manually deploy the cloudformation template (at `template.yaml`) for the first time, filling in parameters as desired (retention days etc - at the Guardian I recommend that you set `OptionLowerFirstCharOfTags` to true)
