@@ -4,12 +4,15 @@
   "description": "Lambdas to maintain and forward cloudwatch logs",
   "author": "Guardian Developers",
   "license": "MIT",
+  "engines": {
+    "node": ">=10.0.0"
+  },
   "scripts": {
     "build": "scripts/build.sh"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.20",
-    "@types/node": "^11.10.4",
+    "@types/node": "12.12.7",
     "typescript": "^3.3.3333"
   },
   "dependencies": {
