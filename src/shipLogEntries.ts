@@ -99,22 +99,52 @@ function lambdaRequestLogData(line: string): StructuredLogData | undefined {
     }
 }
 
-function createStructuredLog(logGroup: string, logEvent: CloudWatchLogsLogEvent, extraFields: StructuredFields): PublishableStructuredLogData {
-    let structuredLog: StructuredLogData;
-    const lambdaRequestLogDataFields = lambdaRequestLogData(logEvent.message);
-    if (!!lambdaRequestLogDataFields) {
-        structuredLog = Object.assign(lambdaRequestLogDataFields, {
-            'message': logEvent.message,
-        });
-    } else {
-        try {
-            structuredLog = JSON.parse(logEvent.message);
-        } catch (err) {
-            structuredLog = {
-                'message': logEvent.message,
-            };
+function parseMessageJson(line: string): StructuredLogData {
+    try {
+        return JSON.parse(line.trim());
+    } catch (err) {
+        return {
+            'message': line.trim(),
+        };
+    }
+}
+
+// this parses a log line of the format <date>\t<requestId>\t<level>\t<message>
+function parseNodeLogFormat(logGroup: string, line: String): StructuredLogData | undefined {
+    const elements = line.split('\t');
+    const [dateString, lambdaRequestId, level, ...messageParts] = elements;
+    const isDate = !isNaN(Date.parse(dateString));
+    if (elements.length >= 4 && isDate) {
+        const message = messageParts.join('\t')
+        const structuredLog = parseMessageJson(message);
+        return {
+            ...structuredLog,
+            //timestamp: dateString, // this makes it explode for some reason
+            lambdaRequestId,
+            level,
         }
     }
+}
+
+// parse a log line
+function parseLambdaLogLine(logGroup: string, line: string): StructuredLogData {
+    const lambdaRequestLogDataFields = lambdaRequestLogData(line);
+    if (!!lambdaRequestLogDataFields) {
+        return Object.assign(lambdaRequestLogDataFields, {
+            'message': line,
+        });
+    } 
+    // next see if this is the log line type we get from 
+    const nodeLogData = parseNodeLogFormat(logGroup, line)
+    if (!!nodeLogData) {
+        return nodeLogData;
+    }
+    // fall back to normal parsing
+    return parseMessageJson(line);
+}
+
+function createStructuredLog(logGroup: string, logEvent: CloudWatchLogsLogEvent, extraFields: StructuredFields): PublishableStructuredLogData {
+    const structuredLog = parseLambdaLogLine(logGroup, logEvent.message.trim());
     const publishable: PublishableStructuredLogData = 
         Object.assign(structuredLog, {
             '@timestamp': structuredLog.timestamp || new Date(logEvent.timestamp).toISOString(),
@@ -132,11 +162,11 @@ function createStructuredLog(logGroup: string, logEvent: CloudWatchLogsLogEvent,
 }
 
 export async function shipLogEntries(event: CloudWatchLogsEvent, context: Context): Promise<void> {
-    
-
     const payload = new Buffer(event.awslogs.data, 'base64');
     const json = zlib.gunzipSync(payload).toString('utf8');
     const decoded: CloudWatchLogsDecodedData = JSON.parse(json);
+
+    console.log('decoded CloudWatch logs to forward', decoded);
 
     const logGroup = decoded.logGroup;
     const extraFields: StructuredFields = 
@@ -144,7 +174,10 @@ export async function shipLogEntries(event: CloudWatchLogsEvent, context: Contex
             console.log(`Unable to get structured fields for ${logGroup} due to ${reason} - falling back to no extra fields`)
             return {};
         });
-    const structuredLogs = decoded.logEvents.map((logEvent) => createStructuredLog(logGroup, logEvent, extraFields));
+    const structuredLogs = decoded.logEvents.map((logEvent) => {
+        const log = createStructuredLog(logGroup, logEvent, extraFields);
+        return log;
+    });
     console.log(`Sending ${structuredLogs.length} events from ${logGroup} to ${kinesisStreamName} (with role: ${kinesisStreamRole})`);
     
     await putKinesisRecords(kinesis, kinesisStreamName, structuredLogs);

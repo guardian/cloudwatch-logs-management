@@ -1,3 +1,4 @@
 node_modules/
 dist/
 riff-raff-artifact/
+.idea

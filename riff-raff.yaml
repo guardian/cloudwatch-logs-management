@@ -6,6 +6,9 @@ stacks:
 - media-service
 - content-api
 - ophan
+- frontend
+- identity
+- mobile
 
 templates:
   lambda:
