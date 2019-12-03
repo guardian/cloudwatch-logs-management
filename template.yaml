@@ -71,7 +71,7 @@ Parameters:
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Runtime: nodejs10.x
+    Runtime: nodejs12.x
     Environment:
       Variables:
         STAGE: !Ref Stage
@@ -98,7 +98,7 @@ Resources:
         Version: 2012-10-17
         Statement:
           - Effect: Allow
-            Action: 
+            Action:
               - logs:DescribeLogGroups
               - logs:PutRetentionPolicy
             Resource: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:*
@@ -106,7 +106,7 @@ Resources:
   SetRetentionFunc:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: 
+      CodeUri:
         Bucket: !Ref DistBucket
         Key: !Sub ${Stack}/${Stage}/set-retention/lambda.zip
       Handler: app.setRetention
@@ -135,7 +135,7 @@ Resources:
         Version: 2012-10-17
         Statement:
           - Effect: Allow
-            Action: 
+            Action:
               - logs:DescribeLogGroups
               - logs:DescribeSubscriptionFilters
               - logs:PutSubscriptionFilter
@@ -186,7 +186,7 @@ Resources:
         Version: 2012-10-17
         Statement:
           - Effect: Allow
-            Action: 
+            Action:
               - kinesis:PutRecords
             Resource: !Ref KinesisStreamArn
           - Effect: Allow
@@ -208,7 +208,7 @@ Resources:
   ShipLogEntriesFunc:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: 
+      CodeUri:
         Bucket: !Ref DistBucket
         Key: !Sub ${Stack}/${Stage}/ship-log-entries/lambda.zip
       Handler: shipLogEntries.shipLogEntries
