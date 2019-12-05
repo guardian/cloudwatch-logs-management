@@ -6,6 +6,7 @@ stacks:
 - media-service
 - content-api
 - cms-fronts
+- ophan
 - frontend
 - identity
 - mobile
