@@ -69,7 +69,7 @@ Target Account Actions:
 This Account Actions:
  1. Add your stack name to the `stacks` section of `riff-raff.yaml`
  1. Use riff-raff to upload the artifact to the dist bucket in your account (use preview and select just the appropriate upload tasks).  
- 1. Manually deploy the cloudformation template (at `template.yaml`) for the first time, filling in parameters as desired (retention days etc - at the Guardian I recommend that you set `OptionLowerFirstCharOfTags` to true). The stack name in the cfn deployment must match the value above
+ 1. Manually deploy the cloudformation template (at `template.yaml`) for the first time, filling in parameters as desired (retention days etc - at the Guardian I recommend that you set `OptionLowerFirstCharOfTags` to true). The CFN stack must be tagged with Stage = `CODE`, App = `cloudwatch-logs-management` and Stack = `<stack-name-from-step-1>` (e.g. Stack = `frontend` if you were deploying it to the frontend account).
  1. Test that you can do a full deploy so you know future updates will work
 
 ### Riff-Raff permissions
