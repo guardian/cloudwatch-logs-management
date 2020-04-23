@@ -10,6 +10,7 @@ stacks:
 - frontend
 - identity
 - mobile
+- deploy
 
 templates:
   lambda:
