@@ -62,15 +62,16 @@ Prerequisites:
  1. Find the name of the Kinesis stream you are using to send data to ELK
  1. If the kinesis stream is not owned by your target account, find the name of the role used to permit enqueing to that stream
 
-Target Account Actions:
+Target account actions:
+
  1. The name of this bucket needs to be available in SSM under the key `/account/services/artifact.bucket`
  1. The ARN of the target kinesis stream needs to be available in SSM under the key `/account/services/logging.stream`
 
-This Account Actions:
+This project actions:
+
  1. Add your stack name to the `stacks` section of `riff-raff.yaml`
- 1. Use riff-raff to upload the artifact to the dist bucket in your account (use preview and select just the appropriate upload tasks).  
- 1. Manually deploy the cloudformation template (at `template.yaml`) for the first time, filling in parameters as desired (retention days etc - at the Guardian I recommend that you set `OptionLowerFirstCharOfTags` to true). The stack name in the cfn deployment must match the value above
- 1. Test that you can do a full deploy so you know future updates will work
+ 1. Deploy this project - this will deploy a new CloudFormation stack to your account
+ 1. If you want to change the retention or need to add a role to assume when writing to the Kinesis stream you can manually change the settings in the stack after this initial deploy
 
 ### Riff-Raff permissions
 
