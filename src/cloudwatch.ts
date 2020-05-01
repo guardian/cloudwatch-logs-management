@@ -19,7 +19,7 @@ async function getAllLogGroups(cloudwatchLogs: CloudWatchLogs, logGroupNamePrefi
 export async function subscribeGroups(cloudwatchLogs: CloudWatchLogs, groups: CloudWatchLogs.LogGroup[], filterName: string, targetLambda: string): Promise<void> {
     await Promise.all(groups.map(async (group) => {
         const subscriptions = await getSubscriptions(cloudwatchLogs, group.logGroupName!, filterName);
-        const subscriptionExists = subscriptions.some(sub => sub.filterName === filterName);
+        const subscriptionExists = subscriptions.some(sub => sub.filterName === filterName && sub.destinationArn === targetLambda);
         if (!subscriptionExists) {
             console.log(`Adding subscription for ${group.logGroupName!} with name ${filterName}`);
             await putSubscription(cloudwatchLogs, group.logGroupName!, filterName, targetLambda);
