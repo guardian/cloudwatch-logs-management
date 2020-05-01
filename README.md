@@ -71,6 +71,7 @@ This project actions:
 
  1. Add your stack name to the `stacks` section of `riff-raff.yaml`
  1. Deploy this project - this will deploy a new CloudFormation stack to your account
+ 1. If you want to change the retention or need to add a role to assume when writing to the Kinesis stream you can manually change the settings in the stack after this initial deploy
 
 ### Riff-Raff permissions
 
