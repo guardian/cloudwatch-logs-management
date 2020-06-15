@@ -6,6 +6,7 @@ import { Kinesis, S3, ChainableTemporaryCredentials } from 'aws-sdk';
 import { getCommonConfig, getShipLogsConfig } from './config';
 import { putKinesisRecords } from './kinesis';
 import { getStructuredFields } from './structuredFields';
+import { PutRecordsOutput } from 'aws-sdk/clients/kinesis';
 
 const { region } = getCommonConfig();
 const { kinesisStreamName, kinesisStreamRole, structuredDataBucket, structuredDataKey } = getShipLogsConfig();
@@ -161,7 +162,7 @@ function createStructuredLog(logGroup: string, logEvent: CloudWatchLogsLogEvent,
         }, publishable);
 }
 
-export async function shipLogEntries(event: CloudWatchLogsEvent, context: Context): Promise<void> {
+export async function shipLogEntries(event: CloudWatchLogsEvent, context: Context): Promise<PutRecordsOutput[]> {
     const payload = new Buffer(event.awslogs.data, 'base64');
     const json = zlib.gunzipSync(payload).toString('utf8');
     const decoded: CloudWatchLogsDecodedData = JSON.parse(json);
@@ -180,5 +181,5 @@ export async function shipLogEntries(event: CloudWatchLogsEvent, context: Contex
     });
     console.log(`Sending ${structuredLogs.length} events from ${logGroup} to ${kinesisStreamName} (with role: ${kinesisStreamRole})`);
     
-    await putKinesisRecords(kinesis, kinesisStreamName, structuredLogs);
+    return await putKinesisRecords(kinesis, kinesisStreamName, structuredLogs);
 }
