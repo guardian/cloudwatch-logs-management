@@ -180,6 +180,18 @@ export async function shipLogEntries(event: CloudWatchLogsEvent, context: Contex
         return log;
     });
     console.log(`Sending ${structuredLogs.length} events from ${logGroup} to ${kinesisStreamName} (with role: ${kinesisStreamRole})`);
-    
-    return await putKinesisRecords(kinesis, kinesisStreamName, structuredLogs);
+
+    const result = await putKinesisRecords(kinesis, kinesisStreamName, structuredLogs);
+
+    // If total failed record count across batches > 0,
+    // then raise an error so the invocation will be marked as failed
+    // and the client of lambda can respond as appropriate for them.
+    const failedRecordCount = result.reduce((count, output) => {
+        return count + (output.FailedRecordCount || 0)
+    }, 0);
+    if (failedRecordCount > 0) {
+        throw new Error(`failed to put ${failedRecordCount} record(s) on Kinesis stream`)
+    }
+
+    return result;
 }
