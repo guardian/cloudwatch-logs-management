@@ -1,5 +1,7 @@
+import { ConfigurationOptions } from "aws-sdk/lib/config";
+
 interface CommonConfig {
-    region: string,
+    awsConfig: ConfigurationOptions,
 }
 
 interface SetRetentionConfig {
@@ -39,8 +41,12 @@ function getRequiredEnv(key: string, devDefault: string | undefined = undefined)
 
 export function getCommonConfig(): CommonConfig {
     const region = getRequiredEnv("AWS_REGION");
+    const maxRetries = parseInt(getRequiredEnv("AWS_RETRIES", "10"));
     return {
-        region,
+        awsConfig: {
+            region,
+            maxRetries: maxRetries
+        }
     };
 }
 

@@ -5,11 +5,11 @@ import { getCommonConfig, getSetRetentionConfig, getConfigureLogShippingConfig }
 import { getCloudWatchLogGroups, setCloudwatchRetention, subscribeGroups, unsubscribeGroups } from "./cloudwatch";
 import { updateStructuredFieldsData } from './structuredFields';
 
-const { region } = getCommonConfig();
+const { awsConfig } = getCommonConfig();
 
-const cloudwatchLogs = new CloudWatchLogs({ region, maxRetries: 10 });
-const s3 = new S3({ region });
-const lambda = new Lambda({ region });
+const cloudwatchLogs = new CloudWatchLogs(awsConfig);
+const s3 = new S3(awsConfig);
+const lambda = new Lambda(awsConfig);
 
 function sleep(ms: number){
     return new Promise(resolve=>{

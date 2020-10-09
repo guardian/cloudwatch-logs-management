@@ -7,14 +7,15 @@ import { getCommonConfig, getShipLogsConfig } from './config';
 import { putKinesisRecords } from './kinesis';
 import { getStructuredFields } from './structuredFields';
 import { PutRecordsOutput } from 'aws-sdk/clients/kinesis';
+import { ConfigurationOptions } from 'aws-sdk/lib/config';
 
-const { region } = getCommonConfig();
+const { awsConfig } = getCommonConfig();
 const { kinesisStreamName, kinesisStreamRole, structuredDataBucket, structuredDataKey } = getShipLogsConfig();
 
-const s3 = new S3({ region });
-const kinesis = getKinesisClient(region, kinesisStreamRole);
+const s3 = new S3(awsConfig);
+const kinesis = getKinesisClient(awsConfig, kinesisStreamRole);
 
-function getKinesisClient(region: string, role: string | undefined): Kinesis {
+function getKinesisClient(awsConfig: ConfigurationOptions, role: string | undefined): Kinesis {
     if (!!role) {
         const credentials = new ChainableTemporaryCredentials({
             params: {
@@ -22,9 +23,9 @@ function getKinesisClient(region: string, role: string | undefined): Kinesis {
                 RoleSessionName: `shipLogEntries-lambda`
              }
         })
-        return new Kinesis({ region, maxRetries: 10, credentials });
+        return new Kinesis({ ...awsConfig, credentials });
     } else {
-        return new Kinesis({ region, maxRetries: 10 });
+        return new Kinesis(awsConfig);
     }
 }
 
