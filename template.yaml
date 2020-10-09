@@ -117,24 +117,11 @@ Resources:
         Variables:
           RETENTION_IN_DAYS: !Ref RetentionInDays
       Events:
-        LogGroupChangeEvent:
-          Type: CloudWatchEvent
-          Properties:
-            Pattern:
-              source:
-              - aws.logs
-              detail-type:
-              - AWS API Call via CloudTrail
-              detail:
-                eventSource:
-                - logs.amazonaws.com
-                eventName:
-                - CreateLogGroup
-        # lets assume that we've missed an event and call it once a day as well
+        # call it once an hour
         CheckStatusEvent:
           Type: Schedule
           Properties:
-            Schedule: rate(1 day) 
+            Schedule: rate(1 hour)
       Tags:
         Stack: !Ref Stack
         Stage: !Ref Stage
@@ -182,21 +169,7 @@ Resources:
           STRUCTURED_DATA_BUCKET: !Ref StructuredFieldsBucket
           OPTION_LOWER_FIRST_CHAR_OF_TAGS: !Ref OptionLowerFirstCharOfTags
       Events:
-        # Trigger whenever a log group is created
-        LogGroupChangeEvent:
-          Type: CloudWatchEvent
-          Properties:
-            Pattern:
-              source:
-              - aws.logs
-              detail-type:
-              - AWS API Call via CloudTrail
-              detail:
-                eventSource:
-                - logs.amazonaws.com
-                eventName:
-                - CreateLogGroup
-        # tag changes on lambdas can't be triggered this way yet so update every 10 mins anyway
+        # Update every 10 mins
         CheckStatusEvent:
           Type: Schedule
           Properties:
