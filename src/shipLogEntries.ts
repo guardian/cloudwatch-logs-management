@@ -119,10 +119,12 @@ function parseNodeLogFormat(logGroup: string, line: String): StructuredLogData |
         const message = messageParts.join('\t')
         const structuredLog = parseMessageJson(message);
         return {
+            // put level first so it can be overriden if structured log contains level
+            level,
             ...structuredLog,
             //timestamp: dateString, // this makes it explode for some reason
+            // put lambdaRequestId last so it can never be overwritten
             lambdaRequestId,
-            level,
         }
     }
 }
