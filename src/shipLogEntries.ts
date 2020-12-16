@@ -147,13 +147,14 @@ function parseLambdaLogLine(logGroup: string, line: string): StructuredLogData {
     return parseMessageJson(line);
 }
 
-function createStructuredLog(logGroup: string, logEvent: CloudWatchLogsLogEvent, extraFields: StructuredFields): PublishableStructuredLogData {
+function createStructuredLog(logGroup: string, logStream: String, logEvent: CloudWatchLogsLogEvent, extraFields: StructuredFields): PublishableStructuredLogData {
     const structuredLog = parseLambdaLogLine(logGroup, logEvent.message.trim());
     const publishable: PublishableStructuredLogData = 
         Object.assign(structuredLog, {
             '@timestamp': structuredLog.timestamp || new Date(logEvent.timestamp).toISOString(),
             cloudwatchId: logEvent.id,
             cloudwatchLogGroup: logGroup,
+            cloudwatchLogStream: logStream,
         });
     return Object.keys(extraFields)
         .reduce((acc: PublishableStructuredLogData, key) => {
@@ -179,7 +180,7 @@ export async function shipLogEntries(event: CloudWatchLogsEvent, context: Contex
             return {};
         });
     const structuredLogs = decoded.logEvents.map((logEvent) => {
-        const log = createStructuredLog(logGroup, logEvent, extraFields);
+        const log = createStructuredLog(logGroup, decoded.logStream, logEvent, extraFields);
         return log;
     });
     console.log(`Sending ${structuredLogs.length} events from ${logGroup} to ${kinesisStreamName} (with role: ${kinesisStreamRole})`);
