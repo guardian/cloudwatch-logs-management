@@ -8,6 +8,7 @@ import { putKinesisRecords } from './kinesis';
 import { getStructuredFields } from './structuredFields';
 import { PutRecordsOutput } from 'aws-sdk/clients/kinesis';
 import { ConfigurationOptions } from 'aws-sdk/lib/config';
+import { isRequestLogEntry } from './logEntryProcessing';
 
 const { awsConfig } = getCommonConfig();
 const { kinesisStreamName, kinesisStreamRole, structuredDataBucket, structuredDataKey } = getShipLogsConfig();
@@ -27,12 +28,6 @@ function getKinesisClient(awsConfig: ConfigurationOptions, role: string | undefi
     } else {
         return new Kinesis(awsConfig);
     }
-}
-
-function isRequestLogEntry(line: string): boolean {
-    return line.startsWith('START RequestId: ') ||
-           line.startsWith('END RequestId: ') ||
-           line.startsWith('REPORT RequestId: ') 
 }
 
 function fieldValue(text: string, fieldNameText: string, valueLength?: number): string {
