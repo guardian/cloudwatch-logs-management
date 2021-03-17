@@ -1,4 +1,4 @@
-import { fieldValue, isRequestLogEntry, lambdaRequestLogData, parseReportField } from './logEntryProcessing';
+import { fieldValue, isRequestLogEntry, lambdaRequestLogData, parseMessageJson, parseReportField } from './logEntryProcessing';
 
 test('AWS Lambda Function reports are identified as request log entries', () => {
     const logLine = 'REPORT RequestId: b1f86b7f-67b8-45a8-926b-1699f0f7ccae\tDuration: 1028.81 ms\tBilled Duration: 1029 ms\tMemory Size: 1024 MB\tMax Memory Used: 220 MB\t';
@@ -74,4 +74,20 @@ test('Builds the correct StructuredLogData for REPORT events', () => {
 test('Does not attempt to build StructuredLogData for custom events', () => {
     const logLine = 'There was an error when fetching data from CAPI';
     expect(lambdaRequestLogData(logLine)).toStrictEqual(undefined)
+})
+
+test('Parses JSON log lines successfully', () => {
+    const logLine = '{ "test": "value" }';
+    const expected = {
+        test: 'value'
+    }
+    expect(parseMessageJson(logLine)).toStrictEqual(expected)
+})
+
+test('Handles non-JSON log lines gracefully', () => {
+    const logLine = 'There was an error when fetching data from CAPI';
+    const expected = {
+        message: logLine
+    }
+    expect(parseMessageJson(logLine)).toStrictEqual(expected)
 })

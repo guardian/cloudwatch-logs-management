@@ -73,7 +73,7 @@ export function lambdaRequestLogData(line: string): StructuredLogData | undefine
     }
 }
 
-function parseMessageJson(line: string): StructuredLogData {
+export function parseMessageJson(line: string): StructuredLogData {
     try {
         return JSON.parse(line.trim());
     } catch (err) {
