@@ -7,7 +7,8 @@ export function isRequestLogEntry(line: string): boolean {
 }
 
 export function fieldValue(text: string, fieldNameText: string, valueLength?: number): string {
-    return text.substr(text.indexOf(fieldNameText)+fieldNameText.length, valueLength).trim();
+    const colonAndSpaceSeparator = 2;
+    return text.substr(text.indexOf(fieldNameText)+fieldNameText.length + colonAndSpaceSeparator, valueLength).trim();
 }
 
 /**
@@ -35,7 +36,7 @@ function parseReportField(rawField: string): [string, any] {
 function lambdaRequestLogData(line: string): StructuredLogData | undefined {
     if (isRequestLogEntry(line)) {
         const eventName = line.substr(0, line.indexOf(' '));
-        const requestId = fieldValue(line, 'RequestId:', 36);
+        const requestId = fieldValue(line, 'RequestId', 36);
         const base = {
             lambdaEvent: eventName,
             lambdaRequestId: requestId
@@ -47,7 +48,7 @@ function lambdaRequestLogData(line: string): StructuredLogData | undefined {
                 break;
             case 'START':
                 // extract Version:
-                const version = fieldValue(line, 'Version:');
+                const version = fieldValue(line, 'Version');
                 stats = {
                     lambdaVersion: version
                 };
