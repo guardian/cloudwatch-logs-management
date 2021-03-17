@@ -1,4 +1,4 @@
-import { fieldValue, isRequestLogEntry, parseReportField } from './logEntryProcessing';
+import { fieldValue, isRequestLogEntry, lambdaRequestLogData, parseReportField } from './logEntryProcessing';
 
 test('AWS Lambda Function reports are identified as request log entries', () => {
     const logLine = 'REPORT RequestId: b1f86b7f-67b8-45a8-926b-1699f0f7ccae\tDuration: 1028.81 ms\tBilled Duration: 1029 ms\tMemory Size: 1024 MB\tMax Memory Used: 220 MB\t';
@@ -32,4 +32,46 @@ test('Parses non-numeric fields from AWS Lambda Function reports', () => {
     const requestIdField = 'RequestId: b1f86b7f-67b8-45a8-926b-1699f0f7ccae';
     const expected = ['requestId', 'b1f86b7f-67b8-45a8-926b-1699f0f7ccae'];
     expect(parseReportField(requestIdField)).toStrictEqual(expected)
+})
+
+test('Builds the correct StructuredLogData for START events', () => {
+    const logLine = 'START RequestId: b1f86b7f-67b8-45a8-926b-1699f0f7ccae Version: $LATEST';
+    const expected = {
+        lambdaEvent: 'START',
+        lambdaRequestId: 'b1f86b7f-67b8-45a8-926b-1699f0f7ccae',
+        lambdaStats: {
+            lambdaVersion: '$LATEST'
+        }
+    }
+    expect(lambdaRequestLogData(logLine)).toStrictEqual(expected)
+})
+
+test('Builds the correct StructuredLogData for END events', () => {
+    const logLine = 'END RequestId: b1f86b7f-67b8-45a8-926b-1699f0f7ccae';
+    const expected = {
+        lambdaEvent: 'END',
+        lambdaRequestId: 'b1f86b7f-67b8-45a8-926b-1699f0f7ccae',
+        lambdaStats: {}
+    }
+    expect(lambdaRequestLogData(logLine)).toStrictEqual(expected)
+})
+
+test('Builds the correct StructuredLogData for REPORT events', () => {
+    const logLine = 'REPORT RequestId: b1f86b7f-67b8-45a8-926b-1699f0f7ccae\tDuration: 1028.81 ms\tBilled Duration: 1029 ms\tMemory Size: 1024 MB\tMax Memory Used: 220 MB\t';
+    const expected = {
+        lambdaEvent: 'REPORT',
+        lambdaRequestId: 'b1f86b7f-67b8-45a8-926b-1699f0f7ccae',
+        lambdaStats: {
+            billedDurationms: 1029,
+            durationms: 1028.81,
+            maxMemoryUsedMB: 220,
+            memorySizeMB: 1024,
+        }
+    }
+    expect(lambdaRequestLogData(logLine)).toStrictEqual(expected)
+})
+
+test('Does not attempt to build StructuredLogData for custom events', () => {
+    const logLine = 'There was an error when fetching data from CAPI';
+    expect(lambdaRequestLogData(logLine)).toStrictEqual(undefined)
 })

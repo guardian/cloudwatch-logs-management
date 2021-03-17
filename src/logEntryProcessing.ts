@@ -33,7 +33,7 @@ export function parseReportField(rawField: string): [string, any] {
     }
 }
 
-function lambdaRequestLogData(line: string): StructuredLogData | undefined {
+export function lambdaRequestLogData(line: string): StructuredLogData | undefined {
     if (isRequestLogEntry(line)) {
         const eventName = line.substr(0, line.indexOf(' '));
         const requestId = fieldValue(line, 'RequestId', 36);
