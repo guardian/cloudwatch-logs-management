@@ -103,7 +103,7 @@ export function parseNodeLogFormat(logGroup: string, line: String): StructuredLo
 }
 
 // parse a log line
-function parseLambdaLogLine(logGroup: string, line: string): StructuredLogData {
+export function parseLambdaLogLine(logGroup: string, line: string): StructuredLogData {
     const lambdaRequestLogDataFields = lambdaRequestLogData(line);
     if (!!lambdaRequestLogDataFields) {
         return Object.assign(lambdaRequestLogDataFields, {
