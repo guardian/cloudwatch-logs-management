@@ -1,4 +1,4 @@
-import { fieldValue, isRequestLogEntry } from './logEntryProcessing';
+import { fieldValue, isRequestLogEntry, parseReportField } from './logEntryProcessing';
 
 test('AWS Lambda Function reports are identified as request log entries', () => {
     const logLine = 'REPORT RequestId: b1f86b7f-67b8-45a8-926b-1699f0f7ccae\tDuration: 1028.81 ms\tBilled Duration: 1029 ms\tMemory Size: 1024 MB\tMax Memory Used: 220 MB\t';
@@ -20,4 +20,16 @@ test('Extracts version correctly', () => {
     const logLine = 'START RequestId: b1f86b7f-67b8-45a8-926b-1699f0f7ccae Version: $LATEST';
     const expected = '$LATEST';
     expect(fieldValue(logLine, 'Version')).toBe(expected)
+})
+
+test('Parses numeric fields from AWS Lambda Function reports', () => {
+    const durationField = 'Duration: 1028.81 ms';
+    const expected = ['durationms', 1028.81];
+    expect(parseReportField(durationField)).toStrictEqual(expected)
+})
+
+test('Parses non-numeric fields from AWS Lambda Function reports', () => {
+    const requestIdField = 'RequestId: b1f86b7f-67b8-45a8-926b-1699f0f7ccae';
+    const expected = ['requestId', 'b1f86b7f-67b8-45a8-926b-1699f0f7ccae'];
+    expect(parseReportField(requestIdField)).toStrictEqual(expected)
 })

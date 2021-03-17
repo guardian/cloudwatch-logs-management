@@ -15,7 +15,7 @@ export function fieldValue(text: string, fieldNameText: string, valueLength?: nu
  * Parse an AWS lambda report field into a field name and a value
  * @param rawField The raw field that looks something like "Field Name: value unit"
  */
-function parseReportField(rawField: string): [string, any] {
+export function parseReportField(rawField: string): [string, any] {
     const [rawFieldName, rawFieldValue] = rawField.split(':').map(s => s.trim());
 
     const fieldNameNoSpaces = rawFieldName.replace(/ /g, '');
