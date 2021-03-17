@@ -84,7 +84,7 @@ export function parseMessageJson(line: string): StructuredLogData {
 }
 
 // this parses a log line of the format <date>\t<requestId>\t<level>\t<message>
-function parseNodeLogFormat(logGroup: string, line: String): StructuredLogData | undefined {
+export function parseNodeLogFormat(logGroup: string, line: String): StructuredLogData | undefined {
     const elements = line.split('\t');
     const [dateString, lambdaRequestId, level, ...messageParts] = elements;
     const isDate = !isNaN(Date.parse(dateString));

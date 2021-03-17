@@ -1,4 +1,4 @@
-import { fieldValue, isRequestLogEntry, lambdaRequestLogData, parseMessageJson, parseReportField } from './logEntryProcessing';
+import { fieldValue, isRequestLogEntry, lambdaRequestLogData, parseMessageJson, parseNodeLogFormat, parseReportField } from './logEntryProcessing';
 
 test('AWS Lambda Function reports are identified as request log entries', () => {
     const logLine = 'REPORT RequestId: b1f86b7f-67b8-45a8-926b-1699f0f7ccae\tDuration: 1028.81 ms\tBilled Duration: 1029 ms\tMemory Size: 1024 MB\tMax Memory Used: 220 MB\t';
@@ -90,4 +90,15 @@ test('Handles non-JSON log lines gracefully', () => {
         message: logLine
     }
     expect(parseMessageJson(logLine)).toStrictEqual(expected)
+})
+
+test('Handles node log format gracefully', () => {
+    const logGroup = '/aws/lambda/app-name-PROD';
+    const logLine = '2021-03-17\tb1f86b7f-67b8-45a8-926b-1699f0f7ccae\tERROR\tThere was an error when fetching data from CAPI';
+    const expected = {
+        level: 'ERROR',
+        message: 'There was an error when fetching data from CAPI',
+        lambdaRequestId: 'b1f86b7f-67b8-45a8-926b-1699f0f7ccae'
+    }
+    expect(parseNodeLogFormat(logGroup, logLine)).toStrictEqual(expected)
 })
