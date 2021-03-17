@@ -31,7 +31,7 @@ nvm install
 nvm use
 
 # install deps, run tests and build app
-npm install
+npm ci
 npm run test
 npm run build
 set -x
