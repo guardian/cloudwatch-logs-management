@@ -6,7 +6,7 @@ export function isRequestLogEntry(line: string): boolean {
         line.startsWith('REPORT RequestId: ')
 }
 
-function fieldValue(text: string, fieldNameText: string, valueLength?: number): string {
+export function fieldValue(text: string, fieldNameText: string, valueLength?: number): string {
     return text.substr(text.indexOf(fieldNameText)+fieldNameText.length, valueLength).trim();
 }
 
