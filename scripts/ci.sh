@@ -30,8 +30,9 @@ fi
 nvm install
 nvm use
 
-# install deps and build app
-npm install
+# install deps, run tests and build app
+npm ci
+npm run test
 npm run build
 set -x
 # bundle lambda code
