@@ -34,7 +34,9 @@ export function parseReportField(rawField: string): [string, any] {
 }
 
 export function lambdaRequestLogData(line: string): StructuredLogData | undefined {
-    if (isRequestLogEntry(line)) {
+    if (!isRequestLogEntry(line)) {
+        return undefined
+    } else {
         const eventName = line.substr(0, line.indexOf(' '));
         const requestId = fieldValue(line, 'RequestId', 36);
         const base = {
@@ -68,8 +70,6 @@ export function lambdaRequestLogData(line: string): StructuredLogData | undefine
         return Object.assign(base, {
             lambdaStats: stats
         });
-    } else {
-        return undefined;
     }
 }
 
