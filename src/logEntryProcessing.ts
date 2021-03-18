@@ -23,7 +23,7 @@ export function parseReportField(rawField: string): [string, any] {
 
     const [value, unit] = rawFieldValue.split(' ');
 
-    if (unit == 'ms' || unit == 'MB') {
+    if (unit === 'ms' || unit === 'MB') {
         // value should be numeric
         const numericValue = parseFloat(value);
         return [fieldName + unit, numericValue] as [string, any];
