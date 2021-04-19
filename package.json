@@ -4,9 +4,6 @@
   "description": "Lambdas to maintain and forward cloudwatch logs",
   "author": "Guardian Developers",
   "license": "MIT",
-  "engines": {
-    "node": ">=14.0.0"
-  },
   "scripts": {
     "build": "scripts/build.sh",
     "test": "jest"
