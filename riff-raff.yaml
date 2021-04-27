@@ -12,6 +12,7 @@ stacks:
 - mobile
 - deploy
 - targeting
+- pfi
 
 templates:
   lambda:
