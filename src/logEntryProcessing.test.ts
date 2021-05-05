@@ -7,7 +7,6 @@ import {
   parseNodeLogFormat,
   parseReportField,
 } from "./logEntryProcessing";
-import { log } from "util";
 
 test("AWS Lambda Function reports are identified as request log entries", () => {
   const logLine =

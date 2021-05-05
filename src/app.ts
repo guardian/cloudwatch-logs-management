@@ -1,16 +1,15 @@
-import { CloudWatchLogs, S3, Lambda } from "aws-sdk";
-
-import {
-  getCommonConfig,
-  getSetRetentionConfig,
-  getConfigureLogShippingConfig,
-} from "./config";
+import { CloudWatchLogs, Lambda, S3 } from "aws-sdk";
 import {
   getCloudWatchLogGroups,
   setCloudwatchRetention,
   subscribeGroups,
   unsubscribeGroups,
 } from "./cloudwatch";
+import {
+  getCommonConfig,
+  getConfigureLogShippingConfig,
+  getSetRetentionConfig,
+} from "./config";
 import { updateStructuredFieldsData } from "./structuredFields";
 
 const { awsConfig } = getCommonConfig();
@@ -32,7 +31,9 @@ export async function setRetention(): Promise<void> {
   for (const logGroup of cloudwatchLogGroups) {
     if (logGroup.retentionInDays === retentionInDays) {
       console.log(
-        `Log group ${logGroup.logGroupName} retention is already ${retentionInDays} days`
+        `Log group ${
+          logGroup.logGroupName ?? "UNDEFINED"
+        } retention is already ${retentionInDays} days`
       );
     } else {
       await setCloudwatchRetention(
@@ -43,7 +44,9 @@ export async function setRetention(): Promise<void> {
       // avoid hitting the SDK throttling limit
       await sleep(200);
       console.log(
-        `Set ${logGroup.logGroupName} retention to ${retentionInDays} days`
+        `Set ${
+          logGroup.logGroupName ?? "UNDEFINED"
+        } retention to ${retentionInDays} days`
       );
     }
   }

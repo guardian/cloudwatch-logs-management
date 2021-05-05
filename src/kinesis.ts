@@ -1,5 +1,5 @@
-import { Kinesis } from "aws-sdk";
-import {
+import type { Kinesis } from "aws-sdk";
+import type {
   PutRecordsOutput,
   PutRecordsRequestEntry,
 } from "aws-sdk/clients/kinesis";

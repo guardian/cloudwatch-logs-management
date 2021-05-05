@@ -14,8 +14,8 @@ module.exports = {
   rules: {
     "@typescript-eslint/no-inferrable-types": 0,
     "import/no-namespace": 2,
-    "@typescript-eslint/no-unsafe-assignment": 0,
-    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/no-unsafe-assignment": 1,
+    "@typescript-eslint/no-explicit-any": 1,
   },
   root: true,
   ignorePatterns: ["**/*.js", "node_modules"],

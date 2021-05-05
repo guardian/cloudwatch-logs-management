@@ -20,15 +20,15 @@
     "@guardian/eslint-config-typescript": "^0.5.0",
     "@typescript-eslint/eslint-plugin": "^4.22.1",
     "@typescript-eslint/parser": "^4.22.1",
-    "aws-sdk": "^2.413.0",
     "eslint": "^7.25.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-custom-rules": "0.0.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-prettier": "^3.4.0"
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.2.1"
   },
   "dependencies": {
-    "prettier": "^2.2.1"
+    "aws-sdk": "^2.413.0"
   }
 }

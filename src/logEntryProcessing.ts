@@ -1,4 +1,5 @@
-import { CloudWatchLogsLogEvent } from "aws-lambda";
+// eslint-disable-next-line import/no-unresolved -- unsure as to why this doesn't resolve
+import type { CloudWatchLogsLogEvent } from "aws-lambda";
 
 export function isRequestLogEntry(line: string): boolean {
   return (
@@ -62,27 +63,27 @@ export function lambdaRequestLogData(
       lambdaRequestId: requestId,
     };
     let stats: StructuredLogData = {};
+    let version, rawFields;
+    let fields: Array<[string, any]>;
     switch (eventName) {
       case "END":
         // no other fields
         break;
       case "START":
         // extract Version:
-        const version = fieldValue(line, "Version");
+        version = fieldValue(line, "Version");
         stats = {
           lambdaVersion: version,
         };
         break;
       case "REPORT":
         // extract other fields (conveniently tab separated)
-        const rawFields = line
+        rawFields = line
           .split("\t")
           .slice(1)
           .map((s) => s.trim())
           .filter((s) => s.length > 0);
-        const fields: [string, any][] = rawFields.map((rawField) =>
-          parseReportField(rawField)
-        );
+        fields = rawFields.map((rawField) => parseReportField(rawField));
         stats = fields.reduce((acc: StructuredLogData, field) => {
           const [fieldName, fieldValue] = field;
           acc[fieldName] = fieldValue;
@@ -99,7 +100,7 @@ export function lambdaRequestLogData(
 
 export function parseMessageJson(line: string): StructuredLogData {
   try {
-    return JSON.parse(line.trim());
+    return JSON.parse(line.trim()) as StructuredLogData;
   } catch (err) {
     return {
       message: line.trim(),
@@ -110,7 +111,7 @@ export function parseMessageJson(line: string): StructuredLogData {
 // this parses a log line of the format <date>\t<requestId>\t<level>\t<message>
 export function parseNodeLogFormat(
   logGroup: string,
-  line: String
+  line: string
 ): StructuredLogData | undefined {
   const elements = line.split("\t");
   const [dateString, lambdaRequestId, level, ...messageParts] = elements;
@@ -135,14 +136,14 @@ export function parseLambdaLogLine(
   line: string
 ): StructuredLogData {
   const lambdaRequestLogDataFields = lambdaRequestLogData(line);
-  if (!!lambdaRequestLogDataFields) {
+  if (lambdaRequestLogDataFields) {
     return Object.assign(lambdaRequestLogDataFields, {
       message: line,
     });
   }
   // next see if this is the log line type we get from
   const nodeLogData = parseNodeLogFormat(logGroup, line);
-  if (!!nodeLogData) {
+  if (nodeLogData) {
     return nodeLogData;
   }
   // fall back to normal parsing
@@ -151,7 +152,7 @@ export function parseLambdaLogLine(
 
 export function createStructuredLog(
   logGroup: string,
-  logStream: String,
+  logStream: string,
   logEvent: CloudWatchLogsLogEvent,
   extraFields: StructuredFields
 ): PublishableStructuredLogData {
@@ -168,7 +169,7 @@ export function createStructuredLog(
   );
   return Object.keys(extraFields).reduce(
     (acc: PublishableStructuredLogData, key) => {
-      if (!!acc[key]) {
+      if (acc[key]) {
         acc[`overwrittenFields.${key}`] = acc[key];
       }
       acc[key] = extraFields[key];

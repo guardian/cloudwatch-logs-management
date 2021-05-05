@@ -1,4 +1,4 @@
-import { ConfigurationOptions } from "aws-sdk/lib/config";
+import type { ConfigurationOptions } from "aws-sdk";
 
 interface CommonConfig {
   awsConfig: ConfigurationOptions;
@@ -31,7 +31,7 @@ function getRequiredEnv(
 ): string {
   const value = process.env[key];
   if (!value) {
-    const stage = process.env[key] || "DEV";
+    const stage = process.env[key] ?? "DEV";
     if (stage == "PROD" || stage == "CODE" || !devDefault) {
       throw new Error(`Missing ENV var ${key}`);
     } else {

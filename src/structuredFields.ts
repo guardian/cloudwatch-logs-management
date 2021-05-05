@@ -1,6 +1,6 @@
+import type { Lambda, S3 } from "aws-sdk";
 import { getLambdaFunctions } from "./lambda";
-import { putData, getData } from "./s3";
-import { S3, Lambda } from "aws-sdk";
+import { getData, putData } from "./s3";
 
 /*
     Remove AWS specific tags and make initial char lowercase
@@ -56,7 +56,7 @@ async function getStructuredFieldsData(
   if (!structuredFields) {
     structuredFields = JSON.parse(await getData(s3, bucket, key));
   }
-  if (!!structuredFields) {
+  if (structuredFields) {
     return structuredFields;
   } else {
     return Promise.reject(

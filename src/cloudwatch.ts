@@ -1,4 +1,4 @@
-import { CloudWatchLogs, CloudWatch } from "aws-sdk";
+import type { CloudWatchLogs } from "aws-sdk";
 
 async function getAllLogGroups(
   cloudwatchLogs: CloudWatchLogs,
@@ -14,7 +14,7 @@ async function getAllLogGroups(
         logGroupNamePrefix,
       })
       .promise();
-    const newAcc = acc.concat(result.logGroups || []);
+    const newAcc = acc.concat(result.logGroups ?? []);
     if (result.nextToken) {
       return rec(newAcc, result.nextToken);
     } else {
@@ -68,7 +68,7 @@ export async function unsubscribeGroups(
         group.logGroupName!,
         filterName
       );
-      subscriptions.forEach(async (subscription) => {
+      for (const subscription of subscriptions) {
         if (subscription.filterName === filterName) {
           console.log(
             `Removing subscription for ${group.logGroupName!} with name ${filterName}`
@@ -79,7 +79,7 @@ export async function unsubscribeGroups(
             filterName
           );
         }
-      });
+      }
     })
   );
 }

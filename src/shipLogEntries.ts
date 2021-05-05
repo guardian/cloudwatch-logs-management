@@ -1,19 +1,17 @@
 import zlib from "zlib";
-
-import {
-  CloudWatchLogsEvent,
+import type {
   CloudWatchLogsDecodedData,
-  CloudWatchLogsLogEvent,
+  CloudWatchLogsEvent,
   Context,
+  // eslint-disable-next-line import/no-unresolved -- unsure as to why this doesn't resolve
 } from "aws-lambda";
-import { Kinesis, S3, ChainableTemporaryCredentials } from "aws-sdk";
-
+import { ChainableTemporaryCredentials, Kinesis, S3 } from "aws-sdk";
+import type { ConfigurationOptions } from "aws-sdk";
+import type { PutRecordsOutput } from "aws-sdk/clients/kinesis";
 import { getCommonConfig, getShipLogsConfig } from "./config";
 import { putKinesisRecords } from "./kinesis";
-import { getStructuredFields } from "./structuredFields";
-import { PutRecordsOutput } from "aws-sdk/clients/kinesis";
-import { ConfigurationOptions } from "aws-sdk/lib/config";
 import { createStructuredLog } from "./logEntryProcessing";
+import { getStructuredFields } from "./structuredFields";
 
 const { awsConfig } = getCommonConfig();
 const {
@@ -30,7 +28,7 @@ function getKinesisClient(
   awsConfig: ConfigurationOptions,
   role: string | undefined
 ): Kinesis {
-  if (!!role) {
+  if (role) {
     const credentials = new ChainableTemporaryCredentials({
       params: {
         RoleArn: role,
@@ -59,7 +57,7 @@ export async function shipLogEntries(
     logGroup,
     structuredDataBucket,
     structuredDataKey
-  ).catch((reason) => {
+  ).catch((reason: string) => {
     console.log(
       `Unable to get structured fields for ${logGroup} due to ${reason} - falling back to no extra fields`
     );
@@ -75,7 +73,11 @@ export async function shipLogEntries(
     return log;
   });
   console.log(
-    `Sending ${structuredLogs.length} events from ${logGroup} to ${kinesisStreamName} (with role: ${kinesisStreamRole})`
+    `Sending ${
+      structuredLogs.length
+    } events from ${logGroup} to ${kinesisStreamName} (with role: ${
+      kinesisStreamRole ?? "UNDEFINED"
+    })`
   );
 
   const result = await putKinesisRecords(
@@ -88,7 +90,7 @@ export async function shipLogEntries(
   // then raise an error so the invocation will be marked as failed
   // and the client of lambda can respond as appropriate for them.
   const failedRecordCount = result.reduce((count, output) => {
-    return count + (output.FailedRecordCount || 0);
+    return count + (output.FailedRecordCount ?? 0);
   }, 0);
   if (failedRecordCount > 0) {
     throw new Error(
