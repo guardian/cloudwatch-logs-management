@@ -33,6 +33,7 @@ nvm use
 # install deps, run tests and build app
 npm ci
 npm run test
+npm run lint
 npm run build
 set -x
 # bundle lambda code
