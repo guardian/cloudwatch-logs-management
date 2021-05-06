@@ -1,29 +1,20 @@
-interface LogGroupToStructuredFields {
-    [logGroup: string]: StructuredFields;
-}
+type LogGroupToStructuredFields = Record<string, StructuredFields>;
 
-interface StructuredFields {
-    [name: string]: string;
-}
+type StructuredFields = Record<string, string>;
 
-interface StructuredLogData {
-    [name: string]: any;
-}
+type StructuredLogData = Record<string, any>;
 
 interface PublishableStructuredLogData {
-    '@timestamp': string,
-    cloudwatchId: string,
-    cloudwatchLogGroup: string,
-    [name: string]: any;
+  "@timestamp": string;
+  cloudwatchId: string;
+  cloudwatchLogGroup: string;
+  [name: string]: any;
 }
 
-interface Tags {
-    [name: string]: string;
-}
+type Tags = Record<string, string>;
 
 interface LambdaFunction {
-    functionName: string,
-    functionArn: string,
-    tags: Tags,
+  functionName: string;
+  functionArn: string;
+  tags: Tags;
 }
-
