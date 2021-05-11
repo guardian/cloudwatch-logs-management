@@ -5,6 +5,7 @@ updates:
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
-      interval: 'weekly'
+      # This repository does not run in a context that is accessible by users or external requests. Run Dependabot once a month to reduce the frequency of PRs.
+      interval: 'monthly'
     commit-message:
       prefix: "chore(deps): "
