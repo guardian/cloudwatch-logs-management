@@ -37,20 +37,18 @@ export async function getLambdaFunctions(
       .filter(
         (fn): fn is AwsLambdaFunction => !!fn.FunctionName && !!fn.FunctionArn
       )
-      .map(
-        async (fn: AwsLambdaFunction): Promise<LambdaFunction> => {
-          const results = await lambda
-            .listTags({
-              Resource: fn.FunctionArn,
-            })
-            .promise();
-          return {
-            functionArn: fn.FunctionArn,
-            functionName: fn.FunctionName,
-            tags: results.Tags ?? {},
-          };
-        }
-      )
+      .map(async (fn: AwsLambdaFunction): Promise<LambdaFunction> => {
+        const results = await lambda
+          .listTags({
+            Resource: fn.FunctionArn,
+          })
+          .promise();
+        return {
+          functionArn: fn.FunctionArn,
+          functionName: fn.FunctionName,
+          tags: results.Tags ?? {},
+        };
+      })
   );
   return results;
 }
