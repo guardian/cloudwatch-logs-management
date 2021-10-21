@@ -1,0 +1,666 @@
+{
+  "version": "14.0.0",
+  "artifacts": {
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    },
+    "Template": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "Template.template.json",
+        "tags": {
+          "gu:cdk:version": "27.1.0",
+          "gu:repo": "guardian/cloudwatch-logs-management",
+          "Stack": "cloudwatch-logs-management",
+          "Stage": "${Token[TOKEN.173]}"
+        },
+        "validateOnSynth": false
+      },
+      "metadata": {
+        "/Template": [
+          {
+            "type": "aws:cdk:stack-tags",
+            "data": [
+              {
+                "Key": "gu:cdk:version",
+                "Value": "27.1.0"
+              },
+              {
+                "Key": "gu:repo",
+                "Value": "guardian/cloudwatch-logs-management"
+              },
+              {
+                "Key": "Stack",
+                "Value": "cloudwatch-logs-management"
+              },
+              {
+                "Key": "Stage",
+                "Value": {
+                  "Ref": "Stage"
+                }
+              }
+            ],
+            "trace": [
+              "ConstructNode.addMetadata (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/construct-compat.ts:252:92)",
+              "Object.addStackArtifactToAssembly (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/stack-synthesizers/_shared.ts:25:16)",
+              "LegacyStackSynthesizer.emitStackArtifact (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/stack-synthesizers/stack-synthesizer.ts:29:5)",
+              "LegacyStackSynthesizer.synthesize (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/stack-synthesizers/legacy.ts:99:10)",
+              "/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/private/synthesis.ts:184:29",
+              "visit (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/private/synthesis.ts:231:5)",
+              "visit (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/private/synthesis.ts:227:5)",
+              "synthesizeTree (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/private/synthesis.ts:176:3)",
+              "Object.synthesize (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/private/synthesis.ts:39:3)",
+              "App.synth (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/stage.ts:94:23)",
+              "process.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/app.ts:64:45)",
+              "Object.onceWrapper (events.js:422:26)",
+              "process.emit (events.js:315:20)",
+              "process.EventEmitter.emit (domain.js:486:12)",
+              "process.emit (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/source-map-support/source-map-support.js:516:21)"
+            ]
+          }
+        ],
+        "/Template/Stage": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Stage",
+            "trace": [
+              "Function.getInstance (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@guardian/cdk/src/constructs/core/parameters/identity.ts:19:23)",
+              "new GuStack (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@guardian/cdk/src/constructs/core/stack.ts:121:36)",
+              "new CloudwatchLogsManagement (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/lib/cloudwatch-logs-management.ts:11:5)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Module.m._compile (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "main (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "/Users/michael_mcnamara/.fnm/node-versions/v14.15.0/installation/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/Template/Template": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Template",
+            "trace": [
+              "new CloudwatchLogsManagement (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/lib/cloudwatch-logs-management.ts:13:5)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Module.m._compile (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "main (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "/Users/michael_mcnamara/.fnm/node-versions/v14.15.0/installation/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/Template/Template/Stack": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Stack",
+            "trace": [
+              "CfnInclude.createParameter (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:294:26)",
+              "new CfnInclude (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:79:12)",
+              "new CloudwatchLogsManagement (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/lib/cloudwatch-logs-management.ts:13:5)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Module.m._compile (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "main (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "/Users/michael_mcnamara/.fnm/node-versions/v14.15.0/installation/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/Template/Template/RetentionInDays": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RetentionInDays",
+            "trace": [
+              "CfnInclude.createParameter (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:294:26)",
+              "new CfnInclude (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:79:12)",
+              "new CloudwatchLogsManagement (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/lib/cloudwatch-logs-management.ts:13:5)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Module.m._compile (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "main (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "/Users/michael_mcnamara/.fnm/node-versions/v14.15.0/installation/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/Template/Template/ShippingPrefix": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ShippingPrefix",
+            "trace": [
+              "CfnInclude.createParameter (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:294:26)",
+              "new CfnInclude (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:79:12)",
+              "new CloudwatchLogsManagement (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/lib/cloudwatch-logs-management.ts:13:5)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Module.m._compile (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "main (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "/Users/michael_mcnamara/.fnm/node-versions/v14.15.0/installation/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/Template/Template/KinesisStreamArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisStreamArn",
+            "trace": [
+              "CfnInclude.createParameter (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:294:26)",
+              "new CfnInclude (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:79:12)",
+              "new CloudwatchLogsManagement (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/lib/cloudwatch-logs-management.ts:13:5)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Module.m._compile (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "main (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "/Users/michael_mcnamara/.fnm/node-versions/v14.15.0/installation/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/Template/Template/KinesisStreamRole": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisStreamRole",
+            "trace": [
+              "CfnInclude.createParameter (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:294:26)",
+              "new CfnInclude (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:79:12)",
+              "new CloudwatchLogsManagement (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/lib/cloudwatch-logs-management.ts:13:5)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Module.m._compile (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "main (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "/Users/michael_mcnamara/.fnm/node-versions/v14.15.0/installation/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/Template/Template/CloudWatchLogsFilterName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CloudWatchLogsFilterName",
+            "trace": [
+              "CfnInclude.createParameter (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:294:26)",
+              "new CfnInclude (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:79:12)",
+              "new CloudwatchLogsManagement (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/lib/cloudwatch-logs-management.ts:13:5)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Module.m._compile (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "main (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "/Users/michael_mcnamara/.fnm/node-versions/v14.15.0/installation/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/Template/Template/OptionLowerFirstCharOfTags": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OptionLowerFirstCharOfTags",
+            "trace": [
+              "CfnInclude.createParameter (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:294:26)",
+              "new CfnInclude (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:79:12)",
+              "new CloudwatchLogsManagement (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/lib/cloudwatch-logs-management.ts:13:5)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Module.m._compile (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "main (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "/Users/michael_mcnamara/.fnm/node-versions/v14.15.0/installation/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/Template/Template/DistBucket": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DistBucket",
+            "trace": [
+              "CfnInclude.createParameter (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:294:26)",
+              "new CfnInclude (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:79:12)",
+              "new CloudwatchLogsManagement (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/lib/cloudwatch-logs-management.ts:13:5)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Module.m._compile (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "main (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "/Users/michael_mcnamara/.fnm/node-versions/v14.15.0/installation/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/Template/Template/$Conditions/UseRoleAssumption": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UseRoleAssumption",
+            "trace": [
+              "CfnInclude.getOrCreateCondition (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:444:26)",
+              "new CfnInclude (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:85:12)",
+              "new CloudwatchLogsManagement (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/lib/cloudwatch-logs-management.ts:13:5)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Module.m._compile (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "main (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "/Users/michael_mcnamara/.fnm/node-versions/v14.15.0/installation/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/Template/Template/StructuredFieldsBucket": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "StructuredFieldsBucket",
+            "trace": [
+              "Function._fromCloudFormation (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/aws-s3/lib/s3.generated.ts:496:21)",
+              "CfnInclude.getOrCreateResource (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:519:40)",
+              "new CfnInclude (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:97:12)",
+              "new CloudwatchLogsManagement (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/lib/cloudwatch-logs-management.ts:13:5)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Module.m._compile (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "main (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "/Users/michael_mcnamara/.fnm/node-versions/v14.15.0/installation/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/Template/Template/SetRetentionPolicy": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SetRetentionPolicy",
+            "trace": [
+              "Function._fromCloudFormation (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/aws-iam/lib/iam.generated.ts:581:21)",
+              "CfnInclude.getOrCreateResource (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:519:40)",
+              "new CfnInclude (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:97:12)",
+              "new CloudwatchLogsManagement (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/lib/cloudwatch-logs-management.ts:13:5)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Module.m._compile (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "main (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "/Users/michael_mcnamara/.fnm/node-versions/v14.15.0/installation/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/Template/Template/SetRetentionFunc": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SetRetentionFunc",
+            "trace": [
+              "Function._fromCloudFormation (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/aws-sam/lib/sam.generated.ts:1212:21)",
+              "CfnInclude.getOrCreateResource (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:519:40)",
+              "new CfnInclude (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:97:12)",
+              "new CloudwatchLogsManagement (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/lib/cloudwatch-logs-management.ts:13:5)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Module.m._compile (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "main (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "/Users/michael_mcnamara/.fnm/node-versions/v14.15.0/installation/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/Template/Template/SetLogShippingPolicy": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SetLogShippingPolicy",
+            "trace": [
+              "Function._fromCloudFormation (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/aws-iam/lib/iam.generated.ts:581:21)",
+              "CfnInclude.getOrCreateResource (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:519:40)",
+              "new CfnInclude (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:97:12)",
+              "new CloudwatchLogsManagement (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/lib/cloudwatch-logs-management.ts:13:5)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Module.m._compile (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "main (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "/Users/michael_mcnamara/.fnm/node-versions/v14.15.0/installation/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/Template/Template/ShipLogEntriesPolicy": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ShipLogEntriesPolicy",
+            "trace": [
+              "Function._fromCloudFormation (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/aws-iam/lib/iam.generated.ts:581:21)",
+              "CfnInclude.getOrCreateResource (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:519:40)",
+              "Object.findResource (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:487:21)",
+              "Object.findRefTarget (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:495:21)",
+              "CfnParser.parseIfCfnIntrinsic (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:523:42)",
+              "CfnParser.parseValue (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:494:33)",
+              "/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:490:38",
+              "Array.map (<anonymous>)",
+              "CfnParser.parseValue (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:490:23)",
+              "CfnParser.parseValue (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:500:25)",
+              "Function._fromCloudFormation (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/aws-sam/lib/sam.generated.ts:1210:51)",
+              "CfnInclude.getOrCreateResource (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:519:40)",
+              "Object.findResource (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:487:21)",
+              "CfnParser.parseIfCfnIntrinsic (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:549:36)",
+              "CfnParser.parseValue (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:494:33)",
+              "CfnParser.parseValue (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:500:25)",
+              "CfnParser.parseValue (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:500:25)",
+              "CfnParser.parseValue (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:500:25)",
+              "Function._fromCloudFormation (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/aws-sam/lib/sam.generated.ts:1210:51)",
+              "CfnInclude.getOrCreateResource (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:519:40)",
+              "new CfnInclude (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:97:12)",
+              "new CloudwatchLogsManagement (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/lib/cloudwatch-logs-management.ts:13:5)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Module.m._compile (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "main (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "/Users/michael_mcnamara/.fnm/node-versions/v14.15.0/installation/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/Template/Template/KinesisRoleAssumptionPolicy": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "KinesisRoleAssumptionPolicy",
+            "trace": [
+              "Function._fromCloudFormation (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/aws-iam/lib/iam.generated.ts:581:21)",
+              "CfnInclude.getOrCreateResource (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:519:40)",
+              "Object.findResource (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:487:21)",
+              "Object.findRefTarget (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:495:21)",
+              "CfnParser.parseIfCfnIntrinsic (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:523:42)",
+              "CfnParser.parseValue (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:494:33)",
+              "/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:490:38",
+              "Array.map (<anonymous>)",
+              "CfnParser.parseValue (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:490:23)",
+              "CfnParser.parseIfCfnIntrinsic (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:614:28)",
+              "CfnParser.parseValue (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:494:33)",
+              "/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:490:38",
+              "Array.map (<anonymous>)",
+              "CfnParser.parseValue (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:490:23)",
+              "CfnParser.parseValue (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:500:25)",
+              "Function._fromCloudFormation (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/aws-sam/lib/sam.generated.ts:1210:51)",
+              "CfnInclude.getOrCreateResource (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:519:40)",
+              "Object.findResource (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:487:21)",
+              "CfnParser.parseIfCfnIntrinsic (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:549:36)",
+              "CfnParser.parseValue (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:494:33)",
+              "CfnParser.parseValue (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:500:25)",
+              "CfnParser.parseValue (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:500:25)",
+              "CfnParser.parseValue (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:500:25)",
+              "Function._fromCloudFormation (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/aws-sam/lib/sam.generated.ts:1210:51)",
+              "CfnInclude.getOrCreateResource (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:519:40)",
+              "new CfnInclude (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:97:12)",
+              "new CloudwatchLogsManagement (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/lib/cloudwatch-logs-management.ts:13:5)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Module.m._compile (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "main (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "/Users/michael_mcnamara/.fnm/node-versions/v14.15.0/installation/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/Template/Template/ShipLogEntriesFunc": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ShipLogEntriesFunc",
+            "trace": [
+              "Function._fromCloudFormation (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/aws-sam/lib/sam.generated.ts:1212:21)",
+              "CfnInclude.getOrCreateResource (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:519:40)",
+              "Object.findResource (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:487:21)",
+              "CfnParser.parseIfCfnIntrinsic (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:549:36)",
+              "CfnParser.parseValue (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:494:33)",
+              "CfnParser.parseValue (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:500:25)",
+              "CfnParser.parseValue (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:500:25)",
+              "CfnParser.parseValue (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/core/lib/cfn-parse.ts:500:25)",
+              "Function._fromCloudFormation (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/aws-sam/lib/sam.generated.ts:1210:51)",
+              "CfnInclude.getOrCreateResource (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:519:40)",
+              "new CfnInclude (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:97:12)",
+              "new CloudwatchLogsManagement (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/lib/cloudwatch-logs-management.ts:13:5)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Module.m._compile (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "main (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "/Users/michael_mcnamara/.fnm/node-versions/v14.15.0/installation/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/Template/Template/SetLogShippingFunc": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SetLogShippingFunc",
+            "trace": [
+              "Function._fromCloudFormation (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/aws-sam/lib/sam.generated.ts:1212:21)",
+              "CfnInclude.getOrCreateResource (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:519:40)",
+              "new CfnInclude (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:97:12)",
+              "new CloudwatchLogsManagement (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/lib/cloudwatch-logs-management.ts:13:5)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Module.m._compile (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "main (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "/Users/michael_mcnamara/.fnm/node-versions/v14.15.0/installation/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ],
+        "/Template/Template/ShipLogEntriesPermission": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ShipLogEntriesPermission",
+            "trace": [
+              "Function._fromCloudFormation (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/aws-lambda/lib/lambda.generated.ts:2744:21)",
+              "CfnInclude.getOrCreateResource (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:519:40)",
+              "new CfnInclude (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/@aws-cdk/cloudformation-include/lib/cfn-include.ts:97:12)",
+              "new CloudwatchLogsManagement (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/lib/cloudwatch-logs-management.ts:13:5)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/bin/cdk.ts:10:1)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Module.m._compile (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "main (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Users/Michael_Mcnamara/git/cloudwatch-logs-management/cdk/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (internal/modules/cjs/loader.js:1063:30)",
+              "Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)",
+              "Module.load (internal/modules/cjs/loader.js:928:32)",
+              "Function.Module._load (internal/modules/cjs/loader.js:769:14)",
+              "Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:72:12)",
+              "/Users/michael_mcnamara/.fnm/node-versions/v14.15.0/installation/lib/node_modules/npm/node_modules/libnpx/index.js:268:14"
+            ]
+          }
+        ]
+      },
+      "displayName": "Template"
+    }
+  }
+}

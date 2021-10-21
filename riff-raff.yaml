@@ -51,7 +51,7 @@ deployments:
     type: cloud-formation
     app: cloudwatch-logs-management
     parameters:
-      templatePath: template.json
+      templatePath: template.yaml
     dependencies:
     - upload-set-retention
     - upload-set-log-shipping

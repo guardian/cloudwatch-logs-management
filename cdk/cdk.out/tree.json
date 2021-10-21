@@ -1,0 +1,564 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "@aws-cdk/core.Construct",
+          "version": "1.127.0"
+        }
+      },
+      "Template": {
+        "id": "Template",
+        "path": "Template",
+        "children": {
+          "Stage": {
+            "id": "Stage",
+            "path": "Template/Stage",
+            "constructInfo": {
+              "fqn": "@aws-cdk/core.CfnParameter",
+              "version": "1.127.0"
+            }
+          },
+          "Template": {
+            "id": "Template",
+            "path": "Template/Template",
+            "children": {
+              "$Mappings": {
+                "id": "$Mappings",
+                "path": "Template/Template/$Mappings",
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.Construct",
+                  "version": "1.127.0"
+                }
+              },
+              "Stack": {
+                "id": "Stack",
+                "path": "Template/Template/Stack",
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.CfnParameter",
+                  "version": "1.127.0"
+                }
+              },
+              "RetentionInDays": {
+                "id": "RetentionInDays",
+                "path": "Template/Template/RetentionInDays",
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.CfnParameter",
+                  "version": "1.127.0"
+                }
+              },
+              "ShippingPrefix": {
+                "id": "ShippingPrefix",
+                "path": "Template/Template/ShippingPrefix",
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.CfnParameter",
+                  "version": "1.127.0"
+                }
+              },
+              "KinesisStreamArn": {
+                "id": "KinesisStreamArn",
+                "path": "Template/Template/KinesisStreamArn",
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.CfnParameter",
+                  "version": "1.127.0"
+                }
+              },
+              "KinesisStreamRole": {
+                "id": "KinesisStreamRole",
+                "path": "Template/Template/KinesisStreamRole",
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.CfnParameter",
+                  "version": "1.127.0"
+                }
+              },
+              "CloudWatchLogsFilterName": {
+                "id": "CloudWatchLogsFilterName",
+                "path": "Template/Template/CloudWatchLogsFilterName",
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.CfnParameter",
+                  "version": "1.127.0"
+                }
+              },
+              "OptionLowerFirstCharOfTags": {
+                "id": "OptionLowerFirstCharOfTags",
+                "path": "Template/Template/OptionLowerFirstCharOfTags",
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.CfnParameter",
+                  "version": "1.127.0"
+                }
+              },
+              "DistBucket": {
+                "id": "DistBucket",
+                "path": "Template/Template/DistBucket",
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.CfnParameter",
+                  "version": "1.127.0"
+                }
+              },
+              "$Conditions": {
+                "id": "$Conditions",
+                "path": "Template/Template/$Conditions",
+                "children": {
+                  "UseRoleAssumption": {
+                    "id": "UseRoleAssumption",
+                    "path": "Template/Template/$Conditions/UseRoleAssumption",
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/core.CfnCondition",
+                      "version": "1.127.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.Construct",
+                  "version": "1.127.0"
+                }
+              },
+              "$Rules": {
+                "id": "$Rules",
+                "path": "Template/Template/$Rules",
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.Construct",
+                  "version": "1.127.0"
+                }
+              },
+              "StructuredFieldsBucket": {
+                "id": "StructuredFieldsBucket",
+                "path": "Template/Template/StructuredFieldsBucket",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                  "aws:cdk:cloudformation:props": {
+                    "publicAccessBlockConfiguration": {
+                      "blockPublicAcls": true,
+                      "blockPublicPolicy": true,
+                      "ignorePublicAcls": true,
+                      "restrictPublicBuckets": true
+                    },
+                    "tags": [
+                      {
+                        "key": "gu:cdk:version",
+                        "value": "27.1.0"
+                      },
+                      {
+                        "key": "gu:repo",
+                        "value": "guardian/cloudwatch-logs-management"
+                      },
+                      {
+                        "key": "Stack",
+                        "value": "cloudwatch-logs-management"
+                      },
+                      {
+                        "key": "Stage",
+                        "value": {
+                          "Ref": "Stage"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-s3.CfnBucket",
+                  "version": "1.127.0"
+                }
+              },
+              "SetRetentionPolicy": {
+                "id": "SetRetentionPolicy",
+                "path": "Template/Template/SetRetentionPolicy",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::ManagedPolicy",
+                  "aws:cdk:cloudformation:props": {
+                    "policyDocument": {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "logs:DescribeLogGroups",
+                            "logs:PutRetentionPolicy"
+                          ],
+                          "Resource": {
+                            "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:*"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.CfnManagedPolicy",
+                  "version": "1.127.0"
+                }
+              },
+              "SetRetentionFunc": {
+                "id": "SetRetentionFunc",
+                "path": "Template/Template/SetRetentionFunc",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Serverless::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "codeUri": {
+                      "bucket": {
+                        "Ref": "DistBucket"
+                      },
+                      "key": {
+                        "Fn::Sub": [
+                          "${Stack}/${Stage}/set-retention/lambda.zip",
+                          {
+                            "Stage": {
+                              "Ref": "Stage"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "environment": {
+                      "variables": {
+                        "RETENTION_IN_DAYS": {
+                          "Ref": "RetentionInDays"
+                        }
+                      }
+                    },
+                    "events": {
+                      "CheckStatusEvent": {
+                        "properties": {
+                          "schedule": "rate(1 hour)"
+                        },
+                        "type": "Schedule"
+                      }
+                    },
+                    "handler": "app.setRetention",
+                    "policies": [
+                      {
+                        "Ref": "SetRetentionPolicy"
+                      }
+                    ],
+                    "tags": {
+                      "App": "set-retention",
+                      "gu:cdk:version": "27.1.0",
+                      "gu:repo": "guardian/cloudwatch-logs-management",
+                      "Stack": "cloudwatch-logs-management",
+                      "Stage": {
+                        "Ref": "Stage"
+                      }
+                    },
+                    "timeout": 60
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-sam.CfnFunction",
+                  "version": "1.127.0"
+                }
+              },
+              "SetLogShippingPolicy": {
+                "id": "SetLogShippingPolicy",
+                "path": "Template/Template/SetLogShippingPolicy",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::ManagedPolicy",
+                  "aws:cdk:cloudformation:props": {
+                    "policyDocument": {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "logs:DescribeLogGroups",
+                            "logs:DescribeSubscriptionFilters",
+                            "logs:PutSubscriptionFilter",
+                            "logs:DeleteSubscriptionFilter"
+                          ],
+                          "Resource": {
+                            "Fn::Sub": "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:*"
+                          }
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "lambda:ListFunctions",
+                            "lambda:ListTags"
+                          ],
+                          "Resource": "*"
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "s3:PutObject"
+                          ],
+                          "Resource": {
+                            "Fn::Sub": "${StructuredFieldsBucket.Arn}/*"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.CfnManagedPolicy",
+                  "version": "1.127.0"
+                }
+              },
+              "ShipLogEntriesPolicy": {
+                "id": "ShipLogEntriesPolicy",
+                "path": "Template/Template/ShipLogEntriesPolicy",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::ManagedPolicy",
+                  "aws:cdk:cloudformation:props": {
+                    "policyDocument": {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "kinesis:PutRecords"
+                          ],
+                          "Resource": {
+                            "Ref": "KinesisStreamArn"
+                          }
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "s3:GetObject"
+                          ],
+                          "Resource": {
+                            "Fn::Sub": "${StructuredFieldsBucket.Arn}/*"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.CfnManagedPolicy",
+                  "version": "1.127.0"
+                }
+              },
+              "KinesisRoleAssumptionPolicy": {
+                "id": "KinesisRoleAssumptionPolicy",
+                "path": "Template/Template/KinesisRoleAssumptionPolicy",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::ManagedPolicy",
+                  "aws:cdk:cloudformation:props": {
+                    "policyDocument": {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Effect": "Allow",
+                          "Action": "sts:assumeRole",
+                          "Resource": {
+                            "Ref": "KinesisStreamRole"
+                          }
+                        }
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.CfnManagedPolicy",
+                  "version": "1.127.0"
+                }
+              },
+              "ShipLogEntriesFunc": {
+                "id": "ShipLogEntriesFunc",
+                "path": "Template/Template/ShipLogEntriesFunc",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Serverless::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "codeUri": {
+                      "bucket": {
+                        "Ref": "DistBucket"
+                      },
+                      "key": {
+                        "Fn::Sub": [
+                          "${Stack}/${Stage}/ship-log-entries/lambda.zip",
+                          {
+                            "Stage": {
+                              "Ref": "Stage"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "environment": {
+                      "variables": {
+                        "LOG_KINESIS_STREAM": {
+                          "Ref": "KinesisStreamArn"
+                        },
+                        "LOG_KINESIS_STREAM_ROLE": {
+                          "Ref": "KinesisStreamRole"
+                        },
+                        "STRUCTURED_DATA_BUCKET": {
+                          "Ref": "StructuredFieldsBucket"
+                        }
+                      }
+                    },
+                    "handler": "shipLogEntries.shipLogEntries",
+                    "policies": [
+                      {
+                        "Ref": "ShipLogEntriesPolicy"
+                      },
+                      {
+                        "Fn::If": [
+                          "UseRoleAssumption",
+                          {
+                            "Ref": "KinesisRoleAssumptionPolicy"
+                          },
+                          {
+                            "Ref": "AWS::NoValue"
+                          }
+                        ]
+                      }
+                    ],
+                    "tags": {
+                      "App": "ship-log-entries",
+                      "gu:cdk:version": "27.1.0",
+                      "gu:repo": "guardian/cloudwatch-logs-management",
+                      "Stack": "cloudwatch-logs-management",
+                      "Stage": {
+                        "Ref": "Stage"
+                      }
+                    },
+                    "timeout": 5
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-sam.CfnFunction",
+                  "version": "1.127.0"
+                }
+              },
+              "SetLogShippingFunc": {
+                "id": "SetLogShippingFunc",
+                "path": "Template/Template/SetLogShippingFunc",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Serverless::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "codeUri": {
+                      "bucket": {
+                        "Ref": "DistBucket"
+                      },
+                      "key": {
+                        "Fn::Sub": [
+                          "${Stack}/${Stage}/set-log-shipping/lambda.zip",
+                          {
+                            "Stage": {
+                              "Ref": "Stage"
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    "environment": {
+                      "variables": {
+                        "LOG_SHIPPING_LAMBDA_ARN": {
+                          "Fn::GetAtt": "ShipLogEntriesFunc.Arn"
+                        },
+                        "LOG_NAME_PREFIXES": {
+                          "Fn::Join": [
+                            ",",
+                            {
+                              "Ref": "ShippingPrefix"
+                            }
+                          ]
+                        },
+                        "LOG_SHIPPING_FILTER_NAME": {
+                          "Ref": "CloudWatchLogsFilterName"
+                        },
+                        "STRUCTURED_DATA_BUCKET": {
+                          "Ref": "StructuredFieldsBucket"
+                        },
+                        "OPTION_LOWER_FIRST_CHAR_OF_TAGS": {
+                          "Ref": "OptionLowerFirstCharOfTags"
+                        }
+                      }
+                    },
+                    "events": {
+                      "CheckStatusEvent": {
+                        "properties": {
+                          "schedule": "rate(10 minutes)"
+                        },
+                        "type": "Schedule"
+                      }
+                    },
+                    "handler": "app.setLogShipping",
+                    "policies": [
+                      {
+                        "Ref": "SetLogShippingPolicy"
+                      }
+                    ],
+                    "tags": {
+                      "App": "set-log-shipping",
+                      "gu:cdk:version": "27.1.0",
+                      "gu:repo": "guardian/cloudwatch-logs-management",
+                      "Stack": "cloudwatch-logs-management",
+                      "Stage": {
+                        "Ref": "Stage"
+                      }
+                    },
+                    "timeout": 60
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-sam.CfnFunction",
+                  "version": "1.127.0"
+                }
+              },
+              "ShipLogEntriesPermission": {
+                "id": "ShipLogEntriesPermission",
+                "path": "Template/Template/ShipLogEntriesPermission",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                  "aws:cdk:cloudformation:props": {
+                    "action": "lambda:InvokeFunction",
+                    "functionName": {
+                      "Fn::GetAtt": "ShipLogEntriesFunc.Arn"
+                    },
+                    "principal": {
+                      "Fn::Sub": "logs.${AWS::Region}.amazonaws.com"
+                    },
+                    "sourceAccount": {
+                      "Ref": "AWS::AccountId"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-lambda.CfnPermission",
+                  "version": "1.127.0"
+                }
+              },
+              "$Hooks": {
+                "id": "$Hooks",
+                "path": "Template/Template/$Hooks",
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.Construct",
+                  "version": "1.127.0"
+                }
+              },
+              "$Ouputs": {
+                "id": "$Ouputs",
+                "path": "Template/Template/$Ouputs",
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.Construct",
+                  "version": "1.127.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/cloudformation-include.CfnInclude",
+              "version": "1.127.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "@aws-cdk/core.Stack",
+          "version": "1.127.0"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "@aws-cdk/core.App",
+      "version": "1.127.0"
+    }
+  }
+}
