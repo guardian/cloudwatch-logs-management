@@ -3,6 +3,10 @@
 # It will then try to push the resulting cloudformation into a riff-raff build
 
 set -e
+(
+ cd cdk
+ ./script/ci
+)
 
 echo $BASH_SOURCE
 SCRIPT_DIR=$(dirname ${BASH_SOURCE})
@@ -22,13 +26,7 @@ mkdir -p ${RIFF_RAFF_ARTIFACT_DIR}/cloudwatch-logs-management
 
 set +x
 # source NVM on teamcity
-if [ -e "${NVM_DIR}/nvm.sh" ]; then
-    . ${NVM_DIR}/nvm.sh
-else
-    . $(brew --prefix nvm)/nvm.sh
-fi
-nvm install
-nvm use
+source $SCRIPT_DIR/node-version-manager
 
 # install deps, run tests and build app
 npm ci
@@ -43,7 +41,7 @@ set -x
 )
 
 mkdir -p ${RIFF_RAFF_ARTIFACT_DIR}/cloudwatch-logs-management-cfn
-cp ${PROJECT_DIR}/template.yaml ${RIFF_RAFF_ARTIFACT_DIR}/cloudwatch-logs-management-cfn/template.yaml
+cp ${PROJECT_DIR}/cdk/cdk.out/Template.template.json ${RIFF_RAFF_ARTIFACT_DIR}/cloudwatch-logs-management-cfn/template.json
 cp ${PROJECT_DIR}/riff-raff.yaml ${RIFF_RAFF_ARTIFACT_DIR}/riff-raff.yaml
 
 # publish from teamcity
