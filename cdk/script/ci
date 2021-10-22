@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -e
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+ROOT_DIR=${SCRIPT_DIR}/../..
+
+source ${ROOT_DIR}/scripts/node-version-manager
+
+npm install -g yarn
+
+yarn install --frozen-lockfile
+
+yarn test
+yarn build
+yarn generate

@@ -1,0 +1,36 @@
+#!/bin/bash
+
+set -e
+
+nvm_available() {
+  type -t nvm > /dev/null
+}
+
+source_nvm() {
+  if ! nvm_available; then
+    # Run nvm for TeamCity or local installs
+    [ -e "${NVM_DIR}/nvm.sh" ] && source "${NVM_DIR}/nvm.sh"
+  fi
+  if ! nvm_available; then
+    # Run nvm for users who installed via brew
+    brewInstalled=$(brew --prefix nvm)/nvm.sh
+    [ -e "${brewInstalled}" ] && source "${brewInstalled}"
+  fi
+  if ! nvm_available; then
+    # For those who use fnm instead of nvm
+    eval "$(fnm env --shell=bash)"
+  fi
+}
+
+node_version_manager() {
+  if nvm_available; then
+    nvm $@
+  else
+    # Assumes fnm is used when nvm is not
+    fnm $@
+  fi
+}
+
+source_nvm
+node_version_manager install
+node_version_manager use
