@@ -7,10 +7,16 @@ Parameters:
     Type: String
     Description: The name of this stack, as specified in the riff-raff stacks entry (principly used to aid observability - used to tag functions)
 
+  # These lambdas do not like siblings! That is, if more than one instance exists in an account/region then terrible things happen.
+  # An `AllowedValues` with a single entry ensures only one version of this template gets deployed via Riff-Raff.
+  # Obviously you can manually create another stack, but then you should know the risks you're taking!
+  # See https://docs.google.com/document/d/1HNEo6UKQ-JhoXHp0mr-KuGC1Ra_8_BfwSuPq3VgO0AI/edit#
   Stage:
     Type: String
     Description: The stage of this stack (principly used to aid developement and tag functions, should be PROD when in use in an account)
     Default: PROD
+    AllowedValues:
+      - PROD
 
   RetentionInDays:
     Type: Number
@@ -98,7 +104,7 @@ Resources:
         Version: 2012-10-17
         Statement:
           - Effect: Allow
-            Action: 
+            Action:
               - logs:DescribeLogGroups
               - logs:PutRetentionPolicy
             Resource: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:*
@@ -106,7 +112,7 @@ Resources:
   SetRetentionFunc:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: 
+      CodeUri:
         Bucket: !Ref DistBucket
         Key: !Sub ${Stack}/${Stage}/set-retention/lambda.zip
       Handler: app.setRetention
@@ -135,7 +141,7 @@ Resources:
         Version: 2012-10-17
         Statement:
           - Effect: Allow
-            Action: 
+            Action:
               - logs:DescribeLogGroups
               - logs:DescribeSubscriptionFilters
               - logs:PutSubscriptionFilter
@@ -186,7 +192,7 @@ Resources:
         Version: 2012-10-17
         Statement:
           - Effect: Allow
-            Action: 
+            Action:
               - kinesis:PutRecords
             Resource: !Ref KinesisStreamArn
           - Effect: Allow
@@ -208,7 +214,7 @@ Resources:
   ShipLogEntriesFunc:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: 
+      CodeUri:
         Bucket: !Ref DistBucket
         Key: !Sub ${Stack}/${Stage}/ship-log-entries/lambda.zip
       Handler: shipLogEntries.shipLogEntries
