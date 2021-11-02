@@ -1,7 +1,14 @@
 import type { ConfigurationOptions } from "aws-sdk";
 
+interface Identity {
+  stack: string;
+  stage: string;
+  app: string;
+}
+
 interface CommonConfig {
   awsConfig: ConfigurationOptions;
+  identity: Identity;
 }
 
 interface SetRetentionConfig {
@@ -49,6 +56,11 @@ export function getCommonConfig(): CommonConfig {
     awsConfig: {
       region,
       maxRetries: maxRetries,
+    },
+    identity: {
+      stack: getRequiredEnv("STACK"),
+      stage: getRequiredEnv("STAGE"),
+      app: getRequiredEnv("APP"),
     },
   };
 }

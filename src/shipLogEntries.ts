@@ -13,7 +13,7 @@ import { putKinesisRecords } from "./kinesis";
 import { createStructuredLog } from "./logEntryProcessing";
 import { getStructuredFields } from "./structuredFields";
 
-const { awsConfig } = getCommonConfig();
+const { awsConfig, identity } = getCommonConfig();
 const {
   kinesisStreamName,
   kinesisStreamRole,
@@ -45,6 +45,7 @@ export async function shipLogEntries(
   event: CloudWatchLogsEvent,
   context: Context
 ): Promise<PutRecordsOutput[]> {
+  console.log(`setLogShipping lambda running in ${JSON.stringify(identity)}`);
   const payload = Buffer.from(event.awslogs.data, "base64");
   const json = zlib.gunzipSync(payload).toString("utf8");
   const decoded: CloudWatchLogsDecodedData = JSON.parse(json);

@@ -12,7 +12,7 @@ import {
 } from "./config";
 import { updateStructuredFieldsData } from "./structuredFields";
 
-const { awsConfig } = getCommonConfig();
+const { awsConfig, identity } = getCommonConfig();
 
 const cloudwatchLogs = new CloudWatchLogs(awsConfig);
 const s3 = new S3(awsConfig);
@@ -25,6 +25,7 @@ function sleep(ms: number) {
 }
 
 export async function setRetention(): Promise<void> {
+  console.log(`setRetention lambda running in ${JSON.stringify(identity)}`);
   const { retentionInDays } = getSetRetentionConfig();
 
   const cloudwatchLogGroups = await getCloudWatchLogGroups(cloudwatchLogs);
@@ -65,6 +66,7 @@ function eligibleForLogShipping(
 }
 
 export async function setLogShipping(trigger: any): Promise<void> {
+  console.log(`setLogShipping lambda running in ${JSON.stringify(identity)}`);
   console.log("Configuring log shipping");
   console.log(JSON.stringify(trigger));
   const {
