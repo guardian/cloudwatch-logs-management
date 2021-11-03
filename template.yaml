@@ -201,7 +201,7 @@ Resources:
             Resource: !Sub ${StructuredFieldsBucket.Arn}/*
 
   DisableCloudWatchLoggingPolicy:
-    Type: AWS::IAM::Policy
+    Type: AWS::IAM::ManagedPolicy
     Properties:
       PolicyDocument:
         Version: 2012-10-17
