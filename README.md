@@ -163,3 +163,12 @@ The above requirements are in the supplied Brewfile and installed via `scripts/s
 * `scripts/setup.sh`
 * `nvm use`
 * `npm run build`
+
+Testing Changes and Observability
+---------------------------------
+
+Due to the nature of this project, there is no pre-production environment available for testing changes. Consequently, we recommend using Riff-Raff to deploy your branch to an individual account in order to validate your changes in production. In order to do this, select `Preview` from the deployment page (instead of `Deploy Now`). Next `Deselect all` and then manually select all deployment tasks for a specific account. Once you’ve done this you can `Preview with selections`, check the list of tasks and then `Deploy`.
+
+Once you have confirmed that the change works as expected, the PR can be merged. This will automatically roll the change out across all relevant AWS accounts via Riff-Raff. If the change adds or removes a feature, significantly alters AWS resources or is considered to be especially risky, you might also want to inform the teams who own the affected AWS accounts via Chat/email. 
+
+[For safety reasons](​​https://github.com/guardian/cloudwatch-logs-management/pull/112), the lambda responsible for shipping log entries does not send any logs to CloudWatch by default. If teams report problems with their lambda logs (e.g. lambda logs are not appearing in Central ELK) or the metrics for this lambda indicate a high number of errors, you can manually enable logs in a specific account by temporarily removing the `DisableCloudWatchLoggingPolicy` from this lambda.
