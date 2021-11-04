@@ -200,6 +200,19 @@ Resources:
               - s3:GetObject
             Resource: !Sub ${StructuredFieldsBucket.Arn}/*
 
+  DisableCloudWatchLoggingPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Deny
+            Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Resource: arn:aws:logs:*:*:*
+
   KinesisRoleAssumptionPolicy:
     Type: AWS::IAM::ManagedPolicy
     Condition: UseRoleAssumption
@@ -220,6 +233,13 @@ Resources:
       Handler: shipLogEntries.shipLogEntries
       Timeout: 5
       Policies:
+      # If this lambda accidentally subscribes to its own log group it can create a feedback loop which overwhelms
+      # Kinesis and spends huge amounts of $$$ on CloudWatch. There is some code which aims to filter out the relevant
+      # log group when creating subscriptions, but we also use this policy to prevent the lambda from sending log events
+      # by default, just to be on the safe side.
+      # If you need to view logs for debugging purposes, the policy below can be temporarily removed from a specific
+      # account using Riff-Raff
+      - !Ref DisableCloudWatchLoggingPolicy
       - !Ref ShipLogEntriesPolicy
       - Fn::If:
         - UseRoleAssumption
