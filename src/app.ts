@@ -1,4 +1,4 @@
-import { CloudWatchLogs, Lambda, S3 } from "aws-sdk";
+import { CloudWatchLogs, ECS, Lambda, S3 } from "aws-sdk";
 import {
   getCloudWatchLogGroups,
   setCloudwatchRetention,
@@ -17,6 +17,7 @@ const { awsConfig } = getCommonConfig();
 const cloudwatchLogs = new CloudWatchLogs(awsConfig);
 const s3 = new S3(awsConfig);
 const lambda = new Lambda(awsConfig);
+const ecs = new ECS(awsConfig);
 
 function sleep(ms: number) {
   return new Promise((resolve) => {
@@ -79,6 +80,7 @@ export async function setLogShipping(trigger: any): Promise<void> {
   await updateStructuredFieldsData(
     s3,
     lambda,
+    ecs,
     structuredDataBucket,
     structuredDataKey,
     optionLowerFirstCharOfTags
