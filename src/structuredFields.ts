@@ -1,6 +1,5 @@
-import { ECS } from "aws-sdk";
+import type { ECS } from "aws-sdk";
 import type { Lambda, S3 } from "aws-sdk";
-import { log } from "util";
 import { getAllTaskDefinitions } from "./ecs";
 import { getLambdaFunctions } from "./lambda";
 import { getData, putData } from "./s3";

@@ -1,5 +1,5 @@
-import { ECS } from "aws-sdk";
-import { Tag, TaskDefinition } from "aws-sdk/clients/ecs";
+import type { ECS } from "aws-sdk";
+import type { Tag, TaskDefinition } from "aws-sdk/clients/ecs";
 
 export interface TaskDefinitionWithTags {
   taskDefinition: TaskDefinition;
