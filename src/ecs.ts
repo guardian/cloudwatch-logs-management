@@ -39,10 +39,9 @@ export async function getAllTaskDefinitions(
   const arns = await getAllTaskDefinitionArns(ecs);
   const definitions = await Promise.all(
     arns.map(async (arn) => {
-      const def = await ecs
+      return await ecs
         .describeTaskDefinition({ taskDefinition: arn, include: ["TAGS"] })
         .promise();
-      return def;
     })
   );
 

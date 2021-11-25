@@ -154,6 +154,11 @@ Resources:
             Resource: '*'
           - Effect: Allow
             Action:
+              - ecs:ListTaskDefinitions
+              - ecs:DescribeTaskDefinition
+            Resource: '*'
+          - Effect: Allow
+            Action:
               - s3:PutObject
             Resource: !Sub ${StructuredFieldsBucket.Arn}/*
 
