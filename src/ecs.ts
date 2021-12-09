@@ -33,26 +33,33 @@ function convertTags(tags: Tag[]): Tags {
   return tagsObject;
 }
 
-export async function getAllTaskDefinitions(
-  ecs: ECS
-): Promise<TaskDefinitionWithTags[]> {
-  const arns = await getAllTaskDefinitionArns(ecs);
-  const definitions = await Promise.all(
+function describeTaskDefinitions(ecs: ECS, arns: string[]) {
+  return Promise.all(
     arns.map(async (arn) => {
       return await ecs
         .describeTaskDefinition({ taskDefinition: arn, include: ["TAGS"] })
         .promise();
     })
   );
+}
 
-  const withTags: TaskDefinitionWithTags[] = definitions
-    .filter((d) => d.taskDefinition)
-    .map((d) => {
-      return {
-        taskDefinition: d.taskDefinition,
-        tags: convertTags(d.tags ?? []),
-      };
-    }) as TaskDefinitionWithTags[];
+export async function getAllTaskDefinitions(
+  ecs: ECS
+): Promise<TaskDefinitionWithTags[]> {
+  try {
+    const arns = await getAllTaskDefinitionArns(ecs);
+    const definitions = await describeTaskDefinitions(ecs, arns);
 
-  return withTags;
+    return definitions
+      .filter((d) => d.taskDefinition)
+      .map((d) => {
+        return {
+          taskDefinition: d.taskDefinition,
+          tags: convertTags(d.tags ?? []),
+        };
+      }) as TaskDefinitionWithTags[];
+  } catch (e: unknown) {
+    console.error("Failed to fetch task definition tags", e);
+    return [];
+  }
 }
