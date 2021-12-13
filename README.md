@@ -4,7 +4,7 @@ Cloudwatch Logs Management
 This set of lambdas provides support to:
  - Set retention/expiry of cloudwatch log groups
  - Provide a lambda that forwards logs from lambdas to Kinesis ELK
- - Automatically seek out lambdas and configure log forwarding to ELK
+ - Automatically seek out lambdas and ECS task definitions and configure log forwarding to ELK
 
 Features
 --------

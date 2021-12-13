@@ -1,4 +1,6 @@
+import type { ECS } from "aws-sdk";
 import type { Lambda, S3 } from "aws-sdk";
+import { getAllTaskDefinitions } from "./ecs";
 import { getLambdaFunctions } from "./lambda";
 import { getData, putData } from "./s3";
 
@@ -22,13 +24,10 @@ function normalisedTags(tags: Tags, lowerFirstCharOfTag: boolean): Tags {
     );
 }
 
-export async function updateStructuredFieldsData(
-  s3: S3,
+async function lambdaLogGroupStructuredFields(
   lambda: Lambda,
-  bucket: string,
-  key: string,
   lowerFirstCharOfTag: boolean
-): Promise<void> {
+): Promise<LogGroupToStructuredFields> {
   // crawl all lambda functions
   const lambdaFunctions = await getLambdaFunctions(lambda);
   // convert into a data map
@@ -40,8 +39,50 @@ export async function updateStructuredFieldsData(
     },
     {}
   );
+  return dataMap;
+}
+
+async function ecsTaskLogGroupStructuredFields(
+  ecs: ECS,
+  lowerFirstCharOfTag: boolean
+): Promise<LogGroupToStructuredFields> {
+  const taskDefinitions = await getAllTaskDefinitions(ecs);
+  const dataMap = taskDefinitions.reduce(
+    (acc: LogGroupToStructuredFields, item) => {
+      const filteredTags = normalisedTags(item.tags, lowerFirstCharOfTag);
+      item.taskDefinition.containerDefinitions?.forEach((cd) => {
+        const logGroup = cd.logConfiguration?.options?.["awslogs-group"];
+        if (logGroup) {
+          acc[logGroup] = filteredTags;
+        }
+      });
+      return acc;
+    },
+    {}
+  );
+  return dataMap;
+}
+
+export async function updateStructuredFieldsData(
+  s3: S3,
+  lambda: Lambda,
+  ecs: ECS,
+  bucket: string,
+  key: string,
+  lowerFirstCharOfTag: boolean
+): Promise<void> {
+  const lambdaDataMap = await lambdaLogGroupStructuredFields(
+    lambda,
+    lowerFirstCharOfTag
+  );
+
+  const ecsDataMap = await ecsTaskLogGroupStructuredFields(
+    ecs,
+    lowerFirstCharOfTag
+  );
+
   // write out tag data to S3
-  const data = JSON.stringify(dataMap);
+  const data = JSON.stringify({ ...lambdaDataMap, ...ecsDataMap });
   console.log(`Putting new map into S3: ${data}`);
   await putData(s3, bucket, key, data);
 }
