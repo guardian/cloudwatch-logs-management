@@ -3,7 +3,6 @@ import type {
   CloudWatchLogsDecodedData,
   CloudWatchLogsEvent,
   Context,
-  // eslint-disable-next-line import/no-unresolved -- unsure as to why this doesn't resolve
 } from "aws-lambda";
 import { ChainableTemporaryCredentials, Kinesis, S3 } from "aws-sdk";
 import type { ConfigurationOptions } from "aws-sdk";

@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved -- unsure as to why this doesn't resolve
 import type { CloudWatchLogsLogEvent } from "aws-lambda";
 
 export function isRequestLogEntry(line: string): boolean {
