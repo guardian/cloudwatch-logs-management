@@ -105,12 +105,13 @@ async function getStructuredFieldsData(
     ? console.log("Structured fields cache is available!")
     : console.log("Structured fields cache is unavailable. Fetching from S3.");
 
-  if (!structuredFields) {
-    structuredFields = JSON.parse(await getData(s3, bucket, key));
-  }
-  if (structuredFields) {
+  try {
+    if (!structuredFields) {
+      const s3Data = await getData(s3, bucket, key);
+      structuredFields = JSON.parse(s3Data) as LogGroupToStructuredFields; // TODO add a JSON validation library (e.g zod) here?
+    }
     return structuredFields;
-  } else {
+  } catch {
     return Promise.reject(
       `Unable to get structured fields data from s3://${bucket}/${key}`
     );
