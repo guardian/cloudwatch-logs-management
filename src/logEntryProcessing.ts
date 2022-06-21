@@ -1,4 +1,9 @@
 import type { CloudWatchLogsLogEvent } from "aws-lambda";
+import type {
+  PublishableStructuredLogData,
+  StructuredFields,
+  StructuredLogData,
+} from "./model";
 
 export function isRequestLogEntry(line: string): boolean {
   return (

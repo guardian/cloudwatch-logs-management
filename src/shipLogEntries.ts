@@ -10,6 +10,7 @@ import type { PutRecordsOutput } from "aws-sdk/clients/kinesis";
 import { getCommonConfig, getShipLogsConfig } from "./config";
 import { putKinesisRecords } from "./kinesis";
 import { createStructuredLog } from "./logEntryProcessing";
+import type { StructuredFields } from "./model";
 import { getStructuredFields } from "./structuredFields";
 
 const { awsConfig } = getCommonConfig();

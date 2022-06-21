@@ -3,6 +3,7 @@ import type {
   PutRecordsOutput,
   PutRecordsRequestEntry,
 } from "aws-sdk/clients/kinesis";
+import type { PublishableStructuredLogData } from "./model";
 
 export async function putKinesisRecords(
   kinesis: Kinesis,
