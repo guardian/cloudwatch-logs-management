@@ -1,5 +1,4 @@
-import type { ECS } from "aws-sdk";
-import type { Lambda, S3 } from "aws-sdk";
+import type { ECS, Lambda, S3 } from "aws-sdk";
 import { getAllTaskDefinitions } from "./ecs";
 import { getLambdaFunctions } from "./lambda";
 import { getData, putData } from "./s3";
@@ -87,6 +86,14 @@ export async function updateStructuredFieldsData(
   await putData(s3, bucket, key, data);
 }
 
+/**
+ * Have `structuredFields` defined at the global context to increase performance,
+ * as global variables are available in the same execution environment:
+ *
+ *   > any process-wide state (such as static state in Java) is available across all invocations within the same execution environment.
+ *
+ * @see https://docs.aws.amazon.com/lambda/latest/operatorguide/execution-environment.html
+ */
 let structuredFields: LogGroupToStructuredFields | undefined;
 
 async function getStructuredFieldsData(
@@ -94,6 +101,10 @@ async function getStructuredFieldsData(
   bucket: string,
   key: string
 ): Promise<LogGroupToStructuredFields> {
+  structuredFields
+    ? console.log("Structured fields cache is available!")
+    : console.log("Structured fields cache is unavailable. Fetching from S3.");
+
   if (!structuredFields) {
     structuredFields = JSON.parse(await getData(s3, bucket, key));
   }
