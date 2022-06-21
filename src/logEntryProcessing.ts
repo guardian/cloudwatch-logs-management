@@ -33,7 +33,7 @@ export function fieldValue(
  * Parse an AWS lambda report field into a field name and a value
  * @param rawField The raw field that looks something like "Field Name: value unit"
  */
-export function parseReportField(rawField: string): [string, any] {
+export function parseReportField(rawField: string): [string, unknown] {
   const [rawFieldName, rawFieldValue] = rawField
     .split(":")
     .map((s) => s.trim());
@@ -47,10 +47,10 @@ export function parseReportField(rawField: string): [string, any] {
   if (unit === "ms" || unit === "MB") {
     // value should be numeric
     const numericValue = parseFloat(value);
-    return [fieldName + unit, numericValue] as [string, any];
+    return [fieldName + unit, numericValue] as [string, unknown];
   } else {
     // we didn't recognise the unit, perhaps there isn't one
-    return [fieldName, rawFieldValue] as [string, any];
+    return [fieldName, rawFieldValue] as [string, unknown];
   }
 }
 
@@ -66,39 +66,52 @@ export function lambdaRequestLogData(
       lambdaEvent: eventName,
       lambdaRequestId: requestId,
     };
-    let stats: StructuredLogData = {};
-    let version, rawFields;
-    let fields: Array<[string, any]>;
+
     switch (eventName) {
       case "END":
         // no other fields
-        break;
-      case "START":
+        return {
+          ...base,
+          lambdaStats: {},
+        };
+      case "START": {
         // extract Version:
-        version = fieldValue(line, "Version");
-        stats = {
+        const version = fieldValue(line, "Version");
+        const stats: StructuredLogData = {
           lambdaVersion: version,
         };
-        break;
-      case "REPORT":
+
+        return {
+          ...base,
+          lambdaStats: stats,
+        };
+      }
+      case "REPORT": {
         // extract other fields (conveniently tab separated)
-        rawFields = line
+        const rawFields = line
           .split("\t")
           .slice(1)
           .map((s) => s.trim())
           .filter((s) => s.length > 0);
-        fields = rawFields.map((rawField) => parseReportField(rawField));
-        stats = fields.reduce((acc: StructuredLogData, field) => {
-          const [fieldName, fieldValue] = field;
-          acc[fieldName] = fieldValue;
-          return acc;
-        }, {});
-        break;
-    }
 
-    return Object.assign(base, {
-      lambdaStats: stats,
-    });
+        const fields: Array<[string, unknown]> = rawFields.map((rawField) =>
+          parseReportField(rawField)
+        );
+        const stats: StructuredLogData = fields.reduce(
+          (acc: StructuredLogData, field) => {
+            const [fieldName, fieldValue] = field;
+            acc[fieldName] = fieldValue;
+            return acc;
+          },
+          {}
+        );
+
+        return {
+          ...base,
+          lambdaStats: stats,
+        };
+      }
+    }
   }
 }
 
@@ -161,16 +174,18 @@ export function createStructuredLog(
   extraFields: StructuredFields
 ): PublishableStructuredLogData {
   const structuredLog = parseLambdaLogLine(logGroup, logEvent.message.trim());
-  const publishable: PublishableStructuredLogData = Object.assign(
-    structuredLog,
-    {
-      "@timestamp":
-        structuredLog.timestamp || new Date(logEvent.timestamp).toISOString(),
-      cloudwatchId: logEvent.id,
-      cloudwatchLogGroup: logGroup,
-      cloudwatchLogStream: logStream,
-    }
-  );
+
+  const timestamp: string = structuredLog.timestamp
+    ? (structuredLog.timestamp as string)
+    : new Date(logEvent.timestamp).toISOString();
+
+  const publishable: PublishableStructuredLogData = {
+    ...structuredLog,
+    "@timestamp": timestamp,
+    cloudwatchId: logEvent.id,
+    cloudwatchLogGroup: logGroup,
+    cloudwatchLogStream: logStream,
+  };
   return Object.keys(extraFields).reduce(
     (acc: PublishableStructuredLogData, key) => {
       if (acc[key]) {
