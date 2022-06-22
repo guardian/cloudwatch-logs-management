@@ -27,27 +27,27 @@ function sleep(ms: number) {
 
 export async function setRetention(): Promise<void> {
   const { retentionInDays } = getSetRetentionConfig();
-
   const cloudwatchLogGroups = await getCloudWatchLogGroups(cloudwatchLogs);
+
   for (const logGroup of cloudwatchLogGroups) {
+    if (logGroup.logGroupName === undefined) {
+      break; // cannot do anything
+    }
+
     if (logGroup.retentionInDays === retentionInDays) {
       console.log(
-        `Log group ${
-          logGroup.logGroupName ?? "UNDEFINED"
-        } retention is already ${retentionInDays} days`
+        `Log group ${logGroup.logGroupName} retention is already ${retentionInDays} days`
       );
     } else {
       await setCloudwatchRetention(
         cloudwatchLogs,
-        logGroup.logGroupName!,
+        logGroup.logGroupName,
         retentionInDays
       );
       // avoid hitting the SDK throttling limit
       await sleep(200);
       console.log(
-        `Set ${
-          logGroup.logGroupName ?? "UNDEFINED"
-        } retention to ${retentionInDays} days`
+        `Set ${logGroup.logGroupName} retention to ${retentionInDays} days`
       );
     }
   }
@@ -65,7 +65,7 @@ function eligibleForLogShipping(
   return matchesPrefix && !isExcluded;
 }
 
-export async function setLogShipping(trigger: any): Promise<void> {
+export async function setLogShipping(trigger: unknown): Promise<void> {
   console.log("Configuring log shipping");
   console.log(JSON.stringify(trigger));
   const {

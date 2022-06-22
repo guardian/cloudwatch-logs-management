@@ -10,6 +10,7 @@ import type { PutRecordsOutput } from "aws-sdk/clients/kinesis";
 import { getCommonConfig, getShipLogsConfig } from "./config";
 import { putKinesisRecords } from "./kinesis";
 import { createStructuredLog } from "./logEntryProcessing";
+import type { StructuredFields } from "./model";
 import { getStructuredFields } from "./structuredFields";
 
 const { awsConfig } = getCommonConfig();
@@ -46,7 +47,7 @@ export async function shipLogEntries(
 ): Promise<PutRecordsOutput[]> {
   const payload = Buffer.from(event.awslogs.data, "base64");
   const json = zlib.gunzipSync(payload).toString("utf8");
-  const decoded: CloudWatchLogsDecodedData = JSON.parse(json);
+  const decoded = JSON.parse(json) as CloudWatchLogsDecodedData;
 
   console.log("decoded CloudWatch logs to forward", decoded);
 
@@ -63,13 +64,12 @@ export async function shipLogEntries(
     return {};
   });
   const structuredLogs = decoded.logEvents.map((logEvent) => {
-    const log = createStructuredLog(
+    return createStructuredLog(
       logGroup,
       decoded.logStream,
       logEvent,
       extraFields
     );
-    return log;
   });
   console.log(
     `Sending ${

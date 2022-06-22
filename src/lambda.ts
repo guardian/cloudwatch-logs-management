@@ -1,5 +1,6 @@
 import type { Lambda } from "aws-sdk";
 import type { FunctionConfiguration } from "aws-sdk/clients/lambda";
+import type { LambdaFunction } from "./model";
 
 async function getAllFunctions(
   lambda: Lambda

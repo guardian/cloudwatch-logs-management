@@ -1,5 +1,6 @@
 import type { ECS } from "aws-sdk";
 import type { Tag, TaskDefinition } from "aws-sdk/clients/ecs";
+import type { Tags } from "./model";
 
 export interface TaskDefinitionWithTags {
   taskDefinition: TaskDefinition;

@@ -1,6 +1,11 @@
 import type { ECS, Lambda, S3 } from "aws-sdk";
 import { getAllTaskDefinitions } from "./ecs";
 import { getLambdaFunctions } from "./lambda";
+import type {
+  LogGroupToStructuredFields,
+  StructuredFields,
+  Tags,
+} from "./model";
 import { getData, putData } from "./s3";
 
 /*
