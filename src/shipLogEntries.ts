@@ -4,8 +4,7 @@ import type {
 	CloudWatchLogsEvent,
 	Context,
 } from 'aws-lambda';
-import { ChainableTemporaryCredentials, Kinesis, S3 } from 'aws-sdk';
-import type { ConfigurationOptions } from 'aws-sdk';
+import { Kinesis, S3 } from 'aws-sdk';
 import type { PutRecordsOutput } from 'aws-sdk/clients/kinesis';
 import { getCommonConfig, getShipLogsConfig } from './config';
 import { putKinesisRecords } from './kinesis';
@@ -14,32 +13,11 @@ import type { StructuredFields } from './model';
 import { getStructuredFields } from './structuredFields';
 
 const { awsConfig } = getCommonConfig();
-const {
-	kinesisStreamName,
-	kinesisStreamRole,
-	structuredDataBucket,
-	structuredDataKey,
-} = getShipLogsConfig();
+const { kinesisStreamName, structuredDataBucket, structuredDataKey } =
+	getShipLogsConfig();
 
 const s3 = new S3(awsConfig);
-const kinesis = getKinesisClient(awsConfig, kinesisStreamRole);
-
-function getKinesisClient(
-	awsConfig: ConfigurationOptions,
-	role: string | undefined,
-): Kinesis {
-	if (role) {
-		const credentials = new ChainableTemporaryCredentials({
-			params: {
-				RoleArn: role,
-				RoleSessionName: `shipLogEntries-lambda`,
-			},
-		});
-		return new Kinesis({ ...awsConfig, credentials });
-	} else {
-		return new Kinesis(awsConfig);
-	}
-}
+const kinesis = new Kinesis(awsConfig);
 
 export async function shipLogEntries(
 	event: CloudWatchLogsEvent,
@@ -72,11 +50,7 @@ export async function shipLogEntries(
 		);
 	});
 	console.log(
-		`Sending ${
-			structuredLogs.length
-		} events from ${logGroup} to ${kinesisStreamName} (with role: ${
-			kinesisStreamRole ?? 'UNDEFINED'
-		})`,
+		`Sending ${structuredLogs.length} events from ${logGroup} to ${kinesisStreamName})`,
 	);
 
 	const result = await putKinesisRecords(
