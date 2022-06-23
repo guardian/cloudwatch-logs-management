@@ -34,6 +34,11 @@ nvm use
 npm ci
 npm run test
 npm run lint
+
+COMMIT=$(git rev-parse HEAD)
+BUILD="${BUILD_NUMBER:-DEV}"
+echo "export const BUILD_INFO = { 'ShippedBy-revision': '${COMMIT}', 'ShippedBy-buildNumber': '${BUILD}' };"  > src/build-info.ts
+
 npm run build
 set -x
 # bundle lambda code

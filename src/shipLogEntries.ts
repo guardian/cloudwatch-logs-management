@@ -6,6 +6,7 @@ import type {
 } from 'aws-lambda';
 import { Kinesis, S3 } from 'aws-sdk';
 import type { PutRecordsOutput } from 'aws-sdk/clients/kinesis';
+import { BUILD_INFO } from './build-info';
 import { getCommonConfig, getShipLogsConfig } from './config';
 import { putKinesisRecords } from './kinesis';
 import { createStructuredLog } from './logEntryProcessing';
@@ -42,12 +43,11 @@ export async function shipLogEntries(
 		return {};
 	});
 	const structuredLogs = decoded.logEvents.map((logEvent) => {
-		return createStructuredLog(
-			logGroup,
-			decoded.logStream,
-			logEvent,
-			extraFields,
-		);
+		return createStructuredLog(logGroup, decoded.logStream, logEvent, {
+			...extraFields,
+			...BUILD_INFO,
+			ShippedBy: 'cloudwatch-logs-management', // casing matches https://github.com/guardian/devx-logs
+		});
 	});
 	console.log(
 		`Sending ${structuredLogs.length} events from ${logGroup} to ${kinesisStreamName})`,
