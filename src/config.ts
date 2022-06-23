@@ -17,7 +17,6 @@ interface ConfigureLogShippingConfig extends StructuredDataConfig {
 	logNamePrefixes: string[];
 	logShippingFilterName: string;
 	logShippingLambdaArn: string;
-	optionLowerFirstCharOfTags: boolean;
 }
 
 interface ShipLogsConfig extends StructuredDataConfig {
@@ -66,8 +65,6 @@ export function getConfigureLogShippingConfig(): ConfigureLogShippingConfig {
 	const logShippingFilterName = getRequiredEnv('LOG_SHIPPING_FILTER_NAME');
 	const logShippingLambdaArn = getRequiredEnv('LOG_SHIPPING_LAMBDA_ARN');
 	const structuredDataBucket = getRequiredEnv('STRUCTURED_DATA_BUCKET');
-	const optionLowerFirstCharOfTags =
-		getRequiredEnv('OPTION_LOWER_FIRST_CHAR_OF_TAGS') === 'true';
 
 	return {
 		logNamePrefixes,
@@ -75,7 +72,6 @@ export function getConfigureLogShippingConfig(): ConfigureLogShippingConfig {
 		logShippingLambdaArn,
 		structuredDataBucket,
 		structuredDataKey: 'structured-data.json',
-		optionLowerFirstCharOfTags,
 	};
 }
 

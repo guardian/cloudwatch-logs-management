@@ -56,14 +56,6 @@ Parameters:
     Description: The name of the filter that should be added/maintained on log groups for shipping to the lambda
     Default: GuLogShippingLambdaFilter
 
-  OptionLowerFirstCharOfTags:
-    Type: String
-    Description: Whether to make the first character of tags from lambdas lower case or not (this can help to align tags with other infrastructure in ELK)
-    AllowedValues:
-    - true
-    - false
-    Default: true
-
   DistBucket:
     Description: The S3 bucket for distributing code in this account
     Type: AWS::SSM::Parameter::Value<String>
@@ -168,7 +160,6 @@ Resources:
           LOG_NAME_PREFIXES: !Join [",", !Ref ShippingPrefix]
           LOG_SHIPPING_FILTER_NAME: !Ref CloudWatchLogsFilterName
           STRUCTURED_DATA_BUCKET: !Ref StructuredFieldsBucket
-          OPTION_LOWER_FIRST_CHAR_OF_TAGS: !Ref OptionLowerFirstCharOfTags
       Events:
         # Update every 10 mins
         CheckStatusEvent:
