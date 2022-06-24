@@ -62,13 +62,12 @@ export function getConfigureLogShippingConfig(): ConfigureLogShippingConfig {
 	const logNamePrefixes = getRequiredEnv('LOG_NAME_PREFIXES', '')
 		.split(',')
 		.filter((prefix) => prefix.length !== 0);
-	const logShippingFilterName = getRequiredEnv('LOG_SHIPPING_FILTER_NAME');
 	const logShippingLambdaArn = getRequiredEnv('LOG_SHIPPING_LAMBDA_ARN');
 	const structuredDataBucket = getRequiredEnv('STRUCTURED_DATA_BUCKET');
 
 	return {
 		logNamePrefixes,
-		logShippingFilterName,
+		logShippingFilterName: 'GuLogShippingLambdaFilter',
 		logShippingLambdaArn,
 		structuredDataBucket,
 		structuredDataKey: 'structured-data.json',

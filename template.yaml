@@ -51,11 +51,6 @@ Parameters:
     Type: AWS::SSM::Parameter::Value<String>
     Default: /account/services/logging.stream
 
-  CloudWatchLogsFilterName:
-    Type: String
-    Description: The name of the filter that should be added/maintained on log groups for shipping to the lambda
-    Default: GuLogShippingLambdaFilter
-
   DistBucket:
     Description: The S3 bucket for distributing code in this account
     Type: AWS::SSM::Parameter::Value<String>
@@ -158,7 +153,6 @@ Resources:
         Variables:
           LOG_SHIPPING_LAMBDA_ARN: !GetAtt ShipLogEntriesFunc.Arn
           LOG_NAME_PREFIXES: !Join [",", !Ref ShippingPrefix]
-          LOG_SHIPPING_FILTER_NAME: !Ref CloudWatchLogsFilterName
           STRUCTURED_DATA_BUCKET: !Ref StructuredFieldsBucket
       Events:
         # Update every 10 mins
