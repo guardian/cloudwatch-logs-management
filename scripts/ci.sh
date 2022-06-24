@@ -16,7 +16,8 @@ setupNodeVersion() {
 injectBuildInfo() {
   COMMIT=$(git rev-parse HEAD)
   BUILD="${BUILD_NUMBER:-DEV}"
-  echo "export const BUILD_INFO = { 'ShippedBy-revision': '${COMMIT}', 'ShippedBy-buildNumber': '${BUILD}' };"  > src/build-info.ts
+  echo "// prettier-ignore" > src/build-info.ts
+  echo "export const BUILD_INFO = { 'ShippedBy-revision': '${COMMIT}', 'ShippedBy-buildNumber': '${BUILD}' };" >> src/build-info.ts
 }
 
 setupNodeVersion
