@@ -11,13 +11,9 @@ import { getData, putData } from './s3';
 /*
     Remove AWS specific tags and make initial char lowercase
 */
-function normalisedTags(tags: Tags, lowerFirstCharOfTag: boolean): Tags {
+function normalisedTags(tags: Tags): Tags {
 	function transformTagName(name: string): string {
-		if (lowerFirstCharOfTag) {
-			return name.charAt(0).toLowerCase() + name.slice(1);
-		}
-		// no transformation? return unaltered...
-		return name;
+		return name.charAt(0).toLowerCase() + name.slice(1);
 	}
 
 	return Object.keys(tags)
@@ -30,14 +26,13 @@ function normalisedTags(tags: Tags, lowerFirstCharOfTag: boolean): Tags {
 
 async function lambdaLogGroupStructuredFields(
 	lambda: Lambda,
-	lowerFirstCharOfTag: boolean,
 ): Promise<LogGroupToStructuredFields> {
 	// crawl all lambda functions
 	const lambdaFunctions = await getLambdaFunctions(lambda);
 	// convert into a data map
 	const dataMap = lambdaFunctions.reduce(
 		(acc: LogGroupToStructuredFields, item) => {
-			const filteredTags = normalisedTags(item.tags, lowerFirstCharOfTag);
+			const filteredTags = normalisedTags(item.tags);
 			acc[`/aws/lambda/${item.functionName}`] = filteredTags;
 			return acc;
 		},
@@ -48,12 +43,11 @@ async function lambdaLogGroupStructuredFields(
 
 async function ecsTaskLogGroupStructuredFields(
 	ecs: ECS,
-	lowerFirstCharOfTag: boolean,
 ): Promise<LogGroupToStructuredFields> {
 	const taskDefinitions = await getAllTaskDefinitions(ecs);
 	const dataMap = taskDefinitions.reduce(
 		(acc: LogGroupToStructuredFields, item) => {
-			const filteredTags = normalisedTags(item.tags, lowerFirstCharOfTag);
+			const filteredTags = normalisedTags(item.tags);
 			item.taskDefinition.containerDefinitions?.forEach((cd) => {
 				const logGroup = cd.logConfiguration?.options?.['awslogs-group'];
 				if (logGroup) {
@@ -73,17 +67,10 @@ export async function updateStructuredFieldsData(
 	ecs: ECS,
 	bucket: string,
 	key: string,
-	lowerFirstCharOfTag: boolean,
 ): Promise<void> {
-	const lambdaDataMap = await lambdaLogGroupStructuredFields(
-		lambda,
-		lowerFirstCharOfTag,
-	);
+	const lambdaDataMap = await lambdaLogGroupStructuredFields(lambda);
 
-	const ecsDataMap = await ecsTaskLogGroupStructuredFields(
-		ecs,
-		lowerFirstCharOfTag,
-	);
+	const ecsDataMap = await ecsTaskLogGroupStructuredFields(ecs);
 
 	// write out tag data to S3
 	const data = JSON.stringify({ ...lambdaDataMap, ...ecsDataMap });

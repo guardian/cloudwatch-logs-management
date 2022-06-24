@@ -74,7 +74,6 @@ export async function setLogShipping(trigger: unknown): Promise<void> {
 		logShippingLambdaArn,
 		structuredDataBucket,
 		structuredDataKey,
-		optionLowerFirstCharOfTags,
 	} = getConfigureLogShippingConfig();
 
 	await updateStructuredFieldsData(
@@ -83,7 +82,6 @@ export async function setLogShipping(trigger: unknown): Promise<void> {
 		ecs,
 		structuredDataBucket,
 		structuredDataKey,
-		optionLowerFirstCharOfTags,
 	);
 
 	const logShippingLambdaName = logShippingLambdaArn.split(':')[6];
