@@ -91,7 +91,7 @@ Resources:
     Properties:
       CodeUri:
         Bucket: !Ref DistBucket
-        Key: !Sub ${Stack}/${Stage}/set-retention/lambda.zip
+        Key: !Sub ${Stack}/${Stage}/set-retention/cloudwatch-logs-management.zip
       Handler: app.setRetention
       Timeout: 60
       Policies:
@@ -144,7 +144,7 @@ Resources:
     Properties:
       CodeUri:
         Bucket: !Ref DistBucket
-        Key: !Sub ${Stack}/${Stage}/set-log-shipping/lambda.zip
+        Key: !Sub ${Stack}/${Stage}/set-log-shipping/cloudwatch-logs-management.zip
       Handler: app.setLogShipping
       Timeout: 60
       Policies:
@@ -198,7 +198,7 @@ Resources:
     Properties:
       CodeUri:
         Bucket: !Ref DistBucket
-        Key: !Sub ${Stack}/${Stage}/ship-log-entries/lambda.zip
+        Key: !Sub ${Stack}/${Stage}/ship-log-entries/cloudwatch-logs-management.zip
       Handler: shipLogEntries.shipLogEntries
       Timeout: 5
       Policies:
