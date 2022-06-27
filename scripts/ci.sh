@@ -23,6 +23,14 @@ injectBuildInfo() {
 setupNodeVersion
 injectBuildInfo
 
+(
+  cd cdk
+  npm ci
+  npm run test
+  npm run lint
+  npm run synth
+)
+
 npm ci
 npm run test
 npm run lint
