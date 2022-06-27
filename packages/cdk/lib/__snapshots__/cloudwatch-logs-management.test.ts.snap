@@ -1,3 +1,927 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `Object {}`;
+exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
+Object {
+  "Parameters": Object {
+    "DistributionBucketName": Object {
+      "Default": "/account/services/artifact.bucket",
+      "Description": "SSM parameter containing the S3 bucket name holding distribution artifacts",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+    "KinesisStreamArn": Object {
+      "Default": "/account/services/logging.stream",
+      "Description": "The ARN (not name) of the kinesis stream to ship logs to",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": Object {
+    "DisableCloudWatchLoggingPolicy566D41D3": Object {
+      "Properties": Object {
+        "Description": "",
+        "Path": "/",
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Deny",
+              "Resource": "arn:aws:logs:*:*:*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::ManagedPolicy",
+    },
+    "SetLogShippingFunc": Object {
+      "DependsOn": Array [
+        "setlogshippingServiceRoleDefaultPolicy21BAA7D8",
+        "setlogshippingServiceRoleFD6872A4",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "DistributionBucketName",
+          },
+          "S3Key": "deploy/PROD/set-log-shipping/cloudwatch-logs-management.zip",
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "APP": "set-log-shipping",
+            "LOG_NAME_PREFIXES": "/aws/lambda",
+            "LOG_SHIPPING_LAMBDA_ARN": Object {
+              "Fn::GetAtt": Array [
+                "ShipLogEntriesFunc",
+                "Arn",
+              ],
+            },
+            "STACK": "deploy",
+            "STAGE": "PROD",
+            "STRUCTURED_DATA_BUCKET": Object {
+              "Ref": "StructuredFieldsBucket",
+            },
+          },
+        },
+        "Handler": "app.setLogShipping",
+        "MemorySize": 512,
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "setlogshippingServiceRoleFD6872A4",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs16.x",
+        "Tags": Array [
+          Object {
+            "Key": "App",
+            "Value": "set-log-shipping",
+          },
+          Object {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          Object {
+            "Key": "gu:repo",
+            "Value": "guardian/cloudwatch-logs-management",
+          },
+          Object {
+            "Key": "Stack",
+            "Value": "deploy",
+          },
+          Object {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+        "Timeout": 60,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "SetLogShippingPolicy0F235CDA": Object {
+      "Properties": Object {
+        "Description": "",
+        "Path": "/",
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "logs:DescribeLogGroups",
+                "logs:DescribeSubscriptionFilters",
+                "logs:PutSubscriptionFilter",
+                "logs:DeleteSubscriptionFilter",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:logs:eu-west-1:",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":log-group:*",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": Array [
+                "lambda:ListFunctions",
+                "lambda:ListTags",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "ecs:ListTaskDefinitions",
+                "ecs:DescribeTaskDefinition",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": "s3:PutObject",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "StructuredFieldsBucket",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::ManagedPolicy",
+    },
+    "SetRetentionFunc": Object {
+      "DependsOn": Array [
+        "setretentionServiceRoleDefaultPolicyCEB3697A",
+        "setretentionServiceRoleF411F948",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "DistributionBucketName",
+          },
+          "S3Key": "deploy/PROD/set-retention/cloudwatch-logs-management.zip",
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "APP": "set-retention",
+            "RETENTION_IN_DAYS": "7",
+            "STACK": "deploy",
+            "STAGE": "PROD",
+          },
+        },
+        "Handler": "app.setRetention",
+        "MemorySize": 512,
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "setretentionServiceRoleF411F948",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs16.x",
+        "Tags": Array [
+          Object {
+            "Key": "App",
+            "Value": "set-retention",
+          },
+          Object {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          Object {
+            "Key": "gu:repo",
+            "Value": "guardian/cloudwatch-logs-management",
+          },
+          Object {
+            "Key": "Stack",
+            "Value": "deploy",
+          },
+          Object {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+        "Timeout": 60,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "SetRetentionPolicy7B345D11": Object {
+      "Properties": Object {
+        "Description": "",
+        "Path": "/",
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "logs:DescribeLogGroups",
+                "logs:PutRetentionPolicy",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:logs:eu-west-1:",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":log-group:*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::ManagedPolicy",
+    },
+    "ShipLogEntriesFunc": Object {
+      "DependsOn": Array [
+        "shiplogentriesServiceRoleDefaultPolicy372B39B1",
+        "shiplogentriesServiceRoleB4E65CC2",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "DistributionBucketName",
+          },
+          "S3Key": "deploy/PROD/ship-log-entries/cloudwatch-logs-management.zip",
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "APP": "ship-log-entries",
+            "LOG_KINESIS_STREAM": Object {
+              "Ref": "KinesisStreamArn",
+            },
+            "STACK": "deploy",
+            "STAGE": "PROD",
+            "STRUCTURED_DATA_BUCKET": Object {
+              "Ref": "StructuredFieldsBucket",
+            },
+          },
+        },
+        "Handler": "shipLogEntries.shipLogEntries",
+        "MemorySize": 512,
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "shiplogentriesServiceRoleB4E65CC2",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs16.x",
+        "Tags": Array [
+          Object {
+            "Key": "App",
+            "Value": "ship-log-entries",
+          },
+          Object {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          Object {
+            "Key": "gu:repo",
+            "Value": "guardian/cloudwatch-logs-management",
+          },
+          Object {
+            "Key": "Stack",
+            "Value": "deploy",
+          },
+          Object {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+        "Timeout": 5,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "ShipLogEntriesPolicyCE9979ED": Object {
+      "Properties": Object {
+        "Description": "",
+        "Path": "/",
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "kinesis:PutRecords",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Ref": "KinesisStreamArn",
+              },
+            },
+            Object {
+              "Action": "s3:GetObject",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    Object {
+                      "Fn::GetAtt": Array [
+                        "StructuredFieldsBucket",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::ManagedPolicy",
+    },
+    "StructuredFieldsBucket": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "PublicAccessBlockConfiguration": Object {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+        "Tags": Array [
+          Object {
+            "Key": "App",
+            "Value": "cloudwatch-logs-management",
+          },
+          Object {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          Object {
+            "Key": "gu:repo",
+            "Value": "guardian/cloudwatch-logs-management",
+          },
+          Object {
+            "Key": "Stack",
+            "Value": "deploy",
+          },
+          Object {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "setlogshippingServiceRoleDefaultPolicy21BAA7D8": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      Object {
+                        "Ref": "DistributionBucketName",
+                      },
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      Object {
+                        "Ref": "DistributionBucketName",
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": "ssm:GetParametersByPath",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:ssm:eu-west-1:",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":parameter/PROD/deploy/set-log-shipping",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": Array [
+                "ssm:GetParameters",
+                "ssm:GetParameter",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:ssm:eu-west-1:",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":parameter/PROD/deploy/set-log-shipping/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "setlogshippingServiceRoleDefaultPolicy21BAA7D8",
+        "Roles": Array [
+          Object {
+            "Ref": "setlogshippingServiceRoleFD6872A4",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "setlogshippingServiceRoleFD6872A4": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+          Object {
+            "Ref": "SetLogShippingPolicy0F235CDA",
+          },
+        ],
+        "Tags": Array [
+          Object {
+            "Key": "App",
+            "Value": "set-log-shipping",
+          },
+          Object {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          Object {
+            "Key": "gu:repo",
+            "Value": "guardian/cloudwatch-logs-management",
+          },
+          Object {
+            "Key": "Stack",
+            "Value": "deploy",
+          },
+          Object {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "setlogshippingsetlogshippingrate10minutes07B669287": Object {
+      "Properties": Object {
+        "ScheduleExpression": "rate(10 minutes)",
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Fn::GetAtt": Array [
+                "SetLogShippingFunc",
+                "Arn",
+              ],
+            },
+            "Id": "Target0",
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "setlogshippingsetlogshippingrate10minutes0AllowEventRuleCloudwatchLogsManagementdeploysetlogshipping1BFA79438197006B": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "SetLogShippingFunc",
+            "Arn",
+          ],
+        },
+        "Principal": "events.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::GetAtt": Array [
+            "setlogshippingsetlogshippingrate10minutes07B669287",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "setretentionServiceRoleDefaultPolicyCEB3697A": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      Object {
+                        "Ref": "DistributionBucketName",
+                      },
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      Object {
+                        "Ref": "DistributionBucketName",
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": "ssm:GetParametersByPath",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:ssm:eu-west-1:",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":parameter/PROD/deploy/set-retention",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": Array [
+                "ssm:GetParameters",
+                "ssm:GetParameter",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:ssm:eu-west-1:",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":parameter/PROD/deploy/set-retention/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "setretentionServiceRoleDefaultPolicyCEB3697A",
+        "Roles": Array [
+          Object {
+            "Ref": "setretentionServiceRoleF411F948",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "setretentionServiceRoleF411F948": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+          Object {
+            "Ref": "SetRetentionPolicy7B345D11",
+          },
+        ],
+        "Tags": Array [
+          Object {
+            "Key": "App",
+            "Value": "set-retention",
+          },
+          Object {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          Object {
+            "Key": "gu:repo",
+            "Value": "guardian/cloudwatch-logs-management",
+          },
+          Object {
+            "Key": "Stack",
+            "Value": "deploy",
+          },
+          Object {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "setretentionsetretentionrate1hour0AllowEventRuleCloudwatchLogsManagementdeploysetretentionD9A0E7537297E68D": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "SetRetentionFunc",
+            "Arn",
+          ],
+        },
+        "Principal": "events.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::GetAtt": Array [
+            "setretentionsetretentionrate1hour0DA4C9A13",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "setretentionsetretentionrate1hour0DA4C9A13": Object {
+      "Properties": Object {
+        "ScheduleExpression": "rate(1 hour)",
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Fn::GetAtt": Array [
+                "SetRetentionFunc",
+                "Arn",
+              ],
+            },
+            "Id": "Target0",
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "shiplogentriesServiceRoleB4E65CC2": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+          Object {
+            "Ref": "ShipLogEntriesPolicyCE9979ED",
+          },
+          Object {
+            "Ref": "DisableCloudWatchLoggingPolicy566D41D3",
+          },
+        ],
+        "Tags": Array [
+          Object {
+            "Key": "App",
+            "Value": "ship-log-entries",
+          },
+          Object {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          Object {
+            "Key": "gu:repo",
+            "Value": "guardian/cloudwatch-logs-management",
+          },
+          Object {
+            "Key": "Stack",
+            "Value": "deploy",
+          },
+          Object {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "shiplogentriesServiceRoleDefaultPolicy372B39B1": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      Object {
+                        "Ref": "DistributionBucketName",
+                      },
+                    ],
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "arn:",
+                      Object {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      Object {
+                        "Ref": "DistributionBucketName",
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            Object {
+              "Action": "ssm:GetParametersByPath",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:ssm:eu-west-1:",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":parameter/PROD/deploy/ship-log-entries",
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": Array [
+                "ssm:GetParameters",
+                "ssm:GetParameter",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:aws:ssm:eu-west-1:",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":parameter/PROD/deploy/ship-log-entries/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "shiplogentriesServiceRoleDefaultPolicy372B39B1",
+        "Roles": Array [
+          Object {
+            "Ref": "shiplogentriesServiceRoleB4E65CC2",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "shiplogentriesShipLogEntriesPermission390E0555": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "ShipLogEntriesFunc",
+            "Arn",
+          ],
+        },
+        "Principal": "logs.eu-west-1.amazonaws.com",
+        "SourceAccount": Object {
+          "Ref": "AWS::AccountId",
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+  },
+}
+`;
