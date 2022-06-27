@@ -925,3 +925,102 @@ Object {
   },
 }
 `;
+
+exports[`The riff-raff.yaml file matches the snapshot 1`] = `
+"regions:
+  - eu-west-1
+allowedStages:
+  - PROD
+deployments:
+  set-retention-upload-deploy:
+    type: aws-lambda
+    stacks:
+      - deploy
+    app: set-retention
+    contentDirectory: cloudwatch-logs-management
+    parameters:
+      bucketSsmLookup: true
+      lookupByTags: true
+      fileName: cloudwatch-logs-management.zip
+    actions:
+      - uploadLambda
+  ship-log-entries-upload-deploy:
+    type: aws-lambda
+    stacks:
+      - deploy
+    app: ship-log-entries
+    contentDirectory: cloudwatch-logs-management
+    parameters:
+      bucketSsmLookup: true
+      lookupByTags: true
+      fileName: cloudwatch-logs-management.zip
+    actions:
+      - uploadLambda
+  set-log-shipping-upload-deploy:
+    type: aws-lambda
+    stacks:
+      - deploy
+    app: set-log-shipping
+    contentDirectory: cloudwatch-logs-management
+    parameters:
+      bucketSsmLookup: true
+      lookupByTags: true
+      fileName: cloudwatch-logs-management.zip
+    actions:
+      - uploadLambda
+  cloudwatch-logs-management-cfn-deploy:
+    type: cloud-formation
+    stacks:
+      - deploy
+    app: cloudwatch-logs-management
+    contentDirectory: /tmp/cdk.out
+    parameters:
+      templatePath: CloudwatchLogsManagement-deploy.template.json
+    dependencies:
+      - set-retention-upload-deploy
+      - ship-log-entries-upload-deploy
+      - set-log-shipping-upload-deploy
+  set-retention-update-deploy:
+    type: aws-lambda
+    stacks:
+      - deploy
+    app: set-retention
+    contentDirectory: cloudwatch-logs-management
+    parameters:
+      bucketSsmLookup: true
+      lookupByTags: true
+      fileName: cloudwatch-logs-management.zip
+    actions:
+      - updateLambda
+    dependencies:
+      - cloudwatch-logs-management-cfn-deploy
+  ship-log-entries-update-deploy:
+    type: aws-lambda
+    stacks:
+      - deploy
+    app: ship-log-entries
+    contentDirectory: cloudwatch-logs-management
+    parameters:
+      bucketSsmLookup: true
+      lookupByTags: true
+      fileName: cloudwatch-logs-management.zip
+    actions:
+      - updateLambda
+    dependencies:
+      - cloudwatch-logs-management-cfn-deploy
+  set-log-shipping-update-deploy:
+    type: aws-lambda
+    stacks:
+      - deploy
+    app: set-log-shipping
+    contentDirectory: cloudwatch-logs-management
+    parameters:
+      bucketSsmLookup: true
+      lookupByTags: true
+      fileName: cloudwatch-logs-management.zip
+    actions:
+      - updateLambda
+    dependencies:
+      - cloudwatch-logs-management-cfn-deploy
+"
+`;
