@@ -3,8 +3,8 @@
   "vcsURL": "https://github.com/guardian/cloudwatch-logs-management",
   "actions": [
     {
-      "action": "cloudwatch-logs-management-cfn",
-      "path": "template.yaml",
+      "action": "cdk.out",
+      "path": "packages/cdk/cdk.out",
       "compress": false
     },
     {
