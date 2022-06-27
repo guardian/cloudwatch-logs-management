@@ -16,9 +16,34 @@ class AppWithRiffRaffYamlGenerator extends App {
 const app = new AppWithRiffRaffYamlGenerator();
 
 export const stacks: CloudwatchLogsManagementProps[] = [
+	{ stack: 'deploy' },
+	{ stack: 'flexible' },
+	{ stack: 'workflow' },
+	{ stack: 'media-service' },
+	{ stack: 'content-api' },
+	{ stack: 'cms-fronts' },
+	{ stack: 'ophan' },
+	{ stack: 'frontend' },
+	{ stack: 'identity' },
+	{ stack: 'mobile' },
 	{
-		stack: 'deploy',
-		cloudFormationStackName: 'deploy-PROD-cloudwatch-logs-management',
+		stack: 'targeting',
+		logShippingPrefixes: [
+			'/aws/lambda/diff-checker-PROD',
+			'/aws/lambda/diff-publisher-PROD',
+			'/aws/lambda/braze-exporter-trigger-PROD',
+			'/aws/lambda/braze-exporter-callback-PROD',
+		],
+	},
+	{
+		stack: 'pfi',
+		logShippingPrefixes: [
+			'/aws/lambda/lurch',
+			'/aws/rds/instance/lurch',
+			'/aws/lambda/pfi-lurch',
+			'fb-ad-library',
+			'lurch',
+		],
 	},
 ];
 
