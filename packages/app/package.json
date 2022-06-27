@@ -1,0 +1,22 @@
+{
+  "name": "app",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Lambdas to maintain and forward cloudwatch logs",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.20",
+    "aws-sdk": "^2.1159.0"
+  },
+  "jest": {
+    "testMatch": [
+      "<rootDir>/src/**/*.test.ts"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    }
+  }
+}

@@ -1,13 +1,31 @@
 {
+    "ts-node": {
+        "compilerOptions": {
+            "module": "CommonJS"
+        }
+    },
     "compilerOptions": {
-        "module": "commonjs",
-        "esModuleInterop": true,
-        "target": "es6",
-        "lib": [ "es2017" ],
-        "strict": true,
+        "target": "ES2020",
+        "module": "CommonJS",
         "moduleResolution": "node",
-        "sourceMap": true,
-        "rootDir": "src",
+        "lib": ["ES2020"],
+        "declaration": true,
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "esModuleInterop": true,
+        "noImplicitThis": true,
+        "alwaysStrict": true,
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": false,
+        "inlineSourceMap": true,
+        "inlineSources": true,
+        "experimentalDecorators": true,
+        "strictPropertyInitialization": false,
+        "typeRoots": ["./node_modules/@types"],
+        "rootDir": "./",
         "outDir": "dist"
     }
 }
