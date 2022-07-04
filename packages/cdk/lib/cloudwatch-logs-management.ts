@@ -34,6 +34,13 @@ export class CloudwatchLogsManagement extends GuStack {
 		super(scope, id, {
 			...props,
 			stack,
+
+			/*
+			 These lambdas do not like siblings!
+			 In the past, when more than one instance existed in an account/region, terrible things happened!
+			 We now only ever deploy to one stage - PROD.
+			 @see https://docs.google.com/document/d/1HNEo6UKQ-JhoXHp0mr-KuGC1Ra_8_BfwSuPq3VgO0AI/edit#
+			 */
 			stage: 'PROD',
 			env: {
 				region: 'eu-west-1',
@@ -133,6 +140,15 @@ export class CloudwatchLogsManagement extends GuStack {
 					}),
 				],
 			}),
+
+			/*
+			 If this lambda accidentally subscribes to its own log group it can create a feedback loop which overwhelms
+       Kinesis and spends huge amounts of $$$ on CloudWatch. There is some code which aims to filter out the relevant
+       log group when creating subscriptions, but we also use this policy to prevent the lambda from sending log events
+       by default, just to be on the safe side.
+       If you need to view logs for debugging purposes, the policy below can be temporarily removed from a specific
+       account using Riff-Raff
+			 */
 			new ManagedPolicy(this, 'DisableCloudWatchLoggingPolicy', {
 				statements: [
 					new PolicyStatement({
