@@ -1,14 +1,12 @@
-Cloudwatch Logs Management
-==========================
+# Cloudwatch Logs Management
+
 
 This set of lambdas provides support to:
  - Set retention/expiry of cloudwatch log groups
  - Provide a lambda that forwards logs from lambdas to Kinesis ELK
  - Automatically seek out lambdas and ECS task definitions and configure log forwarding to ELK
 
-Features
---------
-
+## Features
 ### Retention/expiry of Cloudwatch Logs Groups
 One of the lambdas runs once a day and sets the retention time on all cloudwatch log groups. Typically we forget to set these so now we can forget about forgetting.
 
@@ -50,123 +48,32 @@ That will require the following dependencies (`slf4j-log4j12` forwards logs to t
 "net.logstash.log4j" % "jsonevent-layout" % "1.7",
 ```
 
-Deployment
-----------
+## Deployment
+> **Note**
+> This stack is maintained by [@guardian/devx-operations](https://github.com/orgs/guardian/teams/devx-operations), who would be happy to help with any issues.
 
-This is deployed via riff-raff. In order to add a new account and deploy for the first time you should:
+This service is deployed via Riff-Raff, see `tools::cloudwatch-logs-management`.
 
-Prerequisites:
+To deploy this service into a new account:
+  1. Prepare your account. The following SSM parameters need to exist:
+     - `/account/services/artifact.bucket`
+     - `/account/services/logging.stream`
+  2. Raise a PR, adding your stack to [`packages/cdk/bin/cdk.ts`](packages/cdk/bin/cdk.ts)
+  3. Merge the PR; Riff-Raff is configured to continuously deploy this service
 
- 1. Ensure that the riff-raff user in the target account has the permissions listed below
- 1. Ensure you have an S3 bucket in the target account to store the code for the lambda - this is typically your "dist" bucket
- 1. Find the name of the Kinesis stream you are using to send data to ELK
- 1. If the kinesis stream is not owned by your target account, find the name of the role used to permit enqueing to that stream
-
-Target account actions:
-
- 1. The name of this bucket needs to be available in SSM under the key `/account/services/artifact.bucket`
- 1. The ARN of the target kinesis stream needs to be available in SSM under the key `/account/services/logging.stream`
-
-This project actions:
-
- 1. Add your stack name to the `stacks` section of `riff-raff.yaml`
- 1. Deploy this project - this will deploy [a new CloudFormation stack](./template.yaml) to your account
- 1. If you want to change the retention or need to add a role to assume when writing to the Kinesis stream you can manually change the settings in the stack after this initial deploy
-
-### Riff-Raff permissions
-
-Your riff-raff user will required the following permissions:
-
- - s3:*
- - iam:*
- - cloudformation:*
- - lambda:*
- - events:DescribeRule
- - events:PutRule
- - ssm:GetParameter*
-
-This can be simply added as a single policy:
-
-```
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "CloudwatchLogsManagement",
-            "Effect": "Allow",
-            "Action": [
-                "s3:*",
-                "iam:*",
-                "cloudformation:*",
-                "lambda:*",
-                "events:DescribeRule",
-                "events:PutRule",
-                "ssm:GetParameter*"
-            ],
-            "Resource": "*"
-        }
-    ]
-}
-```
-
-and attached to the riffraff user with the following command:
-
-```
-aws --profile $PROFILE --region $REGION iam attach-user-policy --user-name riffraff --policy-arn $POLICY_ARN 
-```
-
-### Bucket Parameter
-
-List buckets:
-```
-aws --profile $PROFILE --region $REGION s3 ls
-```
-
-Create parameter:
-```
-aws --profile $PROFILE --region $REGION ssm put-parameter --name '/account/services/artifact.bucket' --value $VALUE --type String
-```
-
-# Kinesis parameter:
-
-Assuming your elk kinesis stream is in the same account, you can use the following commands.  If not, ask which ARN you should use for
-the third command below.
-
-List streams:
-```
-aws --profile $PROFILE --region $REGION kinesis list-streams
-```
-
-Get stream ARN:
-```
-aws --profile $PROFILE --region $REGION kinesis describe-stream --stream-name $NAME | jq -r .StreamDescription.StreamARN
-```
-
-Create parameter:
-```
-aws --profile $PROFILE --region $REGION ssm put-parameter --name '/account/services/logging.stream' --value $VALUE --type String
-```
-
-
-Development
------------
-
+## Development
 ### Requirements
-
-* [NVM](https://github.com/creationix/nvm)
-* [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
+  - [NVM](https://github.com/creationix/nvm)
+  - [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html)
 
 The above requirements are in the supplied Brewfile and installed via `scripts/setup.sh`.
 
 ### Setup
+  - `scripts/setup.sh`
+  - `nvm use`
+  - `npm run build`
 
-* `scripts/setup.sh`
-* `nvm use`
-* `npm run build`
-
-Testing Changes and Observability
----------------------------------
-
+## Testing Changes and Observability
 Due to the nature of this project, there is no pre-production environment available for testing changes. Consequently, we recommend using Riff-Raff to deploy your branch to an individual account in order to validate your changes in production. In order to do this, select `Preview` from the deployment page (instead of `Deploy Now`). Next `Deselect all` and then manually select all deployment tasks for a specific account. Once you’ve done this you can `Preview with selections`, check the list of tasks and then `Deploy`.
 
 Once you have confirmed that the change works as expected, the PR can be merged. This will automatically roll the change out across all relevant AWS accounts via Riff-Raff. If the change adds or removes a feature, significantly alters AWS resources or is considered to be especially risky, you might also want to inform the teams who own the affected AWS accounts via Chat/email. 
