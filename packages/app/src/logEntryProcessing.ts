@@ -111,6 +111,9 @@ export function lambdaRequestLogData(
 					lambdaStats: stats,
 				};
 			}
+			default: {
+				return undefined;
+			}
 		}
 	}
 }
@@ -144,6 +147,8 @@ export function parseNodeLogFormat(
 			// put lambdaRequestId last so it can never be overwritten
 			lambdaRequestId,
 		};
+	} else {
+		return undefined;
 	}
 }
 

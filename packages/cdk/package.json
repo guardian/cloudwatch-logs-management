@@ -1,0 +1,30 @@
+{
+  "name": "cdk",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "synth": "cdk synth --path-metadata false --version-reporting false",
+    "diff": "cdk diff --path-metadata false --version-reporting false"
+  },
+  "devDependencies": {
+    "@guardian/cdk": "45.1.3",
+    "aws-cdk": "2.25.0",
+    "aws-cdk-lib": "2.25.0",
+    "constructs": "10.1.17",
+    "source-map-support": "^0.5.20",
+    "ts-node": "^10.8.1"
+  },
+  "jest": {
+    "testMatch": [
+      "<rootDir>/lib/**/*.test.ts"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "setupFilesAfterEnv": [
+      "./jest.setup.js"
+    ]
+  }
+}

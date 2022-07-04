@@ -16,15 +16,16 @@ setupNodeVersion() {
 injectBuildInfo() {
   COMMIT=$(git rev-parse HEAD)
   BUILD="${BUILD_NUMBER:-DEV}"
-  echo "// prettier-ignore" > src/build-info.ts
-  echo "export const BUILD_INFO = { 'ShippedBy-revision': '${COMMIT}', 'ShippedBy-buildNumber': '${BUILD}' };" >> src/build-info.ts
+  echo "// prettier-ignore" > packages/app/src/build-info.ts
+  echo "export const BUILD_INFO = { 'ShippedBy-revision': '${COMMIT}', 'ShippedBy-buildNumber': '${BUILD}' };" >> packages/app/src/build-info.ts
 }
 
 setupNodeVersion
 injectBuildInfo
 
 npm ci
-npm run test
 npm run lint
-npm run build
+npm run test --workspaces
+npm run synth --workspace=cdk
+npm run build --workspace=app
 npm run riffRaffUpload

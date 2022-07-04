@@ -9,7 +9,7 @@
     },
     {
       "action": "cloudwatch-logs-management",
-      "path": "dist",
+      "path": "dist/packages/app/src",
       "compress": "zip"
     }
   ]
