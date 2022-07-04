@@ -1,0 +1,16 @@
+{
+  "projectName": "tools::cloudwatch-logs-management",
+  "vcsURL": "https://github.com/guardian/cloudwatch-logs-management",
+  "actions": [
+    {
+      "action": "cloudwatch-logs-management-cfn",
+      "path": "template.yaml",
+      "compress": false
+    },
+    {
+      "action": "cloudwatch-logs-management",
+      "path": "dist",
+      "compress": "zip"
+    }
+  ]
+}

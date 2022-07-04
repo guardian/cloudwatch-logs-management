@@ -23,7 +23,7 @@ templates:
     contentDirectory: cloudwatch-logs-management
     parameters:
       bucketSsmLookup: true
-      fileName: lambda.zip
+      fileName: cloudwatch-logs-management.zip
       lookupByTags: true
 
   lambdaUpload:
