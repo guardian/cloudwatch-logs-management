@@ -12,7 +12,7 @@
     "@guardian/cdk": "45.1.3",
     "@types/js-yaml": "^4.0.5",
     "aws-cdk": "2.25.0",
-    "aws-cdk-lib": "2.25.0",
+    "aws-cdk-lib": "2.34.2",
     "constructs": "10.1.17",
     "js-yaml": "^4.1.0",
     "source-map-support": "^0.5.20",
