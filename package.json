@@ -10,7 +10,8 @@
   ],
   "scripts": {
     "lint": "eslint packages/** --ext .ts --no-error-on-unmatched-pattern",
-    "riffRaffUpload": "node-riffraff-artifact"
+    "riffRaffUpload": "node-riffraff-artifact",
+    "test": "npm run test --workspaces --if-present"
   },
   "devDependencies": {
     "@guardian/eslint-config-typescript": "^1.0.2",
