@@ -1,8 +1,8 @@
+import { RiffRaffYamlFileExperimental } from '@guardian/cdk/lib/experimental/riff-raff-yaml-file';
 import { App } from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
 import { stacks } from '../bin/cdk';
 import { CloudwatchLogsManagement } from './cloudwatch-logs-management';
-import { RiffRaffYamlFile } from './riff-raff-yaml';
 
 describe('The CloudwatchLogsManagement stack', () => {
 	it('matches the snapshot', () => {
@@ -18,7 +18,7 @@ describe('The riff-raff.yaml file', () => {
 		const app = new App({ outdir: '/tmp/cdk.out' });
 		stacks.forEach((stack) => new CloudwatchLogsManagement(app, stack));
 
-		const riffRaff = new RiffRaffYamlFile(app);
+		const riffRaff = new RiffRaffYamlFileExperimental(app);
 		expect(riffRaff.toYAML()).toMatchSnapshot();
 	});
 });
