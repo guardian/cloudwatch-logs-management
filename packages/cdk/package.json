@@ -14,7 +14,7 @@
     "aws-cdk-lib": "2.35.0",
     "constructs": "10.1.70",
     "source-map-support": "^0.5.20",
-    "ts-node": "^10.8.1"
+    "ts-node": "^10.9.1"
   },
   "jest": {
     "testMatch": [
