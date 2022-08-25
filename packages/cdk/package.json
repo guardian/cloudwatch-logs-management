@@ -12,7 +12,7 @@
     "@guardian/cdk": "47.1.0",
     "aws-cdk": "2.35.0",
     "aws-cdk-lib": "2.35.0",
-    "constructs": "10.1.70",
+    "constructs": "10.1.86",
     "source-map-support": "^0.5.20",
     "ts-node": "^10.8.1"
   },
