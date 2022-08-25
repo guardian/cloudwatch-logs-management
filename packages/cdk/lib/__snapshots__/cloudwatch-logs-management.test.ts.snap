@@ -927,15 +927,15 @@ Object {
 `;
 
 exports[`The riff-raff.yaml file matches the snapshot 1`] = `
-"regions:
-  - eu-west-1
-allowedStages:
+"allowedStages:
   - PROD
 deployments:
-  set-retention-upload-deploy:
+  lambda-upload-eu-west-1-deploy-set-retention:
     type: aws-lambda
     stacks:
       - deploy
+    regions:
+      - eu-west-1
     app: set-retention
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -944,10 +944,12 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  ship-log-entries-upload-deploy:
+  lambda-upload-eu-west-1-deploy-ship-log-entries:
     type: aws-lambda
     stacks:
       - deploy
+    regions:
+      - eu-west-1
     app: ship-log-entries
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -956,10 +958,12 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  set-log-shipping-upload-deploy:
+  lambda-upload-eu-west-1-deploy-set-log-shipping:
     type: aws-lambda
     stacks:
       - deploy
+    regions:
+      - eu-west-1
     app: set-log-shipping
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -968,22 +972,27 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  cloudwatch-logs-management-cfn-deploy:
+  cfn-eu-west-1-deploy-cloudwatch-logs-management:
     type: cloud-formation
+    regions:
+      - eu-west-1
     stacks:
       - deploy
     app: cloudwatch-logs-management
     contentDirectory: /tmp/cdk.out
     parameters:
-      templatePath: CloudwatchLogsManagement-deploy.template.json
+      templateStagePaths:
+        PROD: CloudwatchLogsManagement-deploy.template.json
     dependencies:
-      - set-retention-upload-deploy
-      - ship-log-entries-upload-deploy
-      - set-log-shipping-upload-deploy
-  set-retention-update-deploy:
+      - lambda-upload-eu-west-1-deploy-set-retention
+      - lambda-upload-eu-west-1-deploy-ship-log-entries
+      - lambda-upload-eu-west-1-deploy-set-log-shipping
+  lambda-update-eu-west-1-deploy-set-retention:
     type: aws-lambda
     stacks:
       - deploy
+    regions:
+      - eu-west-1
     app: set-retention
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -993,11 +1002,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-deploy
-  ship-log-entries-update-deploy:
+      - cfn-eu-west-1-deploy-cloudwatch-logs-management
+  lambda-update-eu-west-1-deploy-ship-log-entries:
     type: aws-lambda
     stacks:
       - deploy
+    regions:
+      - eu-west-1
     app: ship-log-entries
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1007,11 +1018,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-deploy
-  set-log-shipping-update-deploy:
+      - cfn-eu-west-1-deploy-cloudwatch-logs-management
+  lambda-update-eu-west-1-deploy-set-log-shipping:
     type: aws-lambda
     stacks:
       - deploy
+    regions:
+      - eu-west-1
     app: set-log-shipping
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1021,11 +1034,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-deploy
-  set-retention-upload-flexible:
+      - cfn-eu-west-1-deploy-cloudwatch-logs-management
+  lambda-upload-eu-west-1-flexible-set-retention:
     type: aws-lambda
     stacks:
       - flexible
+    regions:
+      - eu-west-1
     app: set-retention
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1034,10 +1049,12 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  ship-log-entries-upload-flexible:
+  lambda-upload-eu-west-1-flexible-ship-log-entries:
     type: aws-lambda
     stacks:
       - flexible
+    regions:
+      - eu-west-1
     app: ship-log-entries
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1046,10 +1063,12 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  set-log-shipping-upload-flexible:
+  lambda-upload-eu-west-1-flexible-set-log-shipping:
     type: aws-lambda
     stacks:
       - flexible
+    regions:
+      - eu-west-1
     app: set-log-shipping
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1058,22 +1077,27 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  cloudwatch-logs-management-cfn-flexible:
+  cfn-eu-west-1-flexible-cloudwatch-logs-management:
     type: cloud-formation
+    regions:
+      - eu-west-1
     stacks:
       - flexible
     app: cloudwatch-logs-management
     contentDirectory: /tmp/cdk.out
     parameters:
-      templatePath: CloudwatchLogsManagement-flexible.template.json
+      templateStagePaths:
+        PROD: CloudwatchLogsManagement-flexible.template.json
     dependencies:
-      - set-retention-upload-flexible
-      - ship-log-entries-upload-flexible
-      - set-log-shipping-upload-flexible
-  set-retention-update-flexible:
+      - lambda-upload-eu-west-1-flexible-set-retention
+      - lambda-upload-eu-west-1-flexible-ship-log-entries
+      - lambda-upload-eu-west-1-flexible-set-log-shipping
+  lambda-update-eu-west-1-flexible-set-retention:
     type: aws-lambda
     stacks:
       - flexible
+    regions:
+      - eu-west-1
     app: set-retention
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1083,11 +1107,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-flexible
-  ship-log-entries-update-flexible:
+      - cfn-eu-west-1-flexible-cloudwatch-logs-management
+  lambda-update-eu-west-1-flexible-ship-log-entries:
     type: aws-lambda
     stacks:
       - flexible
+    regions:
+      - eu-west-1
     app: ship-log-entries
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1097,11 +1123,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-flexible
-  set-log-shipping-update-flexible:
+      - cfn-eu-west-1-flexible-cloudwatch-logs-management
+  lambda-update-eu-west-1-flexible-set-log-shipping:
     type: aws-lambda
     stacks:
       - flexible
+    regions:
+      - eu-west-1
     app: set-log-shipping
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1111,11 +1139,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-flexible
-  set-retention-upload-workflow:
+      - cfn-eu-west-1-flexible-cloudwatch-logs-management
+  lambda-upload-eu-west-1-workflow-set-retention:
     type: aws-lambda
     stacks:
       - workflow
+    regions:
+      - eu-west-1
     app: set-retention
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1124,10 +1154,12 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  ship-log-entries-upload-workflow:
+  lambda-upload-eu-west-1-workflow-ship-log-entries:
     type: aws-lambda
     stacks:
       - workflow
+    regions:
+      - eu-west-1
     app: ship-log-entries
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1136,10 +1168,12 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  set-log-shipping-upload-workflow:
+  lambda-upload-eu-west-1-workflow-set-log-shipping:
     type: aws-lambda
     stacks:
       - workflow
+    regions:
+      - eu-west-1
     app: set-log-shipping
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1148,22 +1182,27 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  cloudwatch-logs-management-cfn-workflow:
+  cfn-eu-west-1-workflow-cloudwatch-logs-management:
     type: cloud-formation
+    regions:
+      - eu-west-1
     stacks:
       - workflow
     app: cloudwatch-logs-management
     contentDirectory: /tmp/cdk.out
     parameters:
-      templatePath: CloudwatchLogsManagement-workflow.template.json
+      templateStagePaths:
+        PROD: CloudwatchLogsManagement-workflow.template.json
     dependencies:
-      - set-retention-upload-workflow
-      - ship-log-entries-upload-workflow
-      - set-log-shipping-upload-workflow
-  set-retention-update-workflow:
+      - lambda-upload-eu-west-1-workflow-set-retention
+      - lambda-upload-eu-west-1-workflow-ship-log-entries
+      - lambda-upload-eu-west-1-workflow-set-log-shipping
+  lambda-update-eu-west-1-workflow-set-retention:
     type: aws-lambda
     stacks:
       - workflow
+    regions:
+      - eu-west-1
     app: set-retention
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1173,11 +1212,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-workflow
-  ship-log-entries-update-workflow:
+      - cfn-eu-west-1-workflow-cloudwatch-logs-management
+  lambda-update-eu-west-1-workflow-ship-log-entries:
     type: aws-lambda
     stacks:
       - workflow
+    regions:
+      - eu-west-1
     app: ship-log-entries
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1187,11 +1228,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-workflow
-  set-log-shipping-update-workflow:
+      - cfn-eu-west-1-workflow-cloudwatch-logs-management
+  lambda-update-eu-west-1-workflow-set-log-shipping:
     type: aws-lambda
     stacks:
       - workflow
+    regions:
+      - eu-west-1
     app: set-log-shipping
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1201,11 +1244,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-workflow
-  set-retention-upload-media-service:
+      - cfn-eu-west-1-workflow-cloudwatch-logs-management
+  lambda-upload-eu-west-1-media-service-set-retention:
     type: aws-lambda
     stacks:
       - media-service
+    regions:
+      - eu-west-1
     app: set-retention
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1214,10 +1259,12 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  ship-log-entries-upload-media-service:
+  lambda-upload-eu-west-1-media-service-ship-log-entries:
     type: aws-lambda
     stacks:
       - media-service
+    regions:
+      - eu-west-1
     app: ship-log-entries
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1226,10 +1273,12 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  set-log-shipping-upload-media-service:
+  lambda-upload-eu-west-1-media-service-set-log-shipping:
     type: aws-lambda
     stacks:
       - media-service
+    regions:
+      - eu-west-1
     app: set-log-shipping
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1238,22 +1287,27 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  cloudwatch-logs-management-cfn-media-service:
+  cfn-eu-west-1-media-service-cloudwatch-logs-management:
     type: cloud-formation
+    regions:
+      - eu-west-1
     stacks:
       - media-service
     app: cloudwatch-logs-management
     contentDirectory: /tmp/cdk.out
     parameters:
-      templatePath: CloudwatchLogsManagement-media-service.template.json
+      templateStagePaths:
+        PROD: CloudwatchLogsManagement-media-service.template.json
     dependencies:
-      - set-retention-upload-media-service
-      - ship-log-entries-upload-media-service
-      - set-log-shipping-upload-media-service
-  set-retention-update-media-service:
+      - lambda-upload-eu-west-1-media-service-set-retention
+      - lambda-upload-eu-west-1-media-service-ship-log-entries
+      - lambda-upload-eu-west-1-media-service-set-log-shipping
+  lambda-update-eu-west-1-media-service-set-retention:
     type: aws-lambda
     stacks:
       - media-service
+    regions:
+      - eu-west-1
     app: set-retention
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1263,11 +1317,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-media-service
-  ship-log-entries-update-media-service:
+      - cfn-eu-west-1-media-service-cloudwatch-logs-management
+  lambda-update-eu-west-1-media-service-ship-log-entries:
     type: aws-lambda
     stacks:
       - media-service
+    regions:
+      - eu-west-1
     app: ship-log-entries
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1277,11 +1333,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-media-service
-  set-log-shipping-update-media-service:
+      - cfn-eu-west-1-media-service-cloudwatch-logs-management
+  lambda-update-eu-west-1-media-service-set-log-shipping:
     type: aws-lambda
     stacks:
       - media-service
+    regions:
+      - eu-west-1
     app: set-log-shipping
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1291,11 +1349,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-media-service
-  set-retention-upload-content-api:
+      - cfn-eu-west-1-media-service-cloudwatch-logs-management
+  lambda-upload-eu-west-1-content-api-set-retention:
     type: aws-lambda
     stacks:
       - content-api
+    regions:
+      - eu-west-1
     app: set-retention
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1304,10 +1364,12 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  ship-log-entries-upload-content-api:
+  lambda-upload-eu-west-1-content-api-ship-log-entries:
     type: aws-lambda
     stacks:
       - content-api
+    regions:
+      - eu-west-1
     app: ship-log-entries
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1316,10 +1378,12 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  set-log-shipping-upload-content-api:
+  lambda-upload-eu-west-1-content-api-set-log-shipping:
     type: aws-lambda
     stacks:
       - content-api
+    regions:
+      - eu-west-1
     app: set-log-shipping
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1328,22 +1392,27 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  cloudwatch-logs-management-cfn-content-api:
+  cfn-eu-west-1-content-api-cloudwatch-logs-management:
     type: cloud-formation
+    regions:
+      - eu-west-1
     stacks:
       - content-api
     app: cloudwatch-logs-management
     contentDirectory: /tmp/cdk.out
     parameters:
-      templatePath: CloudwatchLogsManagement-content-api.template.json
+      templateStagePaths:
+        PROD: CloudwatchLogsManagement-content-api.template.json
     dependencies:
-      - set-retention-upload-content-api
-      - ship-log-entries-upload-content-api
-      - set-log-shipping-upload-content-api
-  set-retention-update-content-api:
+      - lambda-upload-eu-west-1-content-api-set-retention
+      - lambda-upload-eu-west-1-content-api-ship-log-entries
+      - lambda-upload-eu-west-1-content-api-set-log-shipping
+  lambda-update-eu-west-1-content-api-set-retention:
     type: aws-lambda
     stacks:
       - content-api
+    regions:
+      - eu-west-1
     app: set-retention
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1353,11 +1422,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-content-api
-  ship-log-entries-update-content-api:
+      - cfn-eu-west-1-content-api-cloudwatch-logs-management
+  lambda-update-eu-west-1-content-api-ship-log-entries:
     type: aws-lambda
     stacks:
       - content-api
+    regions:
+      - eu-west-1
     app: ship-log-entries
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1367,11 +1438,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-content-api
-  set-log-shipping-update-content-api:
+      - cfn-eu-west-1-content-api-cloudwatch-logs-management
+  lambda-update-eu-west-1-content-api-set-log-shipping:
     type: aws-lambda
     stacks:
       - content-api
+    regions:
+      - eu-west-1
     app: set-log-shipping
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1381,11 +1454,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-content-api
-  set-retention-upload-cms-fronts:
+      - cfn-eu-west-1-content-api-cloudwatch-logs-management
+  lambda-upload-eu-west-1-cms-fronts-set-retention:
     type: aws-lambda
     stacks:
       - cms-fronts
+    regions:
+      - eu-west-1
     app: set-retention
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1394,10 +1469,12 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  ship-log-entries-upload-cms-fronts:
+  lambda-upload-eu-west-1-cms-fronts-ship-log-entries:
     type: aws-lambda
     stacks:
       - cms-fronts
+    regions:
+      - eu-west-1
     app: ship-log-entries
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1406,10 +1483,12 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  set-log-shipping-upload-cms-fronts:
+  lambda-upload-eu-west-1-cms-fronts-set-log-shipping:
     type: aws-lambda
     stacks:
       - cms-fronts
+    regions:
+      - eu-west-1
     app: set-log-shipping
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1418,22 +1497,27 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  cloudwatch-logs-management-cfn-cms-fronts:
+  cfn-eu-west-1-cms-fronts-cloudwatch-logs-management:
     type: cloud-formation
+    regions:
+      - eu-west-1
     stacks:
       - cms-fronts
     app: cloudwatch-logs-management
     contentDirectory: /tmp/cdk.out
     parameters:
-      templatePath: CloudwatchLogsManagement-cms-fronts.template.json
+      templateStagePaths:
+        PROD: CloudwatchLogsManagement-cms-fronts.template.json
     dependencies:
-      - set-retention-upload-cms-fronts
-      - ship-log-entries-upload-cms-fronts
-      - set-log-shipping-upload-cms-fronts
-  set-retention-update-cms-fronts:
+      - lambda-upload-eu-west-1-cms-fronts-set-retention
+      - lambda-upload-eu-west-1-cms-fronts-ship-log-entries
+      - lambda-upload-eu-west-1-cms-fronts-set-log-shipping
+  lambda-update-eu-west-1-cms-fronts-set-retention:
     type: aws-lambda
     stacks:
       - cms-fronts
+    regions:
+      - eu-west-1
     app: set-retention
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1443,11 +1527,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-cms-fronts
-  ship-log-entries-update-cms-fronts:
+      - cfn-eu-west-1-cms-fronts-cloudwatch-logs-management
+  lambda-update-eu-west-1-cms-fronts-ship-log-entries:
     type: aws-lambda
     stacks:
       - cms-fronts
+    regions:
+      - eu-west-1
     app: ship-log-entries
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1457,11 +1543,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-cms-fronts
-  set-log-shipping-update-cms-fronts:
+      - cfn-eu-west-1-cms-fronts-cloudwatch-logs-management
+  lambda-update-eu-west-1-cms-fronts-set-log-shipping:
     type: aws-lambda
     stacks:
       - cms-fronts
+    regions:
+      - eu-west-1
     app: set-log-shipping
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1471,11 +1559,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-cms-fronts
-  set-retention-upload-ophan:
+      - cfn-eu-west-1-cms-fronts-cloudwatch-logs-management
+  lambda-upload-eu-west-1-ophan-set-retention:
     type: aws-lambda
     stacks:
       - ophan
+    regions:
+      - eu-west-1
     app: set-retention
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1484,10 +1574,12 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  ship-log-entries-upload-ophan:
+  lambda-upload-eu-west-1-ophan-ship-log-entries:
     type: aws-lambda
     stacks:
       - ophan
+    regions:
+      - eu-west-1
     app: ship-log-entries
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1496,10 +1588,12 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  set-log-shipping-upload-ophan:
+  lambda-upload-eu-west-1-ophan-set-log-shipping:
     type: aws-lambda
     stacks:
       - ophan
+    regions:
+      - eu-west-1
     app: set-log-shipping
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1508,22 +1602,27 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  cloudwatch-logs-management-cfn-ophan:
+  cfn-eu-west-1-ophan-cloudwatch-logs-management:
     type: cloud-formation
+    regions:
+      - eu-west-1
     stacks:
       - ophan
     app: cloudwatch-logs-management
     contentDirectory: /tmp/cdk.out
     parameters:
-      templatePath: CloudwatchLogsManagement-ophan.template.json
+      templateStagePaths:
+        PROD: CloudwatchLogsManagement-ophan.template.json
     dependencies:
-      - set-retention-upload-ophan
-      - ship-log-entries-upload-ophan
-      - set-log-shipping-upload-ophan
-  set-retention-update-ophan:
+      - lambda-upload-eu-west-1-ophan-set-retention
+      - lambda-upload-eu-west-1-ophan-ship-log-entries
+      - lambda-upload-eu-west-1-ophan-set-log-shipping
+  lambda-update-eu-west-1-ophan-set-retention:
     type: aws-lambda
     stacks:
       - ophan
+    regions:
+      - eu-west-1
     app: set-retention
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1533,11 +1632,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-ophan
-  ship-log-entries-update-ophan:
+      - cfn-eu-west-1-ophan-cloudwatch-logs-management
+  lambda-update-eu-west-1-ophan-ship-log-entries:
     type: aws-lambda
     stacks:
       - ophan
+    regions:
+      - eu-west-1
     app: ship-log-entries
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1547,11 +1648,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-ophan
-  set-log-shipping-update-ophan:
+      - cfn-eu-west-1-ophan-cloudwatch-logs-management
+  lambda-update-eu-west-1-ophan-set-log-shipping:
     type: aws-lambda
     stacks:
       - ophan
+    regions:
+      - eu-west-1
     app: set-log-shipping
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1561,11 +1664,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-ophan
-  set-retention-upload-frontend:
+      - cfn-eu-west-1-ophan-cloudwatch-logs-management
+  lambda-upload-eu-west-1-frontend-set-retention:
     type: aws-lambda
     stacks:
       - frontend
+    regions:
+      - eu-west-1
     app: set-retention
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1574,10 +1679,12 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  ship-log-entries-upload-frontend:
+  lambda-upload-eu-west-1-frontend-ship-log-entries:
     type: aws-lambda
     stacks:
       - frontend
+    regions:
+      - eu-west-1
     app: ship-log-entries
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1586,10 +1693,12 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  set-log-shipping-upload-frontend:
+  lambda-upload-eu-west-1-frontend-set-log-shipping:
     type: aws-lambda
     stacks:
       - frontend
+    regions:
+      - eu-west-1
     app: set-log-shipping
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1598,22 +1707,27 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  cloudwatch-logs-management-cfn-frontend:
+  cfn-eu-west-1-frontend-cloudwatch-logs-management:
     type: cloud-formation
+    regions:
+      - eu-west-1
     stacks:
       - frontend
     app: cloudwatch-logs-management
     contentDirectory: /tmp/cdk.out
     parameters:
-      templatePath: CloudwatchLogsManagement-frontend.template.json
+      templateStagePaths:
+        PROD: CloudwatchLogsManagement-frontend.template.json
     dependencies:
-      - set-retention-upload-frontend
-      - ship-log-entries-upload-frontend
-      - set-log-shipping-upload-frontend
-  set-retention-update-frontend:
+      - lambda-upload-eu-west-1-frontend-set-retention
+      - lambda-upload-eu-west-1-frontend-ship-log-entries
+      - lambda-upload-eu-west-1-frontend-set-log-shipping
+  lambda-update-eu-west-1-frontend-set-retention:
     type: aws-lambda
     stacks:
       - frontend
+    regions:
+      - eu-west-1
     app: set-retention
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1623,11 +1737,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-frontend
-  ship-log-entries-update-frontend:
+      - cfn-eu-west-1-frontend-cloudwatch-logs-management
+  lambda-update-eu-west-1-frontend-ship-log-entries:
     type: aws-lambda
     stacks:
       - frontend
+    regions:
+      - eu-west-1
     app: ship-log-entries
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1637,11 +1753,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-frontend
-  set-log-shipping-update-frontend:
+      - cfn-eu-west-1-frontend-cloudwatch-logs-management
+  lambda-update-eu-west-1-frontend-set-log-shipping:
     type: aws-lambda
     stacks:
       - frontend
+    regions:
+      - eu-west-1
     app: set-log-shipping
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1651,11 +1769,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-frontend
-  set-retention-upload-identity:
+      - cfn-eu-west-1-frontend-cloudwatch-logs-management
+  lambda-upload-eu-west-1-identity-set-retention:
     type: aws-lambda
     stacks:
       - identity
+    regions:
+      - eu-west-1
     app: set-retention
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1664,10 +1784,12 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  ship-log-entries-upload-identity:
+  lambda-upload-eu-west-1-identity-ship-log-entries:
     type: aws-lambda
     stacks:
       - identity
+    regions:
+      - eu-west-1
     app: ship-log-entries
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1676,10 +1798,12 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  set-log-shipping-upload-identity:
+  lambda-upload-eu-west-1-identity-set-log-shipping:
     type: aws-lambda
     stacks:
       - identity
+    regions:
+      - eu-west-1
     app: set-log-shipping
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1688,22 +1812,27 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  cloudwatch-logs-management-cfn-identity:
+  cfn-eu-west-1-identity-cloudwatch-logs-management:
     type: cloud-formation
+    regions:
+      - eu-west-1
     stacks:
       - identity
     app: cloudwatch-logs-management
     contentDirectory: /tmp/cdk.out
     parameters:
-      templatePath: CloudwatchLogsManagement-identity.template.json
+      templateStagePaths:
+        PROD: CloudwatchLogsManagement-identity.template.json
     dependencies:
-      - set-retention-upload-identity
-      - ship-log-entries-upload-identity
-      - set-log-shipping-upload-identity
-  set-retention-update-identity:
+      - lambda-upload-eu-west-1-identity-set-retention
+      - lambda-upload-eu-west-1-identity-ship-log-entries
+      - lambda-upload-eu-west-1-identity-set-log-shipping
+  lambda-update-eu-west-1-identity-set-retention:
     type: aws-lambda
     stacks:
       - identity
+    regions:
+      - eu-west-1
     app: set-retention
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1713,11 +1842,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-identity
-  ship-log-entries-update-identity:
+      - cfn-eu-west-1-identity-cloudwatch-logs-management
+  lambda-update-eu-west-1-identity-ship-log-entries:
     type: aws-lambda
     stacks:
       - identity
+    regions:
+      - eu-west-1
     app: ship-log-entries
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1727,11 +1858,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-identity
-  set-log-shipping-update-identity:
+      - cfn-eu-west-1-identity-cloudwatch-logs-management
+  lambda-update-eu-west-1-identity-set-log-shipping:
     type: aws-lambda
     stacks:
       - identity
+    regions:
+      - eu-west-1
     app: set-log-shipping
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1741,11 +1874,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-identity
-  set-retention-upload-mobile:
+      - cfn-eu-west-1-identity-cloudwatch-logs-management
+  lambda-upload-eu-west-1-mobile-set-retention:
     type: aws-lambda
     stacks:
       - mobile
+    regions:
+      - eu-west-1
     app: set-retention
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1754,10 +1889,12 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  ship-log-entries-upload-mobile:
+  lambda-upload-eu-west-1-mobile-ship-log-entries:
     type: aws-lambda
     stacks:
       - mobile
+    regions:
+      - eu-west-1
     app: ship-log-entries
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1766,10 +1903,12 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  set-log-shipping-upload-mobile:
+  lambda-upload-eu-west-1-mobile-set-log-shipping:
     type: aws-lambda
     stacks:
       - mobile
+    regions:
+      - eu-west-1
     app: set-log-shipping
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1778,22 +1917,27 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  cloudwatch-logs-management-cfn-mobile:
+  cfn-eu-west-1-mobile-cloudwatch-logs-management:
     type: cloud-formation
+    regions:
+      - eu-west-1
     stacks:
       - mobile
     app: cloudwatch-logs-management
     contentDirectory: /tmp/cdk.out
     parameters:
-      templatePath: CloudwatchLogsManagement-mobile.template.json
+      templateStagePaths:
+        PROD: CloudwatchLogsManagement-mobile.template.json
     dependencies:
-      - set-retention-upload-mobile
-      - ship-log-entries-upload-mobile
-      - set-log-shipping-upload-mobile
-  set-retention-update-mobile:
+      - lambda-upload-eu-west-1-mobile-set-retention
+      - lambda-upload-eu-west-1-mobile-ship-log-entries
+      - lambda-upload-eu-west-1-mobile-set-log-shipping
+  lambda-update-eu-west-1-mobile-set-retention:
     type: aws-lambda
     stacks:
       - mobile
+    regions:
+      - eu-west-1
     app: set-retention
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1803,11 +1947,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-mobile
-  ship-log-entries-update-mobile:
+      - cfn-eu-west-1-mobile-cloudwatch-logs-management
+  lambda-update-eu-west-1-mobile-ship-log-entries:
     type: aws-lambda
     stacks:
       - mobile
+    regions:
+      - eu-west-1
     app: ship-log-entries
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1817,11 +1963,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-mobile
-  set-log-shipping-update-mobile:
+      - cfn-eu-west-1-mobile-cloudwatch-logs-management
+  lambda-update-eu-west-1-mobile-set-log-shipping:
     type: aws-lambda
     stacks:
       - mobile
+    regions:
+      - eu-west-1
     app: set-log-shipping
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1831,11 +1979,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-mobile
-  set-retention-upload-targeting:
+      - cfn-eu-west-1-mobile-cloudwatch-logs-management
+  lambda-upload-eu-west-1-targeting-set-retention:
     type: aws-lambda
     stacks:
       - targeting
+    regions:
+      - eu-west-1
     app: set-retention
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1844,10 +1994,12 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  ship-log-entries-upload-targeting:
+  lambda-upload-eu-west-1-targeting-ship-log-entries:
     type: aws-lambda
     stacks:
       - targeting
+    regions:
+      - eu-west-1
     app: ship-log-entries
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1856,10 +2008,12 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  set-log-shipping-upload-targeting:
+  lambda-upload-eu-west-1-targeting-set-log-shipping:
     type: aws-lambda
     stacks:
       - targeting
+    regions:
+      - eu-west-1
     app: set-log-shipping
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1868,22 +2022,27 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  cloudwatch-logs-management-cfn-targeting:
+  cfn-eu-west-1-targeting-cloudwatch-logs-management:
     type: cloud-formation
+    regions:
+      - eu-west-1
     stacks:
       - targeting
     app: cloudwatch-logs-management
     contentDirectory: /tmp/cdk.out
     parameters:
-      templatePath: CloudwatchLogsManagement-targeting.template.json
+      templateStagePaths:
+        PROD: CloudwatchLogsManagement-targeting.template.json
     dependencies:
-      - set-retention-upload-targeting
-      - ship-log-entries-upload-targeting
-      - set-log-shipping-upload-targeting
-  set-retention-update-targeting:
+      - lambda-upload-eu-west-1-targeting-set-retention
+      - lambda-upload-eu-west-1-targeting-ship-log-entries
+      - lambda-upload-eu-west-1-targeting-set-log-shipping
+  lambda-update-eu-west-1-targeting-set-retention:
     type: aws-lambda
     stacks:
       - targeting
+    regions:
+      - eu-west-1
     app: set-retention
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1893,11 +2052,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-targeting
-  ship-log-entries-update-targeting:
+      - cfn-eu-west-1-targeting-cloudwatch-logs-management
+  lambda-update-eu-west-1-targeting-ship-log-entries:
     type: aws-lambda
     stacks:
       - targeting
+    regions:
+      - eu-west-1
     app: ship-log-entries
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1907,11 +2068,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-targeting
-  set-log-shipping-update-targeting:
+      - cfn-eu-west-1-targeting-cloudwatch-logs-management
+  lambda-update-eu-west-1-targeting-set-log-shipping:
     type: aws-lambda
     stacks:
       - targeting
+    regions:
+      - eu-west-1
     app: set-log-shipping
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1921,11 +2084,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-targeting
-  set-retention-upload-pfi:
+      - cfn-eu-west-1-targeting-cloudwatch-logs-management
+  lambda-upload-eu-west-1-pfi-set-retention:
     type: aws-lambda
     stacks:
       - pfi
+    regions:
+      - eu-west-1
     app: set-retention
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1934,10 +2099,12 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  ship-log-entries-upload-pfi:
+  lambda-upload-eu-west-1-pfi-ship-log-entries:
     type: aws-lambda
     stacks:
       - pfi
+    regions:
+      - eu-west-1
     app: ship-log-entries
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1946,10 +2113,12 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  set-log-shipping-upload-pfi:
+  lambda-upload-eu-west-1-pfi-set-log-shipping:
     type: aws-lambda
     stacks:
       - pfi
+    regions:
+      - eu-west-1
     app: set-log-shipping
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1958,22 +2127,27 @@ deployments:
       fileName: cloudwatch-logs-management.zip
     actions:
       - uploadLambda
-  cloudwatch-logs-management-cfn-pfi:
+  cfn-eu-west-1-pfi-cloudwatch-logs-management:
     type: cloud-formation
+    regions:
+      - eu-west-1
     stacks:
       - pfi
     app: cloudwatch-logs-management
     contentDirectory: /tmp/cdk.out
     parameters:
-      templatePath: CloudwatchLogsManagement-pfi.template.json
+      templateStagePaths:
+        PROD: CloudwatchLogsManagement-pfi.template.json
     dependencies:
-      - set-retention-upload-pfi
-      - ship-log-entries-upload-pfi
-      - set-log-shipping-upload-pfi
-  set-retention-update-pfi:
+      - lambda-upload-eu-west-1-pfi-set-retention
+      - lambda-upload-eu-west-1-pfi-ship-log-entries
+      - lambda-upload-eu-west-1-pfi-set-log-shipping
+  lambda-update-eu-west-1-pfi-set-retention:
     type: aws-lambda
     stacks:
       - pfi
+    regions:
+      - eu-west-1
     app: set-retention
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1983,11 +2157,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-pfi
-  ship-log-entries-update-pfi:
+      - cfn-eu-west-1-pfi-cloudwatch-logs-management
+  lambda-update-eu-west-1-pfi-ship-log-entries:
     type: aws-lambda
     stacks:
       - pfi
+    regions:
+      - eu-west-1
     app: ship-log-entries
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -1997,11 +2173,13 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-pfi
-  set-log-shipping-update-pfi:
+      - cfn-eu-west-1-pfi-cloudwatch-logs-management
+  lambda-update-eu-west-1-pfi-set-log-shipping:
     type: aws-lambda
     stacks:
       - pfi
+    regions:
+      - eu-west-1
     app: set-log-shipping
     contentDirectory: cloudwatch-logs-management
     parameters:
@@ -2011,6 +2189,6 @@ deployments:
     actions:
       - updateLambda
     dependencies:
-      - cloudwatch-logs-management-cfn-pfi
+      - cfn-eu-west-1-pfi-cloudwatch-logs-management
 "
 `;

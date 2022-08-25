@@ -1,19 +1,9 @@
 import 'source-map-support/register';
-import type { StageSynthesisOptions } from 'aws-cdk-lib';
-import { App } from 'aws-cdk-lib';
-import type { CloudAssembly } from 'aws-cdk-lib/cx-api';
+import { GuRootExperimental } from '@guardian/cdk/lib/experimental/constructs/root';
 import type { CloudwatchLogsManagementProps } from '../lib/cloudwatch-logs-management';
 import { CloudwatchLogsManagement } from '../lib/cloudwatch-logs-management';
-import { RiffRaffYamlFile } from '../lib/riff-raff-yaml';
 
-class AppWithRiffRaffYamlGenerator extends App {
-	override synth(options?: StageSynthesisOptions): CloudAssembly {
-		new RiffRaffYamlFile(this).synth();
-		return super.synth(options);
-	}
-}
-
-const app = new AppWithRiffRaffYamlGenerator();
+const app = new GuRootExperimental();
 
 export const stacks: CloudwatchLogsManagementProps[] = [
 	{ stack: 'deploy' },
