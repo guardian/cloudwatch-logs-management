@@ -11,7 +11,7 @@
   "devDependencies": {
     "@guardian/cdk": "47.1.0",
     "aws-cdk": "2.35.0",
-    "aws-cdk-lib": "2.35.0",
+    "aws-cdk-lib": "2.38.1",
     "constructs": "10.1.70",
     "source-map-support": "^0.5.20",
     "ts-node": "^10.9.1"
