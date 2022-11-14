@@ -12,13 +12,3 @@ describe('The CloudwatchLogsManagement stack', () => {
 		expect(template.toJSON()).toMatchSnapshot();
 	});
 });
-
-describe('The riff-raff.yaml file', () => {
-	it('matches the snapshot', () => {
-		const app = new App({ outdir: '/tmp/cdk.out' });
-		stacks.forEach((stack) => new CloudwatchLogsManagement(app, stack));
-
-		const riffRaff = new RiffRaffYamlFileExperimental(app);
-		expect(riffRaff.toYAML()).toMatchSnapshot();
-	});
-});
