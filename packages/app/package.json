@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.109",
-    "aws-sdk": "^2.1249.0"
+    "aws-sdk": "^2.1266.0"
   },
   "jest": {
     "testMatch": [
