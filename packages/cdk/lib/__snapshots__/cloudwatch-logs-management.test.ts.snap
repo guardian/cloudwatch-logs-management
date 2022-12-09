@@ -51,6 +51,9 @@ Object {
         "Environment": Object {
           "Variables": Object {
             "APP": "set-log-shipping",
+            "LOG_KINESIS_STREAM": Object {
+              "Ref": "KinesisStreamArn",
+            },
             "LOG_NAME_PREFIXES": "/aws/lambda",
             "LOG_SHIPPING_LAMBDA_ARN": Object {
               "Fn::GetAtt": Array [

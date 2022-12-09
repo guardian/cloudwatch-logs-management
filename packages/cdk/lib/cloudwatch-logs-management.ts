@@ -180,6 +180,7 @@ export class CloudwatchLogsManagement extends GuStack {
 				monitoringConfiguration: { noMonitoring: true },
 				environment: {
 					LOG_SHIPPING_LAMBDA_ARN: shipLogEntriesLambda.functionArn,
+					LOG_KINESIS_STREAM: kinesisStreamArn,
 					LOG_NAME_PREFIXES: logShippingPrefixes.join(','),
 					STRUCTURED_DATA_BUCKET: structuredFieldsBucket.bucketName,
 				},
