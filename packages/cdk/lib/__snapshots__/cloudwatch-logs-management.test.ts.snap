@@ -65,7 +65,7 @@ Object {
             },
           },
         },
-        "Handler": "app.setLogShipping",
+        "Handler": "handlers.setLogShipping",
         "MemorySize": 512,
         "Role": Object {
           "Fn::GetAtt": Array [
@@ -187,7 +187,7 @@ Object {
             "STAGE": "PROD",
           },
         },
-        "Handler": "app.setRetention",
+        "Handler": "handlers.setRetention",
         "MemorySize": 512,
         "Role": Object {
           "Fn::GetAtt": Array [
@@ -278,7 +278,7 @@ Object {
             },
           },
         },
-        "Handler": "shipLogEntries.shipLogEntries",
+        "Handler": "handlers.shipLogEntries",
         "MemorySize": 512,
         "Role": Object {
           "Fn::GetAtt": Array [
