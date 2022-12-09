@@ -42,11 +42,11 @@ function getRequiredEnv(
 
 export function getCommonConfig(): CommonConfig {
 	const region = getRequiredEnv('AWS_REGION');
-	const maxRetries = parseInt(getRequiredEnv('AWS_RETRIES', '10'));
+	const maxRetries = 10;
 	return {
 		awsConfig: {
 			region,
-			maxRetries: maxRetries,
+			maxRetries,
 		},
 	};
 }
