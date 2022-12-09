@@ -1,8 +1,7 @@
-import type { ConfigurationOptions } from 'aws-sdk';
+import type { RegionInputConfig } from '@aws-sdk/config-resolver/dist-types/regionConfig/resolveRegionConfig';
+import type { RetryInputConfig } from '@aws-sdk/middleware-retry/dist-types/configurations';
 
-interface CommonConfig {
-	awsConfig: ConfigurationOptions;
-}
+interface CommonConfig extends RetryInputConfig, RegionInputConfig {}
 
 interface SetRetentionConfig {
 	retentionInDays: number;
@@ -45,12 +44,10 @@ function getRequiredEnv(key: string, devDefault?: string): string {
 
 export function getCommonConfig(): CommonConfig {
 	const region = getRequiredEnv('AWS_REGION');
-	const maxRetries = 10;
+	const maxAttempts = 10;
 	return {
-		awsConfig: {
-			region,
-			maxRetries,
-		},
+		region,
+		maxAttempts,
 	};
 }
 

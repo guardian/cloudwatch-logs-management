@@ -1,4 +1,6 @@
-import type { ECS, Lambda, S3 } from 'aws-sdk';
+import type { ECS } from '@aws-sdk/client-ecs';
+import type { Lambda } from '@aws-sdk/client-lambda';
+import type { S3 } from '@aws-sdk/client-s3';
 import { getAllTaskDefinitions } from './ecs';
 import { getLambdaFunctions } from './lambda';
 import type {

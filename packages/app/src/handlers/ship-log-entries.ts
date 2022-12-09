@@ -1,11 +1,12 @@
 import zlib from 'zlib';
+import type { PutRecordsOutput } from '@aws-sdk/client-kinesis';
+import { Kinesis } from '@aws-sdk/client-kinesis';
+import { S3 } from '@aws-sdk/client-s3';
 import type {
 	CloudWatchLogsDecodedData,
 	CloudWatchLogsEvent,
 	Context,
 } from 'aws-lambda';
-import { Kinesis, S3 } from 'aws-sdk';
-import type { PutRecordsOutput } from 'aws-sdk/clients/kinesis';
 import { BUILD_INFO } from '../build-info';
 import { getCommonConfig, getShipLogsConfig } from '../config';
 import { putKinesisRecords } from '../kinesis';
@@ -13,7 +14,7 @@ import { createStructuredLog } from '../logEntryProcessing';
 import type { StructuredFields } from '../model';
 import { getStructuredFields } from '../structuredFields';
 
-const { awsConfig } = getCommonConfig();
+const awsConfig = getCommonConfig();
 const { kinesisStreamName, structuredDataBucket, structuredDataKey } =
 	getShipLogsConfig();
 

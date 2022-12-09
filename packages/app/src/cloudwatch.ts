@@ -1,19 +1,18 @@
-import type { CloudWatchLogs } from 'aws-sdk';
+import type {
+	CloudWatchLogs,
+	LogGroup,
+	SubscriptionFilter,
+} from '@aws-sdk/client-cloudwatch-logs';
 
 async function getAllLogGroups(
 	cloudwatchLogs: CloudWatchLogs,
 	logGroupNamePrefix?: string,
-): Promise<CloudWatchLogs.LogGroup[]> {
-	async function rec(
-		acc: CloudWatchLogs.LogGroup[],
-		nextToken?: string,
-	): Promise<CloudWatchLogs.LogGroup[]> {
-		const result = await cloudwatchLogs
-			.describeLogGroups({
-				nextToken,
-				logGroupNamePrefix,
-			})
-			.promise();
+): Promise<LogGroup[]> {
+	async function rec(acc: LogGroup[], nextToken?: string): Promise<LogGroup[]> {
+		const result = await cloudwatchLogs.describeLogGroups({
+			nextToken,
+			logGroupNamePrefix,
+		});
 		const newAcc = acc.concat(result.logGroups ?? []);
 		if (result.nextToken) {
 			return rec(newAcc, result.nextToken);
@@ -26,7 +25,7 @@ async function getAllLogGroups(
 
 export async function subscribeGroups(
 	cloudwatchLogs: CloudWatchLogs,
-	groups: CloudWatchLogs.LogGroup[],
+	groups: LogGroup[],
 	filterName: string,
 	targetLambda: string,
 ): Promise<void> {
@@ -58,7 +57,7 @@ export async function subscribeGroups(
 
 export async function unsubscribeGroups(
 	cloudwatchLogs: CloudWatchLogs,
-	groups: CloudWatchLogs.LogGroup[],
+	groups: LogGroup[],
 	filterName: string,
 ): Promise<void> {
 	await Promise.all(
@@ -87,7 +86,7 @@ export async function unsubscribeGroups(
 export async function getCloudWatchLogGroups(
 	cloudwatchLogs: CloudWatchLogs,
 	logGroupNamePrefix?: string,
-): Promise<CloudWatchLogs.LogGroup[]> {
+): Promise<LogGroup[]> {
 	return await getAllLogGroups(cloudwatchLogs, logGroupNamePrefix);
 }
 
@@ -96,25 +95,21 @@ export async function setCloudwatchRetention(
 	groupName: string,
 	retentionInDays: number,
 ): Promise<void> {
-	await cloudwatchLogs
-		.putRetentionPolicy({
-			logGroupName: groupName,
-			retentionInDays: retentionInDays,
-		})
-		.promise();
+	await cloudwatchLogs.putRetentionPolicy({
+		logGroupName: groupName,
+		retentionInDays: retentionInDays,
+	});
 }
 
 export async function getSubscriptions(
 	cloudwatchLogs: CloudWatchLogs,
 	logGroupName: string,
 	filterNamePrefix?: string,
-): Promise<CloudWatchLogs.SubscriptionFilter[]> {
-	const results = await cloudwatchLogs
-		.describeSubscriptionFilters({
-			logGroupName,
-			filterNamePrefix,
-		})
-		.promise();
+): Promise<SubscriptionFilter[]> {
+	const results = await cloudwatchLogs.describeSubscriptionFilters({
+		logGroupName,
+		filterNamePrefix,
+	});
 	if (results.subscriptionFilters) {
 		return results.subscriptionFilters;
 	} else {
@@ -127,12 +122,10 @@ export async function deleteSubscription(
 	logGroupName: string,
 	filterName: string,
 ): Promise<void> {
-	await cloudwatchLogs
-		.deleteSubscriptionFilter({
-			logGroupName,
-			filterName,
-		})
-		.promise();
+	await cloudwatchLogs.deleteSubscriptionFilter({
+		logGroupName,
+		filterName,
+	});
 }
 
 export async function putSubscription(
@@ -141,12 +134,10 @@ export async function putSubscription(
 	filterName: string,
 	destinationArn: string,
 ): Promise<void> {
-	await cloudwatchLogs
-		.putSubscriptionFilter({
-			logGroupName,
-			filterName,
-			filterPattern: '', // take everything
-			destinationArn,
-		})
-		.promise();
+	await cloudwatchLogs.putSubscriptionFilter({
+		logGroupName,
+		filterName,
+		filterPattern: '', // take everything
+		destinationArn,
+	});
 }

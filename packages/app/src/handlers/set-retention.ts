@@ -1,8 +1,8 @@
-import { CloudWatchLogs } from 'aws-sdk';
+import { CloudWatchLogs } from '@aws-sdk/client-cloudwatch-logs';
 import { getCloudWatchLogGroups, setCloudwatchRetention } from '../cloudwatch';
 import { getCommonConfig, getSetRetentionConfig } from '../config';
 
-const { awsConfig } = getCommonConfig();
+const awsConfig = getCommonConfig();
 const cloudwatchLogs = new CloudWatchLogs(awsConfig);
 
 function sleep(ms: number) {
