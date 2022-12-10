@@ -72,7 +72,7 @@ export class CloudwatchLogsManagement extends GuStack {
 
 		const setRetentionLambda = new GuScheduledLambda(this, 'set-retention', {
 			app: 'set-retention',
-			runtime: Runtime.NODEJS_16_X,
+			runtime: Runtime.NODEJS_18_X,
 			fileName: 'set-retention.zip',
 			handler: 'handlers.setRetention',
 			rules: [{ schedule: Schedule.rate(Duration.hours(1)) }],
@@ -104,7 +104,7 @@ export class CloudwatchLogsManagement extends GuStack {
 			'ship-log-entries',
 			{
 				app: 'ship-log-entries',
-				runtime: Runtime.NODEJS_16_X,
+				runtime: Runtime.NODEJS_18_X,
 				fileName: 'ship-log-entries.zip',
 				handler: 'handlers.shipLogEntries',
 				timeout: Duration.seconds(5),
@@ -173,7 +173,7 @@ export class CloudwatchLogsManagement extends GuStack {
 			'set-log-shipping',
 			{
 				app: 'set-log-shipping',
-				runtime: Runtime.NODEJS_16_X,
+				runtime: Runtime.NODEJS_18_X,
 				fileName: 'set-log-shipping.zip',
 				handler: 'handlers.setLogShipping',
 				rules: [{ schedule: Schedule.rate(Duration.minutes(10)) }],
