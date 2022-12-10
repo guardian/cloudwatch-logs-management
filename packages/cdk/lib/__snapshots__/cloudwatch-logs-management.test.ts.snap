@@ -2,6 +2,17 @@
 
 exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
 Object {
+  "Metadata": Object {
+    "gu:cdk:constructs": Array [
+      "GuStringParameter",
+      "GuS3Bucket",
+      "GuDistributionBucketParameter",
+      "GuScheduledLambda",
+      "GuLambdaFunction",
+      "GuScheduledLambda",
+    ],
+    "gu:cdk:version": "TEST",
+  },
   "Parameters": Object {
     "DistributionBucketName": Object {
       "Default": "/account/services/artifact.bucket",
@@ -424,7 +435,7 @@ Object {
                       Object {
                         "Ref": "DistributionBucketName",
                       },
-                      "/*",
+                      "/deploy/PROD/set-log-shipping/cloudwatch-logs-management.zip",
                     ],
                   ],
                 },
@@ -609,7 +620,7 @@ Object {
                       Object {
                         "Ref": "DistributionBucketName",
                       },
-                      "/*",
+                      "/deploy/PROD/set-retention/cloudwatch-logs-management.zip",
                     ],
                   ],
                 },
@@ -853,7 +864,7 @@ Object {
                       Object {
                         "Ref": "DistributionBucketName",
                       },
-                      "/*",
+                      "/deploy/PROD/ship-log-entries/cloudwatch-logs-management.zip",
                     ],
                   ],
                 },
