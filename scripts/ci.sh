@@ -5,25 +5,13 @@ set -e
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 ROOT_DIR="${DIR}/.."
 
-setupNodeVersion() {
-  # source NVM on teamcity
-  if [ -e "${NVM_DIR}/nvm.sh" ]; then
-      . ${NVM_DIR}/nvm.sh
-  else
-      . $(brew --prefix nvm)/nvm.sh
-  fi
-  nvm install
-  nvm use
-}
-
 injectBuildInfo() {
   COMMIT=$(git rev-parse HEAD)
-  BUILD="${BUILD_NUMBER:-DEV}"
+  BUILD="${GITHUB_RUN_NUMBER:-DEV}"
   echo "// prettier-ignore" > "${ROOT_DIR}/packages/app/src/build-info.ts"
   echo "export const BUILD_INFO = { 'ShippedBy-revision': '${COMMIT}', 'ShippedBy-buildNumber': '${BUILD}' };" >> "${ROOT_DIR}/packages/app/src/build-info.ts"
 }
 
-setupNodeVersion
 injectBuildInfo
 
 npm ci

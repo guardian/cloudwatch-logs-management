@@ -1,0 +1,26 @@
+name: CI
+on:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # required by aws-actions/configure-aws-credentials
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+      # Setup AWS credentials to enable uploading to S3 for Riff-Raff.
+      # See https://github.com/aws-actions/configure-aws-credentials
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.GU_RIFF_RAFF_ROLE_ARN }}
+          aws-region: eu-west-1
+      - run: |
+          LAST_TEAMCITY_BUILD=488
+          export GITHUB_RUN_NUMBER=$(( $GITHUB_RUN_NUMBER + $LAST_TEAMCITY_BUILD ))
+          ./scripts/ci.sh
