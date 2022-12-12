@@ -74,7 +74,7 @@ export class CloudwatchLogsManagement extends GuStack {
 			app: 'set-retention',
 			runtime: Runtime.NODEJS_16_X,
 			fileName: 'cloudwatch-logs-management.zip',
-			handler: 'app.setRetention',
+			handler: 'handlers.setRetention',
 			rules: [{ schedule: Schedule.rate(Duration.hours(1)) }],
 			monitoringConfiguration: { noMonitoring: true },
 			environment: {
@@ -106,7 +106,7 @@ export class CloudwatchLogsManagement extends GuStack {
 				app: 'ship-log-entries',
 				runtime: Runtime.NODEJS_16_X,
 				fileName: 'cloudwatch-logs-management.zip',
-				handler: 'shipLogEntries.shipLogEntries',
+				handler: 'handlers.shipLogEntries',
 				timeout: Duration.seconds(5),
 				environment: {
 					LOG_KINESIS_STREAM: kinesisStreamArn,
@@ -175,11 +175,12 @@ export class CloudwatchLogsManagement extends GuStack {
 				app: 'set-log-shipping',
 				runtime: Runtime.NODEJS_16_X,
 				fileName: 'cloudwatch-logs-management.zip',
-				handler: 'app.setLogShipping',
+				handler: 'handlers.setLogShipping',
 				rules: [{ schedule: Schedule.rate(Duration.minutes(10)) }],
 				monitoringConfiguration: { noMonitoring: true },
 				environment: {
 					LOG_SHIPPING_LAMBDA_ARN: shipLogEntriesLambda.functionArn,
+					LOG_KINESIS_STREAM: kinesisStreamArn,
 					LOG_NAME_PREFIXES: logShippingPrefixes.join(','),
 					STRUCTURED_DATA_BUCKET: structuredFieldsBucket.bucketName,
 				},
