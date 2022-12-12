@@ -23,21 +23,24 @@ interface ShipLogsConfig extends StructuredDataConfig {
 	kinesisStreamName: string;
 }
 
-function getRequiredEnv(
-	key: string,
-	devDefault: string | undefined = undefined,
-): string {
+function getRequiredEnv(key: string, devDefault?: string): string {
 	const value = process.env[key];
-	if (!value) {
-		const stage = process.env[key] ?? 'DEV';
-		if (stage == 'PROD' || stage == 'CODE' || !devDefault) {
-			throw new Error(`Missing ENV var ${key}`);
-		} else {
-			return devDefault;
-		}
-	} else {
+
+	// happy path
+	if (value) {
 		return value;
 	}
+
+	const stage = process.env['STAGE'] ?? 'DEV';
+	const shouldUseDevDefault = stage === 'DEV';
+
+	// happy path, when in DEV
+	if (devDefault && shouldUseDevDefault) {
+		return devDefault;
+	}
+
+	// unhappy path
+	throw new Error(`Missing ENV var ${key}`);
 }
 
 export function getCommonConfig(): CommonConfig {
