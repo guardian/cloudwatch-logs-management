@@ -8,7 +8,17 @@
       "compress": false
     },
     {
-      "action": "cloudwatch-logs-management",
+      "action": "set-retention",
+      "path": "dist/packages/app/src",
+      "compress": "zip"
+    },
+    {
+      "action": "ship-log-entries",
+      "path": "dist/packages/app/src",
+      "compress": "zip"
+    },
+    {
+      "action": "set-log-shipping",
       "path": "dist/packages/app/src",
       "compress": "zip"
     }

@@ -57,7 +57,7 @@ Object {
           "S3Bucket": Object {
             "Ref": "DistributionBucketName",
           },
-          "S3Key": "deploy/PROD/set-log-shipping/cloudwatch-logs-management.zip",
+          "S3Key": "deploy/PROD/set-log-shipping/set-log-shipping.zip",
         },
         "Environment": Object {
           "Variables": Object {
@@ -191,7 +191,7 @@ Object {
           "S3Bucket": Object {
             "Ref": "DistributionBucketName",
           },
-          "S3Key": "deploy/PROD/set-retention/cloudwatch-logs-management.zip",
+          "S3Key": "deploy/PROD/set-retention/set-retention.zip",
         },
         "Environment": Object {
           "Variables": Object {
@@ -277,7 +277,7 @@ Object {
           "S3Bucket": Object {
             "Ref": "DistributionBucketName",
           },
-          "S3Key": "deploy/PROD/ship-log-entries/cloudwatch-logs-management.zip",
+          "S3Key": "deploy/PROD/ship-log-entries/ship-log-entries.zip",
         },
         "Environment": Object {
           "Variables": Object {
@@ -438,7 +438,7 @@ Object {
                       Object {
                         "Ref": "DistributionBucketName",
                       },
-                      "/deploy/PROD/set-log-shipping/cloudwatch-logs-management.zip",
+                      "/deploy/PROD/set-log-shipping/set-log-shipping.zip",
                     ],
                   ],
                 },
@@ -623,7 +623,7 @@ Object {
                       Object {
                         "Ref": "DistributionBucketName",
                       },
-                      "/deploy/PROD/set-retention/cloudwatch-logs-management.zip",
+                      "/deploy/PROD/set-retention/set-retention.zip",
                     ],
                   ],
                 },
@@ -867,7 +867,7 @@ Object {
                       Object {
                         "Ref": "DistributionBucketName",
                       },
-                      "/deploy/PROD/ship-log-entries/cloudwatch-logs-management.zip",
+                      "/deploy/PROD/ship-log-entries/ship-log-entries.zip",
                     ],
                   ],
                 },
