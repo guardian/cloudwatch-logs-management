@@ -24,6 +24,8 @@ export const stacks: CloudwatchLogsManagementProps[] = [
 			'/aws/lambda/diff-publisher',
 			'/aws/lambda/braze-exporter-trigger',
 			'/aws/lambda/braze-exporter-callback',
+			'/aws/lambda/braze-exporter-progress',
+			'/aws/lambda/braze-exporter-bigquery-ingest',
 		],
 	},
 	{
