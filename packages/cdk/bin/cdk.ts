@@ -20,10 +20,10 @@ export const stacks: CloudwatchLogsManagementProps[] = [
 	{
 		stack: 'targeting',
 		logShippingPrefixes: [
-			'/aws/lambda/diff-checker-PROD',
-			'/aws/lambda/diff-publisher-PROD',
-			'/aws/lambda/braze-exporter-trigger-PROD',
-			'/aws/lambda/braze-exporter-callback-PROD',
+			'/aws/lambda/diff-checker',
+			'/aws/lambda/diff-publisher',
+			'/aws/lambda/braze-exporter-trigger',
+			'/aws/lambda/braze-exporter-callback',
 		],
 	},
 	{
