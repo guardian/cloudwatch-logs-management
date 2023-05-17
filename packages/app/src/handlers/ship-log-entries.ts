@@ -13,17 +13,17 @@ import { createStructuredLog } from '../logEntryProcessing';
 import type { StructuredFields } from '../model';
 import { getStructuredFields } from '../structuredFields';
 
-const { awsConfig } = getCommonConfig();
-const { kinesisStreamName, structuredDataBucket, structuredDataKey } =
-	getShipLogsConfig();
-
-const s3 = new S3(awsConfig);
-const kinesis = new Kinesis(awsConfig);
-
 export async function shipLogEntries(
 	event: CloudWatchLogsEvent,
 	context: Context,
 ): Promise<PutRecordsOutput[]> {
+	const { awsConfig } = getCommonConfig();
+	const { kinesisStreamName, structuredDataBucket, structuredDataKey } =
+		getShipLogsConfig();
+
+	const s3 = new S3(awsConfig);
+	const kinesis = new Kinesis(awsConfig);
+
 	const payload = Buffer.from(event.awslogs.data, 'base64');
 	const json = zlib.gunzipSync(payload).toString('utf8');
 	const decoded = JSON.parse(json) as CloudWatchLogsDecodedData;

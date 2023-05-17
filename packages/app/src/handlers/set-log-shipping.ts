@@ -7,13 +7,6 @@ import {
 import { getCommonConfig, getConfigureLogShippingConfig } from '../config';
 import { updateStructuredFieldsData } from '../structuredFields';
 
-const { awsConfig } = getCommonConfig();
-
-const cloudwatchLogs = new CloudWatchLogs(awsConfig);
-const s3 = new S3(awsConfig);
-const lambda = new Lambda(awsConfig);
-const ecs = new ECS(awsConfig);
-
 function eligibleForLogShipping(
 	logNamePrefixes: string[],
 	groupName: string,
@@ -27,6 +20,13 @@ function eligibleForLogShipping(
 }
 
 export async function setLogShipping(trigger: unknown): Promise<void> {
+	const { awsConfig } = getCommonConfig();
+
+	const cloudwatchLogs = new CloudWatchLogs(awsConfig);
+	const s3 = new S3(awsConfig);
+	const lambda = new Lambda(awsConfig);
+	const ecs = new ECS(awsConfig);
+
 	console.log('Configuring log shipping');
 	console.log(JSON.stringify(trigger));
 	const {
