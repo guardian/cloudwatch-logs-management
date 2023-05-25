@@ -6,6 +6,7 @@ import { CloudwatchLogsManagement } from '../lib/cloudwatch-logs-management';
 const app = new GuRootExperimental();
 
 export const stacks: CloudwatchLogsManagementProps[] = [
+	{ stack: 'print-production' },
 	{ stack: 'deploy' },
 	{ stack: 'flexible' },
 	{ stack: 'workflow' },
