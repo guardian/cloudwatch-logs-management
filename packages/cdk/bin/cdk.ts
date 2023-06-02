@@ -18,6 +18,7 @@ export const stacks: CloudwatchLogsManagementProps[] = [
 	{ stack: 'identity' },
 	{ stack: 'mobile' },
 	{ stack: 'security' },
+	{ stack: 'personalisation' },
 	{
 		stack: 'targeting',
 		logShippingPrefixes: [
