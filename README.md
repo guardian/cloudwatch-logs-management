@@ -60,6 +60,7 @@ To deploy this service into a new account:
      - `/account/services/logging.stream`
   2. Raise a PR, adding your stack to [`packages/cdk/bin/cdk.ts`](packages/cdk/bin/cdk.ts)
   3. Merge the PR; Riff-Raff is configured to continuously deploy this service
+  4. In order for shipped logs appear in Kibana, add the Kinesis stream source from the `aws-account-setup` infrastructure stack to this [file](https://github.com/guardian/deploy-tools-platform/blob/main/elk/src/source.config.ts).
 
 ## Development
 ### Requirements
