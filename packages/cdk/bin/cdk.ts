@@ -38,6 +38,7 @@ export const stacks: CloudwatchLogsManagementProps[] = [
 			'lurch',
 		],
 	},
+	{ stack: 'playground' },
 ];
 
 stacks.forEach((stack) => new CloudwatchLogsManagement(app, stack));
