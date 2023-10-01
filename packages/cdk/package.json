@@ -9,7 +9,7 @@
     "diff": "cdk diff --path-metadata false --version-reporting false"
   },
   "devDependencies": {
-    "@guardian/cdk": "50.10.12",
+    "@guardian/cdk": "50.11.3",
     "aws-cdk": "2.90.0",
     "aws-cdk-lib": "2.90.0",
     "constructs": "10.2.69",
