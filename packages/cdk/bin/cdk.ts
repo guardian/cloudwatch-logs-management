@@ -1,9 +1,9 @@
 import 'source-map-support/register';
-import { GuRootExperimental } from '@guardian/cdk/lib/experimental/constructs/root';
+import { GuRoot } from "@guardian/cdk/lib/constructs/root";
 import type { CloudwatchLogsManagementProps } from '../lib/cloudwatch-logs-management';
 import { CloudwatchLogsManagement } from '../lib/cloudwatch-logs-management';
 
-const app = new GuRootExperimental();
+const app = new GuRoot();
 
 export const stacks: CloudwatchLogsManagementProps[] = [
 	{ stack: 'print-production' },

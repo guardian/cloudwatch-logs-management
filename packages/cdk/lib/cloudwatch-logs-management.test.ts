@@ -1,7 +1,5 @@
-import { RiffRaffYamlFileExperimental } from '@guardian/cdk/lib/experimental/riff-raff-yaml-file';
 import { App } from 'aws-cdk-lib';
 import { Template } from 'aws-cdk-lib/assertions';
-import { stacks } from '../bin/cdk';
 import { CloudwatchLogsManagement } from './cloudwatch-logs-management';
 
 describe('The CloudwatchLogsManagement stack', () => {
