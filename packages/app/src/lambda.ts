@@ -1,5 +1,9 @@
-import type { Lambda } from 'aws-sdk';
-import type { FunctionConfiguration } from 'aws-sdk/clients/lambda';
+import {
+	type FunctionConfiguration,
+	type Lambda,
+	ListFunctionsCommand,
+	ListTagsCommand,
+} from '@aws-sdk/client-lambda';
 import type { LambdaFunction } from './model';
 
 async function getAllFunctions(
@@ -9,11 +13,10 @@ async function getAllFunctions(
 		acc: FunctionConfiguration[],
 		marker?: string,
 	): Promise<FunctionConfiguration[]> {
-		const result = await lambda
-			.listFunctions({
-				Marker: marker,
-			})
-			.promise();
+		const command = new ListFunctionsCommand({
+			Marker: marker,
+		});
+		const result = await lambda.send(command);
 		const newAcc = acc.concat(result.Functions ?? []);
 		if (result.NextMarker) {
 			return rec(newAcc, result.NextMarker);
@@ -39,11 +42,10 @@ export async function getLambdaFunctions(
 				(fn): fn is AwsLambdaFunction => !!fn.FunctionName && !!fn.FunctionArn,
 			)
 			.map(async (fn: AwsLambdaFunction): Promise<LambdaFunction> => {
-				const results = await lambda
-					.listTags({
-						Resource: fn.FunctionArn,
-					})
-					.promise();
+				const command = new ListTagsCommand({
+					Resource: fn.FunctionArn,
+				});
+				const results = await lambda.send(command);
 				return {
 					functionArn: fn.FunctionArn,
 					functionName: fn.FunctionName,

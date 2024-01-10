@@ -1,4 +1,8 @@
-import type { ECS } from 'aws-sdk';
+import {
+	DescribeTaskDefinitionCommand,
+	ListTaskDefinitionsCommand,
+} from '@aws-sdk/client-ecs';
+import type { ECS } from '@aws-sdk/client-ecs';
 import type { Tag, TaskDefinition } from 'aws-sdk/clients/ecs';
 import type { Tags } from './model';
 
@@ -9,11 +13,10 @@ export interface TaskDefinitionWithTags {
 
 async function getAllTaskDefinitionArns(ecs: ECS): Promise<string[]> {
 	async function rec(acc: string[], token?: string): Promise<string[]> {
-		const result = await ecs
-			.listTaskDefinitions({
-				nextToken: token,
-			})
-			.promise();
+		const command = new ListTaskDefinitionsCommand({
+			nextToken: token,
+		});
+		const result = await ecs.send(command);
 		const newAcc = acc.concat(result.taskDefinitionArns ?? []);
 		if (result.nextToken) {
 			return rec(newAcc, result.nextToken);
@@ -37,9 +40,11 @@ function convertTags(tags: Tag[]): Tags {
 function describeTaskDefinitions(ecs: ECS, arns: string[]) {
 	return Promise.all(
 		arns.map(async (arn) => {
-			return await ecs
-				.describeTaskDefinition({ taskDefinition: arn, include: ['TAGS'] })
-				.promise();
+			const command = new DescribeTaskDefinitionCommand({
+				taskDefinition: arn,
+				include: ['TAGS'],
+			});
+			return await ecs.send(command);
 		}),
 	);
 }
@@ -50,7 +55,6 @@ export async function getAllTaskDefinitions(
 	try {
 		const arns = await getAllTaskDefinitionArns(ecs);
 		const definitions = await describeTaskDefinitions(ecs, arns);
-
 		return definitions
 			.filter((d) => d.taskDefinition)
 			.map((d) => {

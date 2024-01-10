@@ -1,4 +1,7 @@
-import { CloudWatchLogs, ECS, Lambda, S3 } from 'aws-sdk';
+import { CloudWatchLogs } from '@aws-sdk/client-cloudwatch-logs';
+import { ECS } from '@aws-sdk/client-ecs';
+import { Lambda } from '@aws-sdk/client-lambda';
+import { S3 } from '@aws-sdk/client-s3';
 import {
 	getCloudWatchLogGroups,
 	subscribeGroups,
