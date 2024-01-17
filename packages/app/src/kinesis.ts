@@ -1,18 +1,19 @@
-import type { Kinesis } from 'aws-sdk';
 import type {
-	PutRecordsOutput,
+	Kinesis,
+	PutRecordsCommandOutput,
 	PutRecordsRequestEntry,
-} from 'aws-sdk/clients/kinesis';
+} from '@aws-sdk/client-kinesis';
+import { PutRecordsCommand } from '@aws-sdk/client-kinesis';
 import type { PublishableStructuredLogData } from './model';
 
 export async function putKinesisRecords(
 	kinesis: Kinesis,
 	streamName: string,
 	logEntries: PublishableStructuredLogData[],
-): Promise<PutRecordsOutput[]> {
+): Promise<PutRecordsCommandOutput[]> {
 	const records: PutRecordsRequestEntry[] = logEntries.map((entry) => {
 		return {
-			Data: JSON.stringify(entry),
+			Data: new TextEncoder().encode(JSON.stringify(entry)),
 			PartitionKey: entry.cloudwatchId,
 		};
 	});
@@ -24,14 +25,13 @@ export async function putKinesisRecords(
 		batchRecords.push(records.splice(0, 500));
 	}
 
-	const results = batchRecords.map((batch) =>
-		kinesis
-			.putRecords({
-				Records: batch,
-				StreamName: streamName,
-			})
-			.promise(),
-	);
+	const results = batchRecords.map((batch) => {
+		const command = new PutRecordsCommand({
+			Records: batch,
+			StreamName: streamName,
+		});
+		return kinesis.send(command);
+	});
 
 	return await Promise.all(results);
 }

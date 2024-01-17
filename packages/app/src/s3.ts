@@ -1,4 +1,5 @@
-import type { S3 } from 'aws-sdk';
+import type { S3 } from '@aws-sdk/client-s3';
+import { GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 
 export async function putData(
 	s3: S3,
@@ -6,14 +7,13 @@ export async function putData(
 	key: string,
 	data: string,
 ): Promise<void> {
-	await s3
-		.putObject({
-			Bucket: bucket,
-			Key: key,
-			Body: data,
-			ContentType: 'application/json; charset=utf-8',
-		})
-		.promise();
+	const command = new PutObjectCommand({
+		Bucket: bucket,
+		Key: key,
+		Body: data,
+		ContentType: 'application/json; charset=utf-8',
+	});
+	await s3.send(command);
 }
 
 export async function getData(
@@ -21,12 +21,11 @@ export async function getData(
 	bucket: string,
 	key: string,
 ): Promise<string> {
-	const result = await s3
-		.getObject({
-			Bucket: bucket,
-			Key: key,
-		})
-		.promise();
+	const command = new GetObjectCommand({
+		Bucket: bucket,
+		Key: key,
+	});
+	const result = await s3.send(command);
 	if (result.Body) {
 		return result.Body.toString();
 	} else {
