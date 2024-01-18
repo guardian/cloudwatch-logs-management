@@ -27,7 +27,7 @@ export async function getData(
 	});
 	const result = await s3.send(command);
 	if (result.Body) {
-		return result.Body.toString();
+		return result.Body.transformToString();
 	} else {
 		return Promise.reject(`Value at s3://${bucket}/${key} could not be found`);
 	}
