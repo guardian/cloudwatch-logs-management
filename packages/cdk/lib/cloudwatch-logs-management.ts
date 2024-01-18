@@ -149,23 +149,27 @@ export class CloudwatchLogsManagement extends GuStack {
        If you need to view logs for debugging purposes, the policy below can be temporarily removed from a specific
        account using Riff-Raff
 			 */
-			new ManagedPolicy(this, 'DisableCloudWatchLoggingPolicy', {
-				statements: [
-					new PolicyStatement({
-						effect: Effect.DENY,
-						actions: [
-							'logs:CreateLogGroup',
-							'logs:CreateLogStream',
-							'logs:PutLogEvents',
-						],
-						resources: [`arn:aws:logs:*:*:*`],
-					}),
-				],
-			}),
+			...(this.stack !== 'playground'
+				? [
+						new ManagedPolicy(this, 'DisableCloudWatchLoggingPolicy', {
+							statements: [
+								new PolicyStatement({
+									effect: Effect.DENY,
+									actions: [
+										'logs:CreateLogGroup',
+										'logs:CreateLogStream',
+										'logs:PutLogEvents',
+									],
+									resources: [`arn:aws:logs:*:*:*`],
+								}),
+							],
+						}),
+				  ]
+				: []),
 		];
 
-		shipLogEntriesPolicies.forEach((policy) =>
-			shipLogEntriesLambda.role?.addManagedPolicy(policy),
+		shipLogEntriesPolicies.forEach(
+			(policy) => shipLogEntriesLambda.role?.addManagedPolicy(policy),
 		);
 
 		const setLogShippingLambda = new GuScheduledLambda(
