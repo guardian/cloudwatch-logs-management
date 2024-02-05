@@ -10,7 +10,7 @@
   "devDependencies": {
     "@types/aws-lambda": "^8.10.130",
     "@aws-sdk/client-cloudwatch-logs": "^3.504.0",
-    "@aws-sdk/client-ecs": "^3.486.0",
+    "@aws-sdk/client-ecs": "^3.504.0",
     "@aws-sdk/client-kinesis": "^3.504.0",
     "@aws-sdk/client-lambda": "^3.504.0",
     "@aws-sdk/client-s3": "^3.485.0"
