@@ -29,12 +29,6 @@ export const stacks: CloudwatchLogsManagementProps[] = [
 		],
 	},
 	{
-		stack: 'investigations',
-		logShippingPrefixes: [
-			'/aws/lambda/transcription-service',
-		],
-	},
-	{
 		stack: 'pfi',
 		logShippingPrefixes: [
 			'/aws/lambda/lurch',
@@ -42,6 +36,7 @@ export const stacks: CloudwatchLogsManagementProps[] = [
 			'/aws/lambda/pfi-lurch',
 			'fb-ad-library',
 			'lurch',
+			'/aws/lambda/transcription-service',
 		],
 	},
 	{ stack: 'playground' },
