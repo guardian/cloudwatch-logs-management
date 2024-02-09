@@ -36,6 +36,7 @@ export const stacks: CloudwatchLogsManagementProps[] = [
 			'/aws/lambda/pfi-lurch',
 			'fb-ad-library',
 			'lurch',
+			'/aws/lambda/transcription-service',
 		],
 	},
 	{ stack: 'playground' },
