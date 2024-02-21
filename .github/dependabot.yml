@@ -16,3 +16,14 @@ updates:
       - dependency-name: "aws-cdk"
       - dependency-name: "aws-cdk-lib"
       - dependency-name: "constructs"
+
+    groups:
+      aws-sdk:
+        patterns:
+          - "@aws-sdk/*"
+      code-quality:
+        patterns:
+          - "@guardian/eslint-config-typescript"
+          - "@guardian/prettier"
+          - "eslint"
+          - "eslint-plugin-prettier"
