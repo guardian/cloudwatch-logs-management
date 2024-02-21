@@ -10,7 +10,12 @@ export const stacks: CloudwatchLogsManagementProps[] = [
 	{ stack: 'deploy' },
 	{ stack: 'flexible' },
 	{ stack: 'workflow' },
-	{ stack: 'media-service' },
+	{ stack: 'media-service',
+		logShippingPrefixes: [
+			'/aws/lambda',
+			'/aws/transfer'
+		],
+	},
 	{ stack: 'content-api' },
 	{ stack: 'cms-fronts' },
 	{ stack: 'ophan' },
