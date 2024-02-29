@@ -2,18 +2,13 @@ import type { CloudWatchLogsClientConfig } from '@aws-sdk/client-cloudwatch-logs
 import type { ECSClientConfig } from '@aws-sdk/client-ecs';
 import type { KinesisClientConfig } from '@aws-sdk/client-kinesis';
 import type { LambdaClientConfig } from '@aws-sdk/client-lambda';
-import type { S3ClientConfig } from '@aws-sdk/client-s3';
-
-type CommonAWSConfig = Pick<
-	S3ClientConfig,
-	keyof KinesisClientConfig &
-		keyof ECSClientConfig &
-		keyof CloudWatchLogsClientConfig &
-		keyof LambdaClientConfig
->;
 
 interface CommonConfig {
-	awsConfig: CommonAWSConfig;
+	awsConfig:
+		| KinesisClientConfig
+		| ECSClientConfig
+		| CloudWatchLogsClientConfig
+		| LambdaClientConfig;
 }
 
 interface SetRetentionConfig {
