@@ -16,6 +16,7 @@ import { getStructuredFields } from '../structuredFields';
 
 export async function shipLogEntries(
 	event: CloudWatchLogsEvent,
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars -- this is a standard signature for AWS Lambdas
 	context: Context,
 ): Promise<PutRecordsCommandOutput[]> {
 	const { awsConfig } = getCommonConfig();
