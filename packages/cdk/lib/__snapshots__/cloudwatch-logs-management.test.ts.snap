@@ -80,6 +80,9 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
           },
         },
         "Handler": "handlers.setLogShipping",
+        "LoggingConfig": {
+          "LogFormat": "JSON",
+        },
         "MemorySize": 512,
         "Role": {
           "Fn::GetAtt": [
@@ -202,6 +205,9 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
           },
         },
         "Handler": "handlers.setRetention",
+        "LoggingConfig": {
+          "LogFormat": "JSON",
+        },
         "MemorySize": 512,
         "Role": {
           "Fn::GetAtt": [
@@ -293,6 +299,9 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
           },
         },
         "Handler": "handlers.shipLogEntries",
+        "LoggingConfig": {
+          "LogFormat": "JSON",
+        },
         "MemorySize": 512,
         "Role": {
           "Fn::GetAtt": [
