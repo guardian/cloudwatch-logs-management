@@ -1,5 +1,5 @@
 import 'source-map-support/register';
-import { GuRoot } from "@guardian/cdk/lib/constructs/root";
+import { GuRoot } from '@guardian/cdk/lib/constructs/root';
 import type { CloudwatchLogsManagementProps } from '../lib/cloudwatch-logs-management';
 import { CloudwatchLogsManagement } from '../lib/cloudwatch-logs-management';
 
@@ -7,14 +7,12 @@ const app = new GuRoot();
 
 export const stacks: CloudwatchLogsManagementProps[] = [
 	{ stack: 'print-production' },
-	{ stack: 'deploy' },
+	{ stack: 'deploy', logShippingPrefixes: ['/aws/lambda', '/aws/cloudtrail'] },
 	{ stack: 'flexible' },
 	{ stack: 'workflow' },
-	{ stack: 'media-service',
-		logShippingPrefixes: [
-			'/aws/lambda',
-			'/aws/transfer'
-		],
+	{
+		stack: 'media-service',
+		logShippingPrefixes: ['/aws/lambda', '/aws/transfer'],
 	},
 	{ stack: 'content-api' },
 	{ stack: 'cms-fronts' },
@@ -45,7 +43,7 @@ export const stacks: CloudwatchLogsManagementProps[] = [
 		],
 	},
 	{ stack: 'playground' },
-	{ stack: 'ai' }
+	{ stack: 'ai' },
 ];
 
 stacks.forEach((stack) => new CloudwatchLogsManagement(app, stack));
