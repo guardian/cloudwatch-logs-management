@@ -14,9 +14,9 @@
     "test": "npm run test --workspaces --if-present"
   },
   "devDependencies": {
-    "@guardian/eslint-config-typescript": "^10.0.0",
+    "@guardian/eslint-config-typescript": "^10.0.1",
     "@guardian/node-riffraff-artifact": "^0.3.2",
-    "@guardian/prettier": "^8.0.0",
+    "@guardian/prettier": "^8.0.1",
     "@types/jest": "^29.5.12",
     "@types/node": "20.12.8",
     "jest": "^29.7.0",
