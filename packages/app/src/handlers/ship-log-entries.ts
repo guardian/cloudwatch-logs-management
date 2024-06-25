@@ -45,6 +45,10 @@ export async function shipLogEntries(
 		return {};
 	});
 	const structuredLogs = decoded.logEvents.map((logEvent) => {
+		console.log('======');
+		console.log(JSON.stringify(logEvent, null, 2));
+		console.log('======');
+
 		return createStructuredLog(logGroup, decoded.logStream, logEvent, {
 			...extraFields,
 			...BUILD_INFO,
