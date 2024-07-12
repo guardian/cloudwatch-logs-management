@@ -21,6 +21,7 @@ export const stacks: CloudwatchLogsManagementProps[] = [
 	{ stack: 'ophan' },
 	{ stack: 'frontend' },
 	{ stack: 'identity' },
+	{ stack: 'interactives' },
 	{ stack: 'mobile' },
 	{ stack: 'security' },
 	{ stack: 'personalisation' },
