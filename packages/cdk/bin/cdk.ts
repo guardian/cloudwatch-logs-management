@@ -1,7 +1,7 @@
 import 'source-map-support/register';
 import { GuRoot } from "@guardian/cdk/lib/constructs/root";
-import type { CloudwatchLogsManagementProps } from '../lib/cloudwatch-logs-management';
-import { CloudwatchLogsManagement } from '../lib/cloudwatch-logs-management';
+import type { CloudwatchLogsManagementProps, CloudwatchLogsManagementForPIIDataProps } from '../lib/cloudwatch-logs-management';
+import { CloudwatchLogsManagement, CloudwatchLogsManagementForPIIData } from '../lib/cloudwatch-logs-management';
 
 const app = new GuRoot();
 
@@ -49,4 +49,12 @@ export const stacks: CloudwatchLogsManagementProps[] = [
 	{ stack: 'ai' }
 ];
 
+export const stacksWithPII: CloudwatchLogsManagementForPIIDataProps[] = [
+	{
+		stack: 'membership',
+			retentionInDays: 14,
+	},
+]
+
 stacks.forEach((stack) => new CloudwatchLogsManagement(app, stack));
+stacksWithPII.forEach((stack) => new CloudwatchLogsManagementForPIIData(app, stack));
