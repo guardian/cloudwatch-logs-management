@@ -45,6 +45,13 @@ export const stacks: CloudwatchLogsManagementProps[] = [
 			'/aws/lambda/transcription-service',
 		],
 	},
+	{
+		stack: 'membership',
+		retentionInDays: 14,
+// Using this to programmatically set the retention time for logs in the membership account.
+// Some logs in the membership stack contain pii-data, so we do not want to send any logs outside of AWS to minimise effort needed for GDPR compliance.
+		logShippingPrefixes: [],
+	},
 	{ stack: 'playground' },
 	{ stack: 'ai' }
 ];
