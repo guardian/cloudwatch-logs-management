@@ -1,7 +1,9 @@
 import 'source-map-support/register';
 import { GuRoot } from "@guardian/cdk/lib/constructs/root";
-import type { CloudwatchLogsManagementProps, CloudwatchLogsManagementForPIIDataProps } from '../lib/cloudwatch-logs-management';
-import { CloudwatchLogsManagement, CloudwatchLogsManagementForPIIData } from '../lib/cloudwatch-logs-management';
+import { CloudwatchLogsManagement } from '../lib/cloudwatch-logs-management';
+import type { CloudwatchLogsManagementProps } from '../lib/cloudwatch-logs-management';
+import { CloudwatchLogsManagementForPIIData } from '../lib/cloudwatch-logs-management-for-pii-data';
+import type { CloudwatchLogsManagementForPIIDataProps } from '../lib/cloudwatch-logs-management-for-pii-data';
 
 const app = new GuRoot();
 
