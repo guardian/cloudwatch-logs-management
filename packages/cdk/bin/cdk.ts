@@ -1,7 +1,6 @@
 import 'source-map-support/register';
 import { GuRoot } from "@guardian/cdk/lib/constructs/root";
-import type { CloudwatchLogsManagementProps } from '../lib/cloudwatch-logs-management';
-import { CloudwatchLogsManagement } from '../lib/cloudwatch-logs-management';
+import type { CloudwatchLogsManagementProps } from "../lib/cloudwatch-logs-management-props";
 import {CloudwatchLogsManagementRetention} from "../lib/cloudwatch-logs-management-retention";
 import {CloudwatchLogsManagementTransfer} from "../lib/cloudwatch-logs-management-transfer";
 
@@ -58,9 +57,9 @@ export const retentionOnlyStacks: CloudwatchLogsManagementProps[] = [
 		stack: 'membership',
 		retentionInDays: 14,
 	}
-]
+];
 
-export const retentionStacks = array.concat(stacks, retentionOnlyStacks);
+export const retentionStacks: CloudwatchLogsManagementProps[] = stacks.concat(retentionOnlyStacks);
 
 retentionStacks.forEach((stack) => new CloudwatchLogsManagementRetention(app, stack));
 stacks.forEach((stack) => new CloudwatchLogsManagementTransfer(app, stack));

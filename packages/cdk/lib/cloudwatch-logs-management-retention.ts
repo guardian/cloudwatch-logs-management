@@ -1,8 +1,5 @@
 import { GuScheduledLambda } from '@guardian/cdk';
-//import type { GuStackProps } from '@guardian/cdk/lib/constructs/core';
-import { GuStack, GuStringParameter } from '@guardian/cdk/lib/constructs/core';
-//import { GuLambdaFunction } from '@guardian/cdk/lib/constructs/lambda';
-//import { GuS3Bucket } from '@guardian/cdk/lib/constructs/s3';
+import { GuStack } from '@guardian/cdk/lib/constructs/core';
 import type { App } from 'aws-cdk-lib';
 import { Duration } from 'aws-cdk-lib';
 import { Schedule } from 'aws-cdk-lib/aws-events';
@@ -13,15 +10,7 @@ import {
 //	ServicePrincipal,
 } from 'aws-cdk-lib/aws-iam';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
-import {CloudwatchLogsManagementProps} from "./cloudwatch-logs-management-props";
-
-// export interface CloudwatchLogsManagementRetentionProps
-// 	extends Omit<GuStackProps, 'stage' | 'env'> {
-// 	retentionInDays?: number;
-// 	logShippingPrefixes?: string[];
-// }
-
-
+import type {CloudwatchLogsManagementProps} from "./cloudwatch-logs-management-props";
 
 export class CloudwatchLogsManagementRetention extends GuStack {
 	constructor(scope: App, props: CloudwatchLogsManagementProps) {
