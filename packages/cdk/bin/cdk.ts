@@ -46,7 +46,10 @@ export const stacks: CloudwatchLogsManagementProps[] = [
 			'/aws/lambda/transcription-service',
 		],
 	},
-	{ stack: 'playground' },
+	{
+		stack: 'playground',
+		retentionInDays: 14,
+	},
 	{ stack: 'ai' }
 ];
 
