@@ -1,5 +1,5 @@
 import { GuScheduledLambda } from '@guardian/cdk';
-import type { GuStackProps } from '@guardian/cdk/lib/constructs/core';
+//import type { GuStackProps } from '@guardian/cdk/lib/constructs/core';
 import { GuStack, GuStringParameter } from '@guardian/cdk/lib/constructs/core';
 import { GuLambdaFunction } from '@guardian/cdk/lib/constructs/lambda';
 import { GuS3Bucket } from '@guardian/cdk/lib/constructs/s3';
@@ -13,14 +13,9 @@ import {
 	ServicePrincipal,
 } from 'aws-cdk-lib/aws-iam';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
+import {CloudwatchLogsManagementProps} from "./cloudwatch-logs-management-props";
 
-export interface CloudwatchLogsManagementProps
-	extends Omit<GuStackProps, 'stage' | 'env'> {
-	retentionInDays?: number;
-	logShippingPrefixes?: string[];
-}
-
-export class CloudwatchLogsManagement extends GuStack {
+export class CloudwatchLogsManagementTransfer extends GuStack {
 	constructor(scope: App, props: CloudwatchLogsManagementProps) {
 		const {
 			stack,
@@ -29,7 +24,7 @@ export class CloudwatchLogsManagement extends GuStack {
 		} = props;
 
 		// The ID will become `CloudwatchLogsManagement-<STACK>`
-		const id = `${CloudwatchLogsManagement.prototype.constructor.name}-${stack}`;
+		const id = `${CloudwatchLogsManagementTransfer.prototype.constructor.name}-${stack}`;
 
 		super(scope, id, {
 			...props,
@@ -69,35 +64,6 @@ export class CloudwatchLogsManagement extends GuStack {
 			logicalId: 'StructuredFieldsBucket',
 			reason: 'Migrating from YAML',
 		});
-
-		const setRetentionLambda = new GuScheduledLambda(this, 'set-retention', {
-			app: 'set-retention',
-			runtime: Runtime.NODEJS_20_X,
-			fileName: 'set-retention.zip',
-			handler: 'handlers.setRetention',
-			rules: [{ schedule: Schedule.rate(Duration.hours(1)) }],
-			monitoringConfiguration: { noMonitoring: true },
-			environment: {
-				RETENTION_IN_DAYS: retentionInDays.toString(),
-			},
-			timeout: Duration.minutes(1),
-		});
-
-		this.overrideLogicalId(setRetentionLambda, {
-			logicalId: 'SetRetentionFunc',
-			reason: 'Migrating from YAML',
-		});
-
-		const setRetentionPolicy = new ManagedPolicy(this, 'SetRetentionPolicy', {
-			statements: [
-				new PolicyStatement({
-					effect: Effect.ALLOW,
-					actions: ['logs:DescribeLogGroups', 'logs:PutRetentionPolicy'],
-					resources: [`arn:aws:logs:${region}:${account}:log-group:*`],
-				}),
-			],
-		});
-		setRetentionLambda.role?.addManagedPolicy(setRetentionPolicy);
 
 		const shipLogEntriesLambda = new GuLambdaFunction(
 			this,

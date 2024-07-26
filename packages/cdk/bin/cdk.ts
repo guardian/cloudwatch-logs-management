@@ -2,6 +2,8 @@ import 'source-map-support/register';
 import { GuRoot } from "@guardian/cdk/lib/constructs/root";
 import type { CloudwatchLogsManagementProps } from '../lib/cloudwatch-logs-management';
 import { CloudwatchLogsManagement } from '../lib/cloudwatch-logs-management';
+import {CloudwatchLogsManagementRetention} from "../lib/cloudwatch-logs-management-retention";
+import {CloudwatchLogsManagementTransfer} from "../lib/cloudwatch-logs-management-transfer";
 
 const app = new GuRoot();
 
@@ -49,4 +51,16 @@ export const stacks: CloudwatchLogsManagementProps[] = [
 	{ stack: 'ai' }
 ];
 
-stacks.forEach((stack) => new CloudwatchLogsManagement(app, stack));
+// For stacks that contain PII data in their logs, these logs cannot be moved from AWS to a 3rd party.
+// It is better to not create the transfer resources at all in these stacks.
+export const retentionOnlyStacks: CloudwatchLogsManagementProps[] = [
+	{
+		stack: 'membership',
+		retentionInDays: 14,
+	}
+]
+
+export const retentionStacks = array.concat(stacks, retentionOnlyStacks);
+
+retentionStacks.forEach((stack) => new CloudwatchLogsManagementRetention(app, stack));
+stacks.forEach((stack) => new CloudwatchLogsManagementTransfer(app, stack));
