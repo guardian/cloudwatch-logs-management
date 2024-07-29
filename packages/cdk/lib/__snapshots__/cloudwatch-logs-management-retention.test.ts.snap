@@ -19,19 +19,19 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
   "Resources": {
     "SetRetentionFunc": {
       "DependsOn": [
-        "setretentionServiceRoleDefaultPolicyCEB3697A",
-        "setretentionServiceRoleF411F948",
+        "setloggroupretentionServiceRoleDefaultPolicyFD6F91DA",
+        "setloggroupretentionServiceRole04D309F6",
       ],
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "DistributionBucketName",
           },
-          "S3Key": "deploy/PROD/set-retention/set-retention.zip",
+          "S3Key": "deploy/PROD/set-log-group-retention/set-log-group-retention.zip",
         },
         "Environment": {
           "Variables": {
-            "APP": "set-retention",
+            "APP": "set-log-group-retention",
             "RETENTION_IN_DAYS": "7",
             "STACK": "deploy",
             "STAGE": "PROD",
@@ -44,7 +44,7 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
         "MemorySize": 512,
         "Role": {
           "Fn::GetAtt": [
-            "setretentionServiceRoleF411F948",
+            "setloggroupretentionServiceRole04D309F6",
             "Arn",
           ],
         },
@@ -52,7 +52,7 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
         "Tags": [
           {
             "Key": "App",
-            "Value": "set-retention",
+            "Value": "set-log-group-retention",
           },
           {
             "Key": "gu:cdk:version",
@@ -106,7 +106,63 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
       },
       "Type": "AWS::IAM::ManagedPolicy",
     },
-    "setretentionServiceRoleDefaultPolicyCEB3697A": {
+    "setloggroupretentionServiceRole04D309F6": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+          {
+            "Ref": "SetRetentionPolicy7B345D11",
+          },
+        ],
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "set-log-group-retention",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/cloudwatch-logs-management",
+          },
+          {
+            "Key": "Stack",
+            "Value": "deploy",
+          },
+          {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "setloggroupretentionServiceRoleDefaultPolicyFD6F91DA": {
       "Properties": {
         "PolicyDocument": {
           "Statement": [
@@ -145,7 +201,7 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
                       {
                         "Ref": "DistributionBucketName",
                       },
-                      "/deploy/PROD/set-retention/set-retention.zip",
+                      "/deploy/PROD/set-log-group-retention/set-log-group-retention.zip",
                     ],
                   ],
                 },
@@ -162,7 +218,7 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
                     {
                       "Ref": "AWS::AccountId",
                     },
-                    ":parameter/PROD/deploy/set-retention",
+                    ":parameter/PROD/deploy/set-log-group-retention",
                   ],
                 ],
               },
@@ -181,7 +237,7 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
                     {
                       "Ref": "AWS::AccountId",
                     },
-                    ":parameter/PROD/deploy/set-retention/*",
+                    ":parameter/PROD/deploy/set-log-group-retention/*",
                   ],
                 ],
               },
@@ -189,91 +245,16 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "setretentionServiceRoleDefaultPolicyCEB3697A",
+        "PolicyName": "setloggroupretentionServiceRoleDefaultPolicyFD6F91DA",
         "Roles": [
           {
-            "Ref": "setretentionServiceRoleF411F948",
+            "Ref": "setloggroupretentionServiceRole04D309F6",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
     },
-    "setretentionServiceRoleF411F948": {
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": {
-                "Service": "lambda.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "ManagedPolicyArns": [
-          {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  "Ref": "AWS::Partition",
-                },
-                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-              ],
-            ],
-          },
-          {
-            "Ref": "SetRetentionPolicy7B345D11",
-          },
-        ],
-        "Tags": [
-          {
-            "Key": "App",
-            "Value": "set-retention",
-          },
-          {
-            "Key": "gu:cdk:version",
-            "Value": "TEST",
-          },
-          {
-            "Key": "gu:repo",
-            "Value": "guardian/cloudwatch-logs-management",
-          },
-          {
-            "Key": "Stack",
-            "Value": "deploy",
-          },
-          {
-            "Key": "Stage",
-            "Value": "PROD",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Role",
-    },
-    "setretentionsetretentionrate1hour0AllowEventRuleCloudwatchLogsManagementRetentiondeploysetretention9D4FCAFF3BBAF751": {
-      "Properties": {
-        "Action": "lambda:InvokeFunction",
-        "FunctionName": {
-          "Fn::GetAtt": [
-            "SetRetentionFunc",
-            "Arn",
-          ],
-        },
-        "Principal": "events.amazonaws.com",
-        "SourceArn": {
-          "Fn::GetAtt": [
-            "setretentionsetretentionrate1hour0DA4C9A13",
-            "Arn",
-          ],
-        },
-      },
-      "Type": "AWS::Lambda::Permission",
-    },
-    "setretentionsetretentionrate1hour0DA4C9A13": {
+    "setloggroupretentionsetloggroupretentionrate1hour098B175BA": {
       "Properties": {
         "ScheduleExpression": "rate(1 hour)",
         "State": "ENABLED",
@@ -290,6 +271,25 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
         ],
       },
       "Type": "AWS::Events::Rule",
+    },
+    "setloggroupretentionsetloggroupretentionrate1hour0AllowEventRuleCloudwatchLogsManagementRetentiondeploysetloggroupretentionE2A32027299787E8": {
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "SetRetentionFunc",
+            "Arn",
+          ],
+        },
+        "Principal": "events.amazonaws.com",
+        "SourceArn": {
+          "Fn::GetAtt": [
+            "setloggroupretentionsetloggroupretentionrate1hour098B175BA",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
     },
   },
 }

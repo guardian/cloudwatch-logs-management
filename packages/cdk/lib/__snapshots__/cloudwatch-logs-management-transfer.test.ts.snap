@@ -185,19 +185,19 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
     },
     "ShipLogEntriesFunc": {
       "DependsOn": [
-        "shiplogentriesServiceRoleDefaultPolicy372B39B1",
-        "shiplogentriesServiceRoleB4E65CC2",
+        "shiploggroupentriesServiceRoleDefaultPolicy3CB303BF",
+        "shiploggroupentriesServiceRole71B7C40C",
       ],
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "DistributionBucketName",
           },
-          "S3Key": "deploy/PROD/ship-log-entries/ship-log-entries.zip",
+          "S3Key": "deploy/PROD/ship-log-group-entries/ship-log-entries.zip",
         },
         "Environment": {
           "Variables": {
-            "APP": "ship-log-entries",
+            "APP": "ship-log-group-entries",
             "LOG_KINESIS_STREAM": {
               "Ref": "KinesisStreamArn",
             },
@@ -215,7 +215,7 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
         "MemorySize": 512,
         "Role": {
           "Fn::GetAtt": [
-            "shiplogentriesServiceRoleB4E65CC2",
+            "shiploggroupentriesServiceRole71B7C40C",
             "Arn",
           ],
         },
@@ -223,7 +223,7 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
         "Tags": [
           {
             "Key": "App",
-            "Value": "ship-log-entries",
+            "Value": "ship-log-group-entries",
           },
           {
             "Key": "gu:cdk:version",
@@ -503,7 +503,7 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "shiplogentriesServiceRoleB4E65CC2": {
+    "shiploggroupentriesServiceRole71B7C40C": {
       "Properties": {
         "AssumeRolePolicyDocument": {
           "Statement": [
@@ -540,7 +540,7 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
         "Tags": [
           {
             "Key": "App",
-            "Value": "ship-log-entries",
+            "Value": "ship-log-group-entries",
           },
           {
             "Key": "gu:cdk:version",
@@ -562,7 +562,7 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
       },
       "Type": "AWS::IAM::Role",
     },
-    "shiplogentriesServiceRoleDefaultPolicy372B39B1": {
+    "shiploggroupentriesServiceRoleDefaultPolicy3CB303BF": {
       "Properties": {
         "PolicyDocument": {
           "Statement": [
@@ -601,7 +601,7 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
                       {
                         "Ref": "DistributionBucketName",
                       },
-                      "/deploy/PROD/ship-log-entries/ship-log-entries.zip",
+                      "/deploy/PROD/ship-log-group-entries/ship-log-entries.zip",
                     ],
                   ],
                 },
@@ -618,7 +618,7 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
                     {
                       "Ref": "AWS::AccountId",
                     },
-                    ":parameter/PROD/deploy/ship-log-entries",
+                    ":parameter/PROD/deploy/ship-log-group-entries",
                   ],
                 ],
               },
@@ -637,7 +637,7 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
                     {
                       "Ref": "AWS::AccountId",
                     },
-                    ":parameter/PROD/deploy/ship-log-entries/*",
+                    ":parameter/PROD/deploy/ship-log-group-entries/*",
                   ],
                 ],
               },
@@ -645,16 +645,16 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
           ],
           "Version": "2012-10-17",
         },
-        "PolicyName": "shiplogentriesServiceRoleDefaultPolicy372B39B1",
+        "PolicyName": "shiploggroupentriesServiceRoleDefaultPolicy3CB303BF",
         "Roles": [
           {
-            "Ref": "shiplogentriesServiceRoleB4E65CC2",
+            "Ref": "shiploggroupentriesServiceRole71B7C40C",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
     },
-    "shiplogentriesShipLogEntriesPermission390E0555": {
+    "shiploggroupentriesShipLogEntriesPermission5B329156": {
       "Properties": {
         "Action": "lambda:InvokeFunction",
         "FunctionName": {

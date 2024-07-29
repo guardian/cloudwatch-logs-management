@@ -7,7 +7,6 @@ import {
 	Effect,
 	ManagedPolicy,
 	PolicyStatement,
-//	ServicePrincipal,
 } from 'aws-cdk-lib/aws-iam';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
 import type {CloudwatchLogsManagementProps} from "./cloudwatch-logs-management-props";
@@ -17,7 +16,6 @@ export class CloudwatchLogsManagementRetention extends GuStack {
 		const {
 			stack,
 			retentionInDays = 7,
-//			logShippingPrefixes = ['/aws/lambda'],
 		} = props;
 
 		// The ID will become `CloudwatchLogsManagement-<STACK>`
@@ -52,10 +50,10 @@ export class CloudwatchLogsManagementRetention extends GuStack {
 		// 	reason: 'Migrating from YAML',
 		// });
 		//
-		const setRetentionLambda = new GuScheduledLambda(this, 'set-retention', {
-			app: 'set-retention',
+		const setRetentionLambda = new GuScheduledLambda(this, 'set-log-group-retention', {
+			app: 'set-log-group-retention',
 			runtime: Runtime.NODEJS_20_X,
-			fileName: 'set-retention.zip',
+			fileName: 'set-log-group-retention.zip',
 			handler: 'handlers.setRetention',
 			rules: [{schedule: Schedule.rate(Duration.hours(1))}],
 			monitoringConfiguration: {noMonitoring: true},

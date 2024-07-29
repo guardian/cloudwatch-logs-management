@@ -65,9 +65,9 @@ export class CloudwatchLogsManagementTransfer extends GuStack {
 
 		const shipLogEntriesLambda = new GuLambdaFunction(
 			this,
-			'ship-log-entries',
+			'ship-log-group-entries',
 			{
-				app: 'ship-log-entries',
+				app: 'ship-log-group-entries',
 				runtime: Runtime.NODEJS_20_X,
 				fileName: 'ship-log-entries.zip',
 				handler: 'handlers.shipLogEntries',
