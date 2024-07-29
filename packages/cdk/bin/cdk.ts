@@ -54,4 +54,5 @@ export const stacks: CloudwatchLogsManagementProps[] = [
 	}
 ];
 
-stacks.forEach((stack) => new CloudwatchLogsManagement(app, stack));
+stacks.forEach((stack) => { new CloudwatchLogsManagement(app, stack)});
+
