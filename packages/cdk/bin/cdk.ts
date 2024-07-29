@@ -46,7 +46,12 @@ export const stacks: CloudwatchLogsManagementProps[] = [
 		],
 	},
 	{ stack: 'playground' },
-	{ stack: 'ai' }
+	{ stack: 'ai' },
+	{
+		stack: 'membership',
+		retentionInDays: 14,
+		containsPIIData: true,
+	}
 ];
 
 stacks.forEach((stack) => new CloudwatchLogsManagement(app, stack));

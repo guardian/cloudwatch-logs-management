@@ -18,6 +18,7 @@ export interface CloudwatchLogsManagementProps
 	extends Omit<GuStackProps, 'stage' | 'env'> {
 	retentionInDays?: number;
 	logShippingPrefixes?: string[];
+	containsPIIData?: boolean;
 }
 
 export class CloudwatchLogsManagement extends GuStack {
@@ -26,6 +27,7 @@ export class CloudwatchLogsManagement extends GuStack {
 			stack,
 			retentionInDays = 7,
 			logShippingPrefixes = ['/aws/lambda'],
+			containsPIIData = false,
 		} = props;
 
 		// The ID will become `CloudwatchLogsManagement-<STACK>`
@@ -48,27 +50,6 @@ export class CloudwatchLogsManagement extends GuStack {
 		});
 
 		const { region, account } = this;
-
-		const kinesisStreamArn: string = new GuStringParameter(
-			this,
-			'KinesisStreamArn',
-			{
-				fromSSM: true,
-				default: '/account/services/logging.stream',
-				description: 'The ARN (not name) of the kinesis stream to ship logs to',
-			},
-		).valueAsString;
-
-		const structuredFieldsBucket = new GuS3Bucket(
-			this,
-			'StructuredFieldsBucket',
-			{ app: 'cloudwatch-logs-management' },
-		);
-
-		this.overrideLogicalId(structuredFieldsBucket, {
-			logicalId: 'StructuredFieldsBucket',
-			reason: 'Migrating from YAML',
-		});
 
 		const setRetentionLambda = new GuScheduledLambda(this, 'set-retention', {
 			app: 'set-retention',
@@ -99,133 +80,156 @@ export class CloudwatchLogsManagement extends GuStack {
 		});
 		setRetentionLambda.role?.addManagedPolicy(setRetentionPolicy);
 
-		const shipLogEntriesLambda = new GuLambdaFunction(
-			this,
-			'ship-log-entries',
-			{
-				app: 'ship-log-entries',
-				runtime: Runtime.NODEJS_20_X,
-				fileName: 'ship-log-entries.zip',
-				handler: 'handlers.shipLogEntries',
-				timeout: Duration.seconds(5),
-				environment: {
-					LOG_KINESIS_STREAM: kinesisStreamArn,
-					STRUCTURED_DATA_BUCKET: structuredFieldsBucket.bucketName,
+		if (!containsPIIData) {
+			const structuredFieldsBucket = new GuS3Bucket(
+				this,
+				'StructuredFieldsBucket',
+				{ app: 'cloudwatch-logs-management' },
+			);
+
+			const kinesisStreamArn: string = new GuStringParameter(
+				this,
+				'KinesisStreamArn',
+				{
+					fromSSM: true,
+					default: '/account/services/logging.stream',
+					description: 'The ARN (not name) of the kinesis stream to ship logs to',
 				},
-			},
-		);
+			).valueAsString;
 
-		this.overrideLogicalId(shipLogEntriesLambda, {
-			logicalId: 'ShipLogEntriesFunc',
-			reason: 'Migrating from YAML',
-		});
+			this.overrideLogicalId(structuredFieldsBucket, {
+				logicalId: 'StructuredFieldsBucket',
+				reason: 'Migrating from YAML',
+			});
 
-		shipLogEntriesLambda.addPermission('ShipLogEntriesPermission', {
-			principal: new ServicePrincipal(`logs.${region}.amazonaws.com`),
-			sourceAccount: this.account,
-		});
-
-		const shipLogEntriesPolicies = [
-			new ManagedPolicy(this, 'ShipLogEntriesPolicy', {
-				statements: [
-					new PolicyStatement({
-						effect: Effect.ALLOW,
-						actions: ['kinesis:PutRecords'],
-						resources: [kinesisStreamArn],
-					}),
-					new PolicyStatement({
-						effect: Effect.ALLOW,
-						actions: ['s3:GetObject'],
-						resources: [`${structuredFieldsBucket.bucketArn}/*`],
-					}),
-				],
-			}),
-
-			/*
-			 If this lambda accidentally subscribes to its own log group it can create a feedback loop which overwhelms
-       Kinesis and spends huge amounts of $$$ on CloudWatch. There is some code which aims to filter out the relevant
-       log group when creating subscriptions, but we also use this policy to prevent the lambda from sending log events
-       by default, just to be on the safe side.
-       If you need to view logs for debugging purposes, the policy below can be temporarily removed from a specific
-       account using Riff-Raff
-			 */
-			new ManagedPolicy(this, 'DisableCloudWatchLoggingPolicy', {
-				statements: [
-					new PolicyStatement({
-						effect: Effect.DENY,
-						actions: [
-							'logs:CreateLogGroup',
-							'logs:CreateLogStream',
-							'logs:PutLogEvents',
-						],
-						resources: [`arn:aws:logs:*:*:*`],
-					}),
-				],
-			}),
-		];
-
-		shipLogEntriesPolicies.forEach((policy) =>
-			shipLogEntriesLambda.role?.addManagedPolicy(policy),
-		);
-
-		const setLogShippingLambda = new GuScheduledLambda(
-			this,
-			'set-log-shipping',
-			{
-				app: 'set-log-shipping',
-				runtime: Runtime.NODEJS_20_X,
-				fileName: 'set-log-shipping.zip',
-				handler: 'handlers.setLogShipping',
-				rules: [{ schedule: Schedule.rate(Duration.minutes(10)) }],
-				monitoringConfiguration: { noMonitoring: true },
-				environment: {
-					LOG_SHIPPING_LAMBDA_ARN: shipLogEntriesLambda.functionArn,
-					LOG_KINESIS_STREAM: kinesisStreamArn,
-					LOG_NAME_PREFIXES: logShippingPrefixes.join(','),
-					STRUCTURED_DATA_BUCKET: structuredFieldsBucket.bucketName,
+			const shipLogEntriesLambda = new GuLambdaFunction(
+				this,
+				'ship-log-entries',
+				{
+					app: 'ship-log-entries',
+					runtime: Runtime.NODEJS_20_X,
+					fileName: 'ship-log-entries.zip',
+					handler: 'handlers.shipLogEntries',
+					timeout: Duration.seconds(5),
+					environment: {
+						LOG_KINESIS_STREAM: kinesisStreamArn,
+						STRUCTURED_DATA_BUCKET: structuredFieldsBucket.bucketName,
+					},
 				},
-				timeout: Duration.minutes(1),
-			},
-		);
+			);
 
-		this.overrideLogicalId(setLogShippingLambda, {
-			logicalId: 'SetLogShippingFunc',
-			reason: 'Migrating from YAML',
-		});
+			this.overrideLogicalId(shipLogEntriesLambda, {
+				logicalId: 'ShipLogEntriesFunc',
+				reason: 'Migrating from YAML',
+			});
 
-		const setLogShippingPolicy = new ManagedPolicy(
-			this,
-			'SetLogShippingPolicy',
-			{
-				statements: [
-					new PolicyStatement({
-						effect: Effect.ALLOW,
-						actions: [
-							'logs:DescribeLogGroups',
-							'logs:DescribeSubscriptionFilters',
-							'logs:PutSubscriptionFilter',
-							'logs:DeleteSubscriptionFilter',
-						],
-						resources: [`arn:aws:logs:${region}:${account}:log-group:*`],
-					}),
-					new PolicyStatement({
-						effect: Effect.ALLOW,
-						actions: ['lambda:ListFunctions', 'lambda:ListTags'],
-						resources: ['*'],
-					}),
-					new PolicyStatement({
-						effect: Effect.ALLOW,
-						actions: ['ecs:ListTaskDefinitions', 'ecs:DescribeTaskDefinition'],
-						resources: ['*'],
-					}),
-					new PolicyStatement({
-						effect: Effect.ALLOW,
-						actions: ['s3:PutObject'],
-						resources: [`${structuredFieldsBucket.bucketArn}/*`],
-					}),
-				],
-			},
-		);
-		setLogShippingLambda.role?.addManagedPolicy(setLogShippingPolicy);
+			shipLogEntriesLambda.addPermission('ShipLogEntriesPermission', {
+				principal: new ServicePrincipal(`logs.${region}.amazonaws.com`),
+				sourceAccount: this.account,
+			});
+
+			const shipLogEntriesPolicies = [
+				new ManagedPolicy(this, 'ShipLogEntriesPolicy', {
+					statements: [
+						new PolicyStatement({
+							effect: Effect.ALLOW,
+							actions: ['kinesis:PutRecords'],
+							resources: [kinesisStreamArn],
+						}),
+						new PolicyStatement({
+							effect: Effect.ALLOW,
+							actions: ['s3:GetObject'],
+							resources: [`${structuredFieldsBucket.bucketArn}/*`],
+						}),
+					],
+				}),
+
+				/*
+                 If this lambda accidentally subscribes to its own log group it can create a feedback loop which overwhelms
+           Kinesis and spends huge amounts of $$$ on CloudWatch. There is some code which aims to filter out the relevant
+           log group when creating subscriptions, but we also use this policy to prevent the lambda from sending log events
+           by default, just to be on the safe side.
+           If you need to view logs for debugging purposes, the policy below can be temporarily removed from a specific
+           account using Riff-Raff
+                 */
+				new ManagedPolicy(this, 'DisableCloudWatchLoggingPolicy', {
+					statements: [
+						new PolicyStatement({
+							effect: Effect.DENY,
+							actions: [
+								'logs:CreateLogGroup',
+								'logs:CreateLogStream',
+								'logs:PutLogEvents',
+							],
+							resources: [`arn:aws:logs:*:*:*`],
+						}),
+					],
+				}),
+			];
+
+			shipLogEntriesPolicies.forEach((policy) =>
+				shipLogEntriesLambda.role?.addManagedPolicy(policy),
+			);
+
+			const setLogShippingLambda = new GuScheduledLambda(
+				this,
+				'set-log-shipping',
+				{
+					app: 'set-log-shipping',
+					runtime: Runtime.NODEJS_20_X,
+					fileName: 'set-log-shipping.zip',
+					handler: 'handlers.setLogShipping',
+					rules: [{ schedule: Schedule.rate(Duration.minutes(10)) }],
+					monitoringConfiguration: { noMonitoring: true },
+					environment: {
+						LOG_SHIPPING_LAMBDA_ARN: shipLogEntriesLambda.functionArn,
+						LOG_KINESIS_STREAM: kinesisStreamArn,
+						LOG_NAME_PREFIXES: logShippingPrefixes.join(','),
+						STRUCTURED_DATA_BUCKET: structuredFieldsBucket.bucketName,
+					},
+					timeout: Duration.minutes(1),
+				},
+			);
+
+			this.overrideLogicalId(setLogShippingLambda, {
+				logicalId: 'SetLogShippingFunc',
+				reason: 'Migrating from YAML',
+			});
+
+			const setLogShippingPolicy = new ManagedPolicy(
+				this,
+				'SetLogShippingPolicy',
+				{
+					statements: [
+						new PolicyStatement({
+							effect: Effect.ALLOW,
+							actions: [
+								'logs:DescribeLogGroups',
+								'logs:DescribeSubscriptionFilters',
+								'logs:PutSubscriptionFilter',
+								'logs:DeleteSubscriptionFilter',
+							],
+							resources: [`arn:aws:logs:${region}:${account}:log-group:*`],
+						}),
+						new PolicyStatement({
+							effect: Effect.ALLOW,
+							actions: ['lambda:ListFunctions', 'lambda:ListTags'],
+							resources: ['*'],
+						}),
+						new PolicyStatement({
+							effect: Effect.ALLOW,
+							actions: ['ecs:ListTaskDefinitions', 'ecs:DescribeTaskDefinition'],
+							resources: ['*'],
+						}),
+						new PolicyStatement({
+							effect: Effect.ALLOW,
+							actions: ['s3:PutObject'],
+							resources: [`${structuredFieldsBucket.bucketArn}/*`],
+						}),
+					],
+				},
+			);
+			setLogShippingLambda.role?.addManagedPolicy(setLogShippingPolicy);
+		};
 	}
 }

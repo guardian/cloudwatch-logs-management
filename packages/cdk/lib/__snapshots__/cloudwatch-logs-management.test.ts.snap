@@ -4,10 +4,10 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
 {
   "Metadata": {
     "gu:cdk:constructs": [
-      "GuStringParameter",
-      "GuS3Bucket",
       "GuDistributionBucketParameter",
       "GuScheduledLambda",
+      "GuS3Bucket",
+      "GuStringParameter",
       "GuLambdaFunction",
       "GuScheduledLambda",
     ],
