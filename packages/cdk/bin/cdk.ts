@@ -1,11 +1,25 @@
 import 'source-map-support/register';
 import { GuRoot } from "@guardian/cdk/lib/constructs/root";
-import type { CloudwatchLogsManagementProps } from '../lib/cloudwatch-logs-management';
 import { CloudwatchLogsManagement } from '../lib/cloudwatch-logs-management';
+import {CloudwatchLogsRetention} from "../lib/cloudwatch-logs-retention";
+import {GuStackProps} from "@guardian/cdk/lib/constructs/core";
 
 const app = new GuRoot();
 
-export const stacks: CloudwatchLogsManagementProps[] = [
+export interface CloudwatchLogsManagementProps
+	extends Omit<GuStackProps, 'stage' | 'env'> {
+	retentionInDays?: number;
+	logShippingPrefixes?: string[];
+}
+
+export const retentionOnlyStacks: CloudwatchLogsManagementProps[] = [
+	{
+		stack: 'membership',
+		retentionInDays: 14,
+	}
+];
+
+export const retentionAndTransferStacks: CloudwatchLogsManagementProps[] = [
 	{ stack: 'print-production' },
 	{ stack: 'deploy' },
 	{ stack: 'flexible' },
@@ -47,12 +61,11 @@ export const stacks: CloudwatchLogsManagementProps[] = [
 	},
 	{ stack: 'playground' },
 	{ stack: 'ai' },
-	{
-		stack: 'membership',
-		retentionInDays: 14,
-		containsPIIData: true,
-	}
 ];
 
-stacks.forEach((stack) => { new CloudwatchLogsManagement(app, stack)});
+export const allRetentionStacks = retentionOnlyStacks.concat(retentionAndTransferStacks);
+
+allRetentionStacks.forEach((stack) => { new CloudwatchLogsRetention(app, stack)});
+
+retentionAndTransferStacks.forEach((stack) => { new CloudwatchLogsManagement(app, stack)});
 
