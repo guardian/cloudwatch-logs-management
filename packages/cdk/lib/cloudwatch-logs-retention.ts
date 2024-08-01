@@ -9,7 +9,7 @@ import {
 	PolicyStatement,
 } from 'aws-cdk-lib/aws-iam';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
-import {CloudwatchLogsManagementProps} from "../bin/cdk";
+import type {CloudwatchLogsManagementProps} from "./cloudwatch-logs-management-props";
 
 export class CloudwatchLogsRetention extends GuStack {
 	constructor(scope: App, props: CloudwatchLogsManagementProps) {

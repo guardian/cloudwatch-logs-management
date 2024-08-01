@@ -1,16 +1,10 @@
 import 'source-map-support/register';
 import { GuRoot } from "@guardian/cdk/lib/constructs/root";
 import { CloudwatchLogsManagement } from '../lib/cloudwatch-logs-management';
+import type {CloudwatchLogsManagementProps} from "../lib/cloudwatch-logs-management-props";
 import {CloudwatchLogsRetention} from "../lib/cloudwatch-logs-retention";
-import {GuStackProps} from "@guardian/cdk/lib/constructs/core";
 
 const app = new GuRoot();
-
-export interface CloudwatchLogsManagementProps
-	extends Omit<GuStackProps, 'stage' | 'env'> {
-	retentionInDays?: number;
-	logShippingPrefixes?: string[];
-}
 
 export const retentionOnlyStacks: CloudwatchLogsManagementProps[] = [
 	{
