@@ -52,11 +52,6 @@ export class CloudwatchLogsRetention extends GuStack {
 			timeout: Duration.minutes(1),
 		});
 
-		this.overrideLogicalId(setRetentionLambda, {
-			logicalId: 'SetRetentionFunc',
-			reason: 'Migrating from YAML',
-		});
-
 		const setRetentionPolicy = new ManagedPolicy(this, 'SetRetentionPolicy', {
 			statements: [
 				new PolicyStatement({

@@ -17,7 +17,38 @@ exports[`The CloudwatchLogsRetention stack matches the snapshot 1`] = `
     },
   },
   "Resources": {
-    "SetRetentionFunc": {
+    "SetRetentionPolicy7B345D11": {
+      "Properties": {
+        "Description": "",
+        "Path": "/",
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:DescribeLogGroups",
+                "logs:PutRetentionPolicy",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:logs:eu-west-1:",
+                    {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":log-group:*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::ManagedPolicy",
+    },
+    "setretention36D65F7E": {
       "DependsOn": [
         "setretentionServiceRoleDefaultPolicyCEB3697A",
         "setretentionServiceRoleF411F948",
@@ -74,37 +105,6 @@ exports[`The CloudwatchLogsRetention stack matches the snapshot 1`] = `
         "Timeout": 60,
       },
       "Type": "AWS::Lambda::Function",
-    },
-    "SetRetentionPolicy7B345D11": {
-      "Properties": {
-        "Description": "",
-        "Path": "/",
-        "PolicyDocument": {
-          "Statement": [
-            {
-              "Action": [
-                "logs:DescribeLogGroups",
-                "logs:PutRetentionPolicy",
-              ],
-              "Effect": "Allow",
-              "Resource": {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:aws:logs:eu-west-1:",
-                    {
-                      "Ref": "AWS::AccountId",
-                    },
-                    ":log-group:*",
-                  ],
-                ],
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::IAM::ManagedPolicy",
     },
     "setretentionServiceRoleDefaultPolicyCEB3697A": {
       "Properties": {
@@ -259,7 +259,7 @@ exports[`The CloudwatchLogsRetention stack matches the snapshot 1`] = `
         "Action": "lambda:InvokeFunction",
         "FunctionName": {
           "Fn::GetAtt": [
-            "SetRetentionFunc",
+            "setretention36D65F7E",
             "Arn",
           ],
         },
@@ -281,7 +281,7 @@ exports[`The CloudwatchLogsRetention stack matches the snapshot 1`] = `
           {
             "Arn": {
               "Fn::GetAtt": [
-                "SetRetentionFunc",
+                "setretention36D65F7E",
                 "Arn",
               ],
             },
