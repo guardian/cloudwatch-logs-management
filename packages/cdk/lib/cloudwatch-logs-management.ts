@@ -1,5 +1,4 @@
 import { GuScheduledLambda } from '@guardian/cdk';
-import type { GuStackProps } from '@guardian/cdk/lib/constructs/core';
 import { GuStack, GuStringParameter } from '@guardian/cdk/lib/constructs/core';
 import { GuLambdaFunction } from '@guardian/cdk/lib/constructs/lambda';
 import { GuS3Bucket } from '@guardian/cdk/lib/constructs/s3';
@@ -13,18 +12,13 @@ import {
 	ServicePrincipal,
 } from 'aws-cdk-lib/aws-iam';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
+import type {CloudwatchLogsManagementProps} from "./cloudwatch-logs-management-props";
 
-export interface CloudwatchLogsManagementProps
-	extends Omit<GuStackProps, 'stage' | 'env'> {
-	retentionInDays?: number;
-	logShippingPrefixes?: string[];
-}
 
 export class CloudwatchLogsManagement extends GuStack {
 	constructor(scope: App, props: CloudwatchLogsManagementProps) {
 		const {
 			stack,
-			retentionInDays = 7,
 			logShippingPrefixes = ['/aws/lambda'],
 		} = props;
 
@@ -70,35 +64,6 @@ export class CloudwatchLogsManagement extends GuStack {
 			reason: 'Migrating from YAML',
 		});
 
-		const setRetentionLambda = new GuScheduledLambda(this, 'set-retention', {
-			app: 'set-retention',
-			runtime: Runtime.NODEJS_20_X,
-			fileName: 'set-retention.zip',
-			handler: 'handlers.setRetention',
-			rules: [{ schedule: Schedule.rate(Duration.hours(1)) }],
-			monitoringConfiguration: { noMonitoring: true },
-			environment: {
-				RETENTION_IN_DAYS: retentionInDays.toString(),
-			},
-			timeout: Duration.minutes(1),
-		});
-
-		this.overrideLogicalId(setRetentionLambda, {
-			logicalId: 'SetRetentionFunc',
-			reason: 'Migrating from YAML',
-		});
-
-		const setRetentionPolicy = new ManagedPolicy(this, 'SetRetentionPolicy', {
-			statements: [
-				new PolicyStatement({
-					effect: Effect.ALLOW,
-					actions: ['logs:DescribeLogGroups', 'logs:PutRetentionPolicy'],
-					resources: [`arn:aws:logs:${region}:${account}:log-group:*`],
-				}),
-			],
-		});
-		setRetentionLambda.role?.addManagedPolicy(setRetentionPolicy);
-
 		const shipLogEntriesLambda = new GuLambdaFunction(
 			this,
 			'ship-log-entries',
@@ -141,14 +106,14 @@ export class CloudwatchLogsManagement extends GuStack {
 				],
 			}),
 
-			/*
-			 If this lambda accidentally subscribes to its own log group it can create a feedback loop which overwhelms
-       Kinesis and spends huge amounts of $$$ on CloudWatch. There is some code which aims to filter out the relevant
-       log group when creating subscriptions, but we also use this policy to prevent the lambda from sending log events
-       by default, just to be on the safe side.
-       If you need to view logs for debugging purposes, the policy below can be temporarily removed from a specific
-       account using Riff-Raff
-			 */
+				/*
+                 If this lambda accidentally subscribes to its own log group it can create a feedback loop which overwhelms
+           Kinesis and spends huge amounts of $$$ on CloudWatch. There is some code which aims to filter out the relevant
+           log group when creating subscriptions, but we also use this policy to prevent the lambda from sending log events
+           by default, just to be on the safe side.
+           If you need to view logs for debugging purposes, the policy below can be temporarily removed from a specific
+           account using Riff-Raff
+                 */
 			new ManagedPolicy(this, 'DisableCloudWatchLoggingPolicy', {
 				statements: [
 					new PolicyStatement({
@@ -165,8 +130,8 @@ export class CloudwatchLogsManagement extends GuStack {
 		];
 
 		shipLogEntriesPolicies.forEach((policy) =>
-			shipLogEntriesLambda.role?.addManagedPolicy(policy),
-		);
+				shipLogEntriesLambda.role?.addManagedPolicy(policy),
+			);
 
 		const setLogShippingLambda = new GuScheduledLambda(
 			this,
