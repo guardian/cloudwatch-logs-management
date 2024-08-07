@@ -8,6 +8,8 @@ const app = new GuRoot();
 
 // The word "stack" in this file refers to the deployment-resources-stacks in riffraff. These stacks map roughly to aws accounts.
 
+// Adding stacks here will manage log retention without transfer of logs to the ELK stack.
+// This is mainly for stacks whose logs contain PII data.
 export const retentionOnlyStacks: CloudwatchLogsManagementProps[] = [
 	{
 		stack: 'membership',
