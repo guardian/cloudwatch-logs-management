@@ -58,11 +58,11 @@ To deploy this service into a new account:
   1. Prepare your account. The following SSM parameters need to exist:
      - `/account/services/artifact.bucket`
      - `/account/services/logging.stream`
-  2. Raise a PR, adding your [deployment-resource-stack](https://riffraff.gutools.co.uk/deployinfo/data?key=credentials%3Aaws-cfn-role) to [`packages/cdk/bin/cdk.ts`](packages/cdk/bin/cdk.ts):
+  2. Raise a PR, adding your deployment-resource-stack (obtained from [riffraff](https://riffraff.gutools.co.uk/)) to [`packages/cdk/bin/cdk.ts`](packages/cdk/bin/cdk.ts):
      - For deployment-resource-stacks with logs that contain PII data, use the `retentionOnlyStacks` array. 
      - For all other deployment-resource-stacks, use the `retentionAndTransferStacks` array.
-  3. Merge the PR; Riff-Raff is configured to continuously deploy this service
-  4. In order for shipped logs appear in Kibana, add the Kinesis stream source from the `aws-account-setup` infrastructure stack to this [file](https://github.com/guardian/deploy-tools-platform/blob/main/elk/src/source.config.ts).
+  4. Merge the PR; Riff-Raff is configured to continuously deploy this service
+  5. In order for shipped logs appear in Kibana, add the Kinesis stream source from the `aws-account-setup` infrastructure stack to this [file](https://github.com/guardian/deploy-tools-platform/blob/main/elk/src/source.config.ts).
 
 ## Development
 ### Requirements
