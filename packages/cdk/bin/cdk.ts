@@ -6,6 +6,8 @@ import {CloudwatchLogsRetention} from "../lib/cloudwatch-logs-retention";
 
 const app = new GuRoot();
 
+// The word "stack" in this file refers to the deployment-resources-stacks in riffraff. These stacks map roughly to aws accounts.
+
 export const retentionOnlyStacks: CloudwatchLogsManagementProps[] = [
 	{
 		stack: 'membership',
