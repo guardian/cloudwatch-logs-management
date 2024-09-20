@@ -1,16 +1,3 @@
-import type { CloudWatchLogsClientConfig } from '@aws-sdk/client-cloudwatch-logs';
-import type { ECSClientConfig } from '@aws-sdk/client-ecs';
-import type { KinesisClientConfig } from '@aws-sdk/client-kinesis';
-import type { LambdaClientConfig } from '@aws-sdk/client-lambda';
-
-interface CommonConfig {
-	awsConfig:
-		| KinesisClientConfig
-		| ECSClientConfig
-		| CloudWatchLogsClientConfig
-		| LambdaClientConfig;
-}
-
 interface SetRetentionConfig {
 	retentionInDays: number;
 }
@@ -50,14 +37,17 @@ function getRequiredEnv(key: string, devDefault?: string): string {
 	throw new Error(`Missing ENV var ${key}`);
 }
 
-export function getCommonConfig(): CommonConfig {
+interface AwsClientConfig {
+	region: string;
+	maxAttempts: number;
+}
+
+export function awsClientConfig(): AwsClientConfig {
 	const region = getRequiredEnv('AWS_REGION');
 	const maxAttempts = 10;
 	return {
-		awsConfig: {
-			region,
-			maxAttempts,
-		},
+		region,
+		maxAttempts,
 	};
 }
 

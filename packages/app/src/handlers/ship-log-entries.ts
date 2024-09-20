@@ -8,7 +8,7 @@ import type {
 	Context,
 } from 'aws-lambda';
 import { BUILD_INFO } from '../build-info';
-import { getCommonConfig, getShipLogsConfig } from '../config';
+import { awsClientConfig, getShipLogsConfig } from '../config';
 import { putKinesisRecords } from '../kinesis';
 import { createStructuredLog } from '../logEntryProcessing';
 import type { StructuredFields } from '../model';
@@ -19,12 +19,12 @@ export async function shipLogEntries(
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars -- this is a standard signature for AWS Lambdas
 	context: Context,
 ): Promise<PutRecordsCommandOutput[]> {
-	const { awsConfig } = getCommonConfig();
+	const clientConfig = awsClientConfig();
 	const { kinesisStreamName, structuredDataBucket, structuredDataKey } =
 		getShipLogsConfig();
 
-	const s3 = new S3(awsConfig);
-	const kinesis = new Kinesis(awsConfig);
+	const s3 = new S3(clientConfig);
+	const kinesis = new Kinesis(clientConfig);
 
 	const payload = Buffer.from(event.awslogs.data, 'base64');
 	const json = zlib.gunzipSync(payload).toString('utf8');
