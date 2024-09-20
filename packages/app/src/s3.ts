@@ -29,6 +29,8 @@ export async function getData(
 	if (result.Body) {
 		return result.Body.transformToString();
 	} else {
-		return Promise.reject(`Value at s3://${bucket}/${key} could not be found`);
+		return Promise.reject(
+			new Error(`Value at s3://${bucket}/${key} could not be found`),
+		);
 	}
 }
