@@ -95,9 +95,11 @@ async function getStructuredFieldsData(
 	bucket: string,
 	key: string,
 ): Promise<LogGroupToStructuredFields> {
-	structuredFields
-		? console.log('Structured fields cache is available!')
-		: console.log('Structured fields cache is unavailable. Fetching from S3.');
+	if (structuredFields) {
+		console.log('Structured fields cache is available!');
+	} else {
+		console.log('Structured fields cache is unavailable. Fetching from S3.');
+	}
 
 	try {
 		if (!structuredFields) {
@@ -107,7 +109,9 @@ async function getStructuredFieldsData(
 		return structuredFields;
 	} catch {
 		return Promise.reject(
-			`Unable to get structured fields data from s3://${bucket}/${key}`,
+			new Error(
+				`Unable to get structured fields data from s3://${bucket}/${key}`,
+			),
 		);
 	}
 }
