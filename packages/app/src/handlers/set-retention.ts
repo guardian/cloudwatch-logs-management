@@ -1,6 +1,6 @@
 import { CloudWatchLogs } from '@aws-sdk/client-cloudwatch-logs';
 import { getCloudWatchLogGroups, setCloudwatchRetention } from '../cloudwatch';
-import { getCommonConfig, getSetRetentionConfig } from '../config';
+import { awsClientConfig, getSetRetentionConfig } from '../config';
 
 function sleep(ms: number) {
 	return new Promise((resolve) => {
@@ -9,8 +9,8 @@ function sleep(ms: number) {
 }
 
 export async function setRetention(): Promise<void> {
-	const { awsConfig } = getCommonConfig();
-	const cloudwatchLogs = new CloudWatchLogs(awsConfig);
+	const clientConfig = awsClientConfig();
+	const cloudwatchLogs = new CloudWatchLogs(clientConfig);
 
 	const { retentionInDays } = getSetRetentionConfig();
 	const cloudwatchLogGroups = await getCloudWatchLogGroups(cloudwatchLogs);
