@@ -56,6 +56,7 @@ export const retentionAndTransferStacks: CloudwatchLogsManagementProps[] = [
 			'fb-ad-library',
 			'lurch',
 			'/aws/lambda/transcription-service',
+			'transcription-service'
 		],
 	},
 	{ stack: 'playground' },
