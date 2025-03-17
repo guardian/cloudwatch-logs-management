@@ -21,6 +21,7 @@ export const retentionAndTransferStacks: CloudwatchLogsManagementProps[] = [
 	{ stack: 'print-production' },
 	{ stack: 'editorial-feeds' },
 	{ stack: 'deploy' },
+	{ stack: 'feast' },
 	{ stack: 'flexible' },
 	{ stack: 'workflow' },
 	{ stack: 'media-service',
