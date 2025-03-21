@@ -62,6 +62,7 @@ export const retentionAndTransferStacks: CloudwatchLogsManagementProps[] = [
 	},
 	{ stack: 'playground' },
 	{ stack: 'ai' },
+	{ stack: 'hiring-and-onboarding' },
 ];
 
 export const allRetentionStacks = retentionOnlyStacks.concat(retentionAndTransferStacks);
