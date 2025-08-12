@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
 {
@@ -89,7 +89,7 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
             "Arn",
           ],
         },
-        "Runtime": "nodejs20.x",
+        "Runtime": "nodejs22.x",
         "Tags": [
           {
             "Key": "App",
@@ -219,7 +219,7 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
             "Arn",
           ],
         },
-        "Runtime": "nodejs20.x",
+        "Runtime": "nodejs22.x",
         "Tags": [
           {
             "Key": "App",
