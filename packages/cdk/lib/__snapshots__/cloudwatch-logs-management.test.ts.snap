@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
 {
@@ -102,6 +102,10 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
           {
             "Key": "gu:repo",
             "Value": "guardian/cloudwatch-logs-management",
+          },
+          {
+            "Key": "Owner",
+            "Value": "DevX",
           },
           {
             "Key": "Stack",
@@ -234,6 +238,10 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
             "Value": "guardian/cloudwatch-logs-management",
           },
           {
+            "Key": "Owner",
+            "Value": "DevX",
+          },
+          {
             "Key": "Stack",
             "Value": "deploy",
           },
@@ -304,6 +312,10 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
           {
             "Key": "gu:repo",
             "Value": "guardian/cloudwatch-logs-management",
+          },
+          {
+            "Key": "Owner",
+            "Value": "DevX",
           },
           {
             "Key": "Stack",
@@ -455,6 +467,10 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
             "Value": "guardian/cloudwatch-logs-management",
           },
           {
+            "Key": "Owner",
+            "Value": "DevX",
+          },
+          {
             "Key": "Stack",
             "Value": "deploy",
           },
@@ -549,6 +565,10 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
           {
             "Key": "gu:repo",
             "Value": "guardian/cloudwatch-logs-management",
+          },
+          {
+            "Key": "Owner",
+            "Value": "DevX",
           },
           {
             "Key": "Stack",
