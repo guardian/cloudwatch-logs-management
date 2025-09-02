@@ -1,22 +1,15 @@
 import { GuScheduledLambda } from '@guardian/cdk';
 import { GuStack } from '@guardian/cdk/lib/constructs/core';
 import type { App } from 'aws-cdk-lib';
-import { Duration } from 'aws-cdk-lib';
+import { Duration, Tags } from 'aws-cdk-lib';
 import { Schedule } from 'aws-cdk-lib/aws-events';
-import {
-	Effect,
-	ManagedPolicy,
-	PolicyStatement,
-} from 'aws-cdk-lib/aws-iam';
+import { Effect, ManagedPolicy, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
-import type {CloudwatchLogsManagementProps} from "./cloudwatch-logs-management-props";
+import type { CloudwatchLogsManagementProps } from './cloudwatch-logs-management-props';
 
 export class CloudwatchLogsRetention extends GuStack {
 	constructor(scope: App, props: CloudwatchLogsManagementProps) {
-		const {
-			stack,
-			retentionInDays = 7,
-		} = props;
+		const { stack, retentionInDays = 7 } = props;
 
 		// The ID will become `CloudwatchLogsManagement-<STACK>`
 		const id = `${CloudwatchLogsRetention.prototype.constructor.name}-${stack}`;
@@ -62,5 +55,6 @@ export class CloudwatchLogsRetention extends GuStack {
 			],
 		});
 		setRetentionLambda.role?.addManagedPolicy(setRetentionPolicy);
+		Tags.of(this).add('Owner', 'DevX');
 	}
 }

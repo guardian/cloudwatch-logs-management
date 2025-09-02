@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`The CloudwatchLogsRetention stack matches the snapshot 1`] = `
 {
@@ -92,6 +92,10 @@ exports[`The CloudwatchLogsRetention stack matches the snapshot 1`] = `
           {
             "Key": "gu:repo",
             "Value": "guardian/cloudwatch-logs-management",
+          },
+          {
+            "Key": "Owner",
+            "Value": "DevX",
           },
           {
             "Key": "Stack",
@@ -241,6 +245,10 @@ exports[`The CloudwatchLogsRetention stack matches the snapshot 1`] = `
           {
             "Key": "gu:repo",
             "Value": "guardian/cloudwatch-logs-management",
+          },
+          {
+            "Key": "Owner",
+            "Value": "DevX",
           },
           {
             "Key": "Stack",
