@@ -34,7 +34,7 @@ export class CloudwatchLogsRetention extends GuStack {
 
 		const setRetentionLambda = new GuScheduledLambda(this, 'set-retention', {
 			app: 'set-retention',
-			runtime: Runtime.NODEJS_20_X,
+			runtime: Runtime.NODEJS_22_X,
 			fileName: 'set-retention.zip',
 			handler: 'handlers.setRetention',
 			rules: [{ schedule: Schedule.rate(Duration.hours(1)) }],

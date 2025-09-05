@@ -65,7 +65,7 @@ export class CloudwatchLogsManagement extends GuStack {
 			'ship-log-entries',
 			{
 				app: 'ship-log-entries',
-				runtime: Runtime.NODEJS_20_X,
+				runtime: Runtime.NODEJS_22_X,
 				fileName: 'ship-log-entries.zip',
 				handler: 'handlers.shipLogEntries',
 				timeout: Duration.seconds(5),
@@ -134,7 +134,7 @@ export class CloudwatchLogsManagement extends GuStack {
 			'set-log-shipping',
 			{
 				app: 'set-log-shipping',
-				runtime: Runtime.NODEJS_20_X,
+				runtime: Runtime.NODEJS_22_X,
 				fileName: 'set-log-shipping.zip',
 				handler: 'handlers.setLogShipping',
 				rules: [{ schedule: Schedule.rate(Duration.minutes(10)) }],
