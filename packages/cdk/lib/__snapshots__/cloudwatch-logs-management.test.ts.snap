@@ -486,6 +486,32 @@ exports[`The CloudwatchLogsManagement stack matches the snapshot 1`] = `
       "Properties": {
         "ScheduleExpression": "rate(10 minutes)",
         "State": "ENABLED",
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "set-log-shipping",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/cloudwatch-logs-management",
+          },
+          {
+            "Key": "Owner",
+            "Value": "DevX",
+          },
+          {
+            "Key": "Stack",
+            "Value": "deploy",
+          },
+          {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
         "Targets": [
           {
             "Arn": {
