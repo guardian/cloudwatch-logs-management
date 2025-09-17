@@ -9,11 +9,11 @@
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.152",
-    "@aws-sdk/client-cloudwatch-logs": "^3.858.0",
-    "@aws-sdk/client-ecs": "^3.858.0",
-    "@aws-sdk/client-kinesis": "^3.858.0",
-    "@aws-sdk/client-lambda": "^3.858.0",
-    "@aws-sdk/client-s3": "^3.858.0"
+    "@aws-sdk/client-cloudwatch-logs": "^3.890.0",
+    "@aws-sdk/client-ecs": "^3.890.0",
+    "@aws-sdk/client-kinesis": "^3.890.0",
+    "@aws-sdk/client-lambda": "^3.890.0",
+    "@aws-sdk/client-s3": "^3.890.0"
   },
   "jest": {
     "testMatch": [
