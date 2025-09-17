@@ -285,6 +285,32 @@ exports[`The CloudwatchLogsRetention stack matches the snapshot 1`] = `
       "Properties": {
         "ScheduleExpression": "rate(1 hour)",
         "State": "ENABLED",
+        "Tags": [
+          {
+            "Key": "App",
+            "Value": "set-retention",
+          },
+          {
+            "Key": "gu:cdk:version",
+            "Value": "TEST",
+          },
+          {
+            "Key": "gu:repo",
+            "Value": "guardian/cloudwatch-logs-management",
+          },
+          {
+            "Key": "Owner",
+            "Value": "DevX",
+          },
+          {
+            "Key": "Stack",
+            "Value": "deploy",
+          },
+          {
+            "Key": "Stage",
+            "Value": "PROD",
+          },
+        ],
         "Targets": [
           {
             "Arn": {
