@@ -18,7 +18,7 @@
     "@guardian/node-riffraff-artifact": "^0.3.2",
     "@guardian/prettier": "^8.0.1",
     "@types/jest": "^30.0.0",
-    "@types/node": "24.3.0",
+    "@types/node": "24.6.2",
     "jest": "^30.0.5",
     "ts-jest": "^29.4.1",
     "typescript": "5.5.4"
