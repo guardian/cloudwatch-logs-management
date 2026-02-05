@@ -8,7 +8,7 @@
     "test": "jest"
   },
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.159",
+    "@types/aws-lambda": "^8.10.160",
     "@aws-sdk/client-cloudwatch-logs": "^3.958.0",
     "@aws-sdk/client-ecs": "^3.958.0",
     "@aws-sdk/client-kinesis": "^3.958.0",
