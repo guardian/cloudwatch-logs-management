@@ -27,7 +27,7 @@ export const retentionAndTransferStacks: CloudwatchLogsManagementProps[] = [
 			'feast-CODE',
 			'feast-PROD'
 		]
-	 },
+	},
 	{ stack: 'flexible' },
 	{ stack: 'workflow' },
 	{ stack: 'media-service',
