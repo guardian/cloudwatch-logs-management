@@ -21,6 +21,7 @@ export const retentionAndTransferStacks: CloudwatchLogsManagementProps[] = [
 	{ stack: 'print-production' },
 	{ stack: 'editorial-feeds' },
 	{ stack: 'deploy' },
+	{ stack: 'artifacts' },
 	{ stack: 'feast',
 		logShippingPrefixes: [
 			'/aws/lambda',
