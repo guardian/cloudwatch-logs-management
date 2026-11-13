@@ -37,7 +37,14 @@ export const retentionAndTransferStacks: CloudwatchLogsManagementProps[] = [
 			'/aws/transfer'
 		],
 	},
-	{ stack: 'content-api' },
+	{
+		stack: 'content-api',
+		logShippingPrefixes: [
+			'/aws/lambda',
+			'content-api-CODE-trove',
+			'content-api-PROD-trove'
+		]
+	},
 	{ stack: 'cms-fronts' },
 	{ stack: 'ophan' },
 	{ stack: 'frontend' },
